@@ -12,7 +12,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("Корзина"),
+      child: Text("Функция пока \n Не достпуна D:", textAlign: TextAlign.center,),
     );
   }
 }

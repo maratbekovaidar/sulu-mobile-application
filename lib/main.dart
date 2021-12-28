@@ -4,6 +4,7 @@ import 'package:sulu_mobile_application/features/auth/views/screens/login_page.d
 import 'package:sulu_mobile_application/features/auth/views/screens/register_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sulu_mobile_application/features/profile/views/screens/profile_edit_apge.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,8 @@ Map<String, WidgetBuilder> routes = {
   '/' : (context) => const HomePage(),
   '/first_page' : (context) => const FirstPage(),
   '/login' : (context) => const LoginPage(),
-  '/register' : (context) => const RegisterPage()
+  '/register' : (context) => const RegisterPage(),
+  '/edit_profile' : (context) => const ProfileEditPage(),
 };
 
 class MyApp extends StatelessWidget {
