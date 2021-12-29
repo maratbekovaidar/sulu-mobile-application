@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FirstPage extends StatefulWidget {
@@ -10,11 +11,15 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
+
+  final storage = const FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
 
     /// Size
     double width = MediaQuery.of(context).size.width;
+
 
     return Scaffold(
       body: Stack(
