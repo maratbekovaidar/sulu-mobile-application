@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sulu_mobile_application/features/home/views/screens/category_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/bookmark_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/cart_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/hello_page.dart';
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
 
   /// Data
   /// Dropdown value
@@ -36,6 +37,18 @@ class _HomePageState extends State<HomePage> {
     const ProfilePage()
   ];
 
+  /// Animation
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 1),
+    vsync: this,
+  );
+  late final Animation<Offset> _offsetAnimation = Tween<Offset>(
+    begin: Offset.zero,
+    end: const Offset(4, 0.0),
+  ).animate(CurvedAnimation(
+    parent: _controller,
+    curve: Curves.elasticIn,
+  ));
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +90,17 @@ class _HomePageState extends State<HomePage> {
           /// Burger
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => const CategoryPage(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        return SlideTransition(position: _offsetAnimation,
+                        child: child);
+                      },
+                    )
+                  );
+                },
                 icon: const Icon(
                   Icons.menu_rounded,
                   size: 30,

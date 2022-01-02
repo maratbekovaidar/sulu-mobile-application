@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/first_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/login_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/register_page.dart';
+import 'package:sulu_mobile_application/features/home/views/screens/category_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/features/profile/views/screens/profile_edit_page.dart';
@@ -35,6 +36,7 @@ Map<String, WidgetBuilder> routes = {
   '/register' : (context) => const RegisterPage(),
   '/edit_profile' : (context) => const ProfileEditPage(),
   '/salons' : (context) => const SalonsPage(),
+  '/category' : (context) => const CategoryPage(),
 
 };
 
