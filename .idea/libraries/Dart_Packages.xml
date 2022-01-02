@@ -12,7 +12,7 @@
         <entry key="bloc">
           <value>
             <list>
-              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/bloc-8.0.1/lib" />
+              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/bloc-8.0.2/lib" />
             </list>
           </value>
         </entry>
@@ -103,7 +103,7 @@
         <entry key="flutter_bloc">
           <value>
             <list>
-              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.0/lib" />
+              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.1/lib" />
             </list>
           </value>
         </entry>
@@ -313,7 +313,14 @@
         <entry key="provider">
           <value>
             <list>
-              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.1/lib" />
+              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="restart_app">
+          <value>
+            <list>
+              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/restart_app-1.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -398,7 +405,7 @@
     </properties>
     <CLASSES>
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.1/lib" />
-      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/bloc-8.0.1/lib" />
+      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/bloc-8.0.2/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/carousel_slider-4.0.0/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/characters-1.1.0/lib" />
@@ -410,7 +417,7 @@
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/ffi-1.1.2/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.2/lib" />
-      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.0/lib" />
+      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.1/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage-5.0.2/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage_linux-1.1.0/lib" />
@@ -438,7 +445,8 @@
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.1.0/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.2/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib" />
-      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.1/lib" />
+      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.2/lib" />
+      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/restart_app-1.1.0/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.1/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />

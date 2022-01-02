@@ -324,11 +324,16 @@ class _HelloPageState extends State<HelloPage> {
               /// Salons
               Row(
                 children: [
-                  Text("Салоны", style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Colors.black
-                  ),),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/salons');
+                    },
+                    child: Text("Салоны", style: GoogleFonts.inter(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black
+                    ),),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
