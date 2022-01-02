@@ -324,15 +324,25 @@ class _HelloPageState extends State<HelloPage> {
               /// Salons
               Row(
                 children: [
-                  TextButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       Navigator.pushNamed(context, '/salons');
                     },
-                    child: Text("Салоны", style: GoogleFonts.inter(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.black
-                    ),),
+                    child: Row(
+                      children: [
+                        Text("Салоны", style: GoogleFonts.inter(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.black
+                        ),),
+                        const SizedBox(width: 5),
+
+                        const Icon(
+                          Icons.arrow_forward_rounded,
+                          color: Colors.black,
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
