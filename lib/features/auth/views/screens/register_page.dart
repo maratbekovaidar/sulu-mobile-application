@@ -1,8 +1,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sulu_mobile_application/utils/services/rest_api_provider.dart';
+import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -21,10 +22,67 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
+  /// Validate
+  bool _firstNameValidate = true;
+  bool _lastNameValidate = true;
+  bool _phoneNumberValidate = true;
+  bool _passwordValidate = true;
+  bool _confirmPasswordValidate = true;
+
+  /// Validator
+  void registerValidator() {
+    if(firstNameController.text.isNotEmpty) {
+      setState(() {
+        _firstNameValidate = true;
+      });
+    } else {
+      setState(() {
+        _firstNameValidate = false;
+      });
+    }
+    if(lastNameController.text.isNotEmpty) {
+      setState(() {
+        _lastNameValidate = true;
+      });
+    } else {
+      setState(() {
+        _lastNameValidate = false;
+      });
+    }
+    if(phoneNumberController.text.isNotEmpty) {
+      setState(() {
+        _phoneNumberValidate = true;
+      });
+    } else {
+      setState(() {
+        _phoneNumberValidate = false;
+      });
+    }
+    if(passwordController.text.isNotEmpty) {
+      setState(() {
+        _passwordValidate = true;
+      });
+    } else {
+      setState(() {
+        _passwordValidate = false;
+      });
+    }
+    if(confirmPasswordController.text == passwordController.text && confirmPasswordController.text.isNotEmpty) {
+      setState(() {
+        _confirmPasswordValidate = true;
+      });
+    } else {
+      setState(() {
+        _confirmPasswordValidate = false;
+      });
+    }
+  }
 
   /// Opacity
   bool circularBarIndicatorOpacity = false;
   bool errorTextOpacity = false;
+  bool isButtonDisabled = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
     /// Provider
-    final RestApiProvider provider = RestApiProvider();
+    final UserProvider provider = UserProvider();
 
 
     return Scaffold(
@@ -48,6 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 30),
 
                 /// Title
                 Row(
@@ -56,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Text(
                       "Регистрация клиента",
                       style: GoogleFonts.inter(
-                          color: const Color(0xff95798a),
+                          color: const Color(0xffFF385C),
                           fontWeight: FontWeight.bold,
                           fontSize: 26),
                       textAlign: TextAlign.start,
@@ -67,36 +126,70 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 /// First Name
                 TextField(
-                  decoration: const InputDecoration(hintText: "Имя"),
+                  decoration: InputDecoration(
+                    hintText: "Имя",
+                    errorText: _firstNameValidate ? null : "Введите имя"
+                  ),
                   controller: firstNameController,
                 ),
                 const SizedBox(height: 10),
 
                 /// Last Name
                 TextField(
-                  decoration: const InputDecoration(hintText: "Фамилия"),
+                  decoration: InputDecoration(
+                    hintText: "Фамилия",
+                    errorText: _lastNameValidate ? null : "Введите фамилию"
+                  ),
                   controller: lastNameController,
                 ),
                 const SizedBox(height: 10),
 
-                /// Middle Name
-                TextField(
-                  decoration: const InputDecoration(hintText: "Отчество"),
-                  controller: patronymicController,
-                ),
-                const SizedBox(height: 10),
-
                 /// Phone NUmber
-                TextField(
-                  decoration: const InputDecoration(hintText: "Номер телефона"),
+                TextFormField(
                   controller: phoneNumberController,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    if (value.isEmpty ||
+                        value.length <= 9) {
+                      setState(() {
+                        isButtonDisabled = true;
+                      });
+                    } else if(value.length>9) {
+                      setState(() {
+                        isButtonDisabled = false;
+                      });
+                    }
+                  },
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    LengthLimitingTextInputFormatter(10),
+                    
+                  ],
+                  decoration: InputDecoration(
+                    prefixIcon: const Padding(
+                        padding:
+                        EdgeInsets.only(left: 15, top: 15, bottom: 15),
+                        child: Text(
+                          '+7',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Color.fromRGBO(45, 45, 45, 1)),
+                        )),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(20)),
+                    hintText: "777-777-77-77",
+                  ),
                 ),
                 const SizedBox(height: 10),
 
                 /// Password
                 TextField(
                   obscureText: true,
-                  decoration: const InputDecoration(hintText: "Пароль"),
+                  decoration: InputDecoration(
+                    hintText: "Пароль",
+                    errorText: _passwordValidate == true ? null : "Введите пароль"
+                  ),
                   controller: passwordController,
                 ),
                 const SizedBox(height: 10),
@@ -104,8 +197,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 /// Confirm Password
                 TextField(
                   obscureText: true,
-                  decoration:
-                  const InputDecoration(hintText: "Повторите пароль"),
+                  decoration: InputDecoration(
+                    hintText: "Повторите пароль",
+                    errorText: _confirmPasswordValidate == false ? "Пароли не совпадают" : null
+                  ),
                   controller: confirmPasswordController,
                 ),
                 const SizedBox(height: 25),
@@ -114,40 +209,41 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   width: width * 0.95,
                   child: ElevatedButton(
+
                       onPressed: () async {
-
-                        // yield ("Yield");
-
-                        if(passwordController.text == confirmPasswordController.text) {
-                          setState(() {
-                            circularBarIndicatorOpacity = true;
-                          });
-                          int status = await provider.register(
-                              firstNameController.text,
-                              lastNameController.text,
-                              patronymicController.text,
-                              phoneNumberController.text,
-                              passwordController.text);
-                          if(status == 200) {
+                        registerValidator();
+                        if(_confirmPasswordValidate && _passwordValidate && _phoneNumberValidate && _lastNameValidate && _firstNameValidate) {
+                          if(passwordController.text == confirmPasswordController.text) {
                             setState(() {
-                              circularBarIndicatorOpacity = false;
-                              showDialog(context: context, builder: (_) {
-                                return CupertinoAlertDialog(
-                                  content: const Text("Регистрация \n прошла успешлно!", style: TextStyle(
-                                    color: Colors.green
-                                  ),),
-                                  actions: [
-                                    TextButton(onPressed: () {
-                                      Navigator.pushNamed(context, '/login');
+                              circularBarIndicatorOpacity = true;
+                            });
+                            int status = await provider.register(
+                                firstNameController.text,
+                                lastNameController.text,
+                                "",
+                                phoneNumberController.text,
+                                passwordController.text);
+                            if(status == 200) {
+                              setState(() {
+                                circularBarIndicatorOpacity = false;
+                                showDialog(context: context, builder: (_) {
+                                  return CupertinoAlertDialog(
+                                    content: const Text("Регистрация \n прошла успешлно!", style: TextStyle(
+                                        color: Colors.green
+                                    ),),
+                                    actions: [
+                                      TextButton(onPressed: () {
+                                        Navigator.pushNamed(context, '/login');
                                       }, child: const Text("Ok"))
-                                  ],
-                                );
+                                    ],
+                                  );
+                                });
                               });
-                            });
-                          } else {
-                            setState(() {
-                              errorTextOpacity = true;
-                            });
+                            } else {
+                              setState(() {
+                                errorTextOpacity = true;
+                              });
+                            }
                           }
                         }
                       },

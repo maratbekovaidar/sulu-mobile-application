@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sulu_mobile_application/utils/services/rest_api_provider.dart';
+import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -15,13 +16,14 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
   /// Api provider
-  RestApiProvider provider = RestApiProvider();
+  UserProvider provider = UserProvider();
 
   /// Checkbox
   bool isChecked = false;
 
   /// TextField Controller
   TextEditingController phoneNumberController = TextEditingController();
+  bool isButtonDisabled = true;
   TextEditingController passwordController = TextEditingController();
 
   /// Error Status opacity
@@ -29,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
   /// Loading opacity
   bool circularIndicatorOpacity = false;
+
 
 
 
@@ -56,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       "Вход",
                       style: GoogleFonts.inter(
-                        color: const Color(0xff95798a),
+                        color: const Color(0xffFF385C),
                         fontWeight: FontWeight.bold,
                         fontSize: 26
                       ),
@@ -66,12 +69,43 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 10),
 
-                /// Username
-                TextField(
-                  decoration: const InputDecoration(
-                    hintText: "Номер телефона"
-                  ),
+                /// Phone Number
+                TextFormField(
                   controller: phoneNumberController,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    print(phoneNumberController.text);
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.length <= 9) {
+                      setState(() {
+                        isButtonDisabled = true;
+                      });
+                    } else if(value.length>9) {
+                      setState(() {
+                        isButtonDisabled = false;
+                      });
+                    }
+                  },
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  ],
+                  decoration: InputDecoration(
+                    prefixIcon: const Padding(
+                        padding:
+                        EdgeInsets.only(left: 15, top: 15, bottom: 15),
+                        child: Text(
+                          '+7',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Color.fromRGBO(45, 45, 45, 1)),
+                        )),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(20)),
+                    hintText: "777-777-77-77",
+                  ),
+                  maxLength: 10,
                 ),
                 const SizedBox(height: 10),
 
@@ -108,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                         Text(
                           "Запномнить меня",
                           style: GoogleFonts.inter(
-                            fontSize: 16,
+                            fontSize: 12,
                             color: Colors.black,
                             fontWeight: FontWeight.w300,
                           ),
@@ -122,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           "Забыли пароль?",
                           style: GoogleFonts.inter(
-                              fontSize: 16,
+                              fontSize: 12,
                               color: Colors.black,
                               fontWeight: FontWeight.w300,
                               decoration: TextDecoration.underline
@@ -139,15 +173,17 @@ class _LoginPageState extends State<LoginPage> {
                   child: ElevatedButton(
                       onPressed: () async {
                         setState(() {
+                          errorStatusOpacity = false;
                           circularIndicatorOpacity = true;
                         });
-                        bool status = await provider.login(phoneNumberController.text, passwordController.text);
-                        if(status == true) {
+
+                        try {
+                          bool status = await provider.login(phoneNumberController.text, passwordController.text);
                           setState(() {
                             circularIndicatorOpacity = false;
                           });
                           Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-                        } else {
+                        } catch(e) {
                           setState(() {
                             circularIndicatorOpacity = false;
                             errorStatusOpacity = true;

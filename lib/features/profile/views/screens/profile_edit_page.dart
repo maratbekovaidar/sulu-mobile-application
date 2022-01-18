@@ -36,7 +36,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     Text(
                       "Данные клиента",
                       style: GoogleFonts.inter(
-                          color: const Color(0xff95798a),
+                          color: const Color(0xffFF385C),
                           fontWeight: FontWeight.bold,
                           fontSize: 26
                       ),
@@ -78,7 +78,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     Text(
                       "Изменение пароля",
                       style: GoogleFonts.inter(
-                          color: const Color(0xff95798a),
+                          color: const Color(0xffFF385C),
                           fontWeight: FontWeight.bold,
                           fontSize: 26
                       ),

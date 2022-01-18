@@ -3,9 +3,11 @@ class UserModel {
   final String firstName;
   final String lastName;
   final String patronymic;
+  final String photo;
 
-  UserModel(
-      {required this.id,
+  UserModel({
+      required this.photo,
+      required this.id,
       required this.firstName,
       required this.lastName,
       required this.patronymic});
@@ -14,5 +16,6 @@ class UserModel {
       id: json['id'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      patronymic: json['patronymic']);
+      patronymic: json['patronymic'],
+      photo: json['photo'] ?? 'https://afitat-bol.com/wp-content/uploads/2021/03/default-user-avatar.jpg');
 }

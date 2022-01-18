@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,7 +34,7 @@ class _FirstPageState extends State<FirstPage> {
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage('assets/background/first_page_background.jpg')
+                  image: AssetImage('assets/background/background_image.jpg')
                 ),
               ),
             ),
@@ -40,7 +42,17 @@ class _FirstPageState extends State<FirstPage> {
             /// Color and Content
             Container(
               decoration: const BoxDecoration(
-                color: Color.fromRGBO(12, 12, 12, 0.33)
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromRGBO(255, 255, 255, 0.9),
+                    Color.fromRGBO(255, 255, 255, 0.2),
+                    Color.fromRGBO(00, 00, 00, 0.5),
+                    Colors.transparent,
+                    Colors.transparent,
+                  ]
+                )
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,9 +62,15 @@ class _FirstPageState extends State<FirstPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(50.0),
-                        child: Image.asset('assets/logo/sulu_logo.png'),
+                      Column(
+                        children: [
+                          const SizedBox(height: 100),
+                          Image.asset(
+                            'assets/logo/red_logo.png',
+                            width: 80,
+                          ),
+                          const SizedBox(height: 40),
+                        ],
                       ),
                     ],
                   ),
@@ -61,15 +79,20 @@ class _FirstPageState extends State<FirstPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "Добро пожаловать! \n Мы рады видеть вас \n с нами",
-                        style: GoogleFonts.inter(
-                          fontSize: 26,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "Добро пожаловать! \n Мы рады видеть вас \n с нами",
+                            style: GoogleFonts.inter(
+                              fontSize: 26,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 150),
+                        ],
+                      )
                     ],
                   ),
 
@@ -119,7 +142,7 @@ class _FirstPageState extends State<FirstPage> {
                               )
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 40),
                         ],
                       )
                     ],

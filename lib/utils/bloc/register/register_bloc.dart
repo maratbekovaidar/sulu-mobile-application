@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:sulu_mobile_application/utils/services/rest_api_provider.dart';
+import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
-  RestApiProvider restApiProvider = RestApiProvider();
+  UserProvider restApiProvider = UserProvider();
 
   RegisterBloc() : super(RegisterInitialState()) {
     on<RegisterEvent>((event, emit) async {
