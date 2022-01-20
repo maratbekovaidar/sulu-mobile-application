@@ -127,7 +127,9 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
 
                       if (state is MasterInitialState) {
                         masterBloc.add(MasterLoadByTypeIdEvent(
-                            id: widget.selectedService.id));
+                          serviceTypeId: widget.selectedService.typeId,
+                          establishmentId: widget.selectedService.establishmentId
+                        ));
                         return Container();
                       }
 
@@ -179,8 +181,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                                             crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                             children: [
-                                              Text(items.firstName +
-                                                  " " + items.lastName),
+                                              Text(items.name),
                                               Text(items.masterType[0].type,
                                                 style: GoogleFonts.inter(
                                                     fontSize: 14,

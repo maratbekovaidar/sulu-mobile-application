@@ -27,10 +27,10 @@ class MasterBloc extends Bloc<MasterEvent, MasterState> {
       if(event is MasterLoadByTypeIdEvent) {
         emit(MasterLoadingState());
         try {
-          List<MasterModel> _loadedMastersOfEstablishment = await masterRepository.getMasterByTypeId(event.id);
+          List<MasterModel> _loadedMastersOfEstablishment = await masterRepository.getMasterByTypeId(event.serviceTypeId, event.establishmentId);
           return(emit(MasterLoadedState(loadedMastersOfEstablishment: _loadedMastersOfEstablishment)));
         } catch(e) {
-          print("Master error " + e.toString());
+          print("Master error by type id " + e.toString());
           return(emit(MasterErrorState()));
         }
       }

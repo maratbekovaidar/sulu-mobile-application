@@ -7,8 +7,7 @@ class MasterModel {
   final List<MasterTypeModel> masterType;
   final String? photo;
   final List<ScheduleModel> schedule;
-  final String firstName;
-  final String lastName;
+  final String name;
   final List<String> masterStartTime;
 
   MasterModel({
@@ -18,8 +17,7 @@ class MasterModel {
       required this.masterType,
       required this.photo,
       required this.schedule,
-      required this.firstName,
-      required this.lastName});
+      required this.name,});
 
   factory MasterModel.fromJson(json) {
 
@@ -33,8 +31,8 @@ class MasterModel {
         masterType: masterTypeJson.map((e) => MasterTypeModel.fromJson(e)).toList(),
         photo: "",
         schedule: scheduleJson.map((e) => ScheduleModel.fromJson(e)).toList(),
-        firstName: json['firstname'] ?? "S",
-        lastName: json['lastname'] ?? "Мастер", masterStartTime: masterTime.map((e) => e.toString()).toList()
+        name: json['name'],
+        masterStartTime: masterTime.map((e) => e.toString()).toList()
     );
   }
 

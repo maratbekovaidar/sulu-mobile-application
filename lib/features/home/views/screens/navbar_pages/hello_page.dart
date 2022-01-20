@@ -54,6 +54,15 @@ class _HelloPageState extends State<HelloPage> {
   int _mainBannerIndex = 0;
   final CarouselController _mainBannerController = CarouselController();
 
+  /// Favorite status
+  bool getFavoriteStatus(int id) {
+    List<int> favoritesId = [1, 3, 5];
+    if(favoritesId.contains(id)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   /// Provider
   final EstablishmentProvider _establishmentProvider = EstablishmentProvider();
@@ -485,10 +494,10 @@ class _HelloPageState extends State<HelloPage> {
                                                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                       }
                                                     },
-                                                    child: const CircleAvatar(
+                                                    child: CircleAvatar(
                                                       radius: 15,
                                                       child: Icon(
-                                                        Icons.favorite,
+                                                        getFavoriteStatus(state.establishments[index].id) ? Icons.favorite : Icons.favorite_outline_rounded,
                                                         color: Colors.redAccent,
                                                         size: 16,
                                                       ),
@@ -514,7 +523,7 @@ class _HelloPageState extends State<HelloPage> {
                                             Row(
                                               children: [
                                                 const Icon(Icons.star, size: 16, color: Colors.grey,),
-                                                Text(state.establishments[index].amountOfLikes.toString(), style: GoogleFonts.inter(fontSize: 16, color: Colors.grey),)
+                                                Text(state.establishments[index].rating.toString(), style: GoogleFonts.inter(fontSize: 16, color: Colors.grey),)
                                               ],
                                             )
                                           ],
@@ -712,7 +721,7 @@ class _HelloPageState extends State<HelloPage> {
                                             Row(
                                               children: [
                                                 const Icon(Icons.star, size: 16, color: Colors.grey,),
-                                                Text(state.establishments[index].amountOfLikes.toString(), style: GoogleFonts.inter(fontSize: 16, color: Colors.grey),)
+                                                Text(state.establishments[index].rating.toString(), style: GoogleFonts.inter(fontSize: 16, color: Colors.grey),)
                                               ],
                                             )
                                           ],

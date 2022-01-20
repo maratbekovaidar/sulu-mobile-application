@@ -1,12 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/order/order_set_date_page.dart';
+import 'package:sulu_mobile_application/utils/bloc/comment/comment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/master/master_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/service/service_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/master_model.dart';
+import 'package:sulu_mobile_application/utils/repository/comment_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/master_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/service_repository.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
@@ -30,8 +31,10 @@ class _EstablishmentPageState extends State<EstablishmentPage>
   /// Order Amount
   int orderAmount = 0;
 
+  /// Repositories
   ServiceRepository serviceRepository = ServiceRepository();
   MasterRepository masterRepository = MasterRepository();
+  CommentRepository commentRepository = CommentRepository();
 
   List<MasterModel> masters = [];
 
@@ -51,6 +54,9 @@ class _EstablishmentPageState extends State<EstablishmentPage>
         BlocProvider(
           create: (context) => MasterBloc(masterRepository: masterRepository),
         ),
+        BlocProvider(
+            create: (context) =>
+                CommentBloc(commentRepository: commentRepository))
       ],
       child: Scaffold(
         appBar: AppBar(),
@@ -94,7 +100,8 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                             IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    Share.share('Удобное приложение для записи на услуги красоты! \n https://sulu.life');
+                                    Share.share(
+                                        'Удобное приложение для записи на услуги красоты! \n https://sulu.life');
                                   });
                                 },
                                 icon: const Icon(
@@ -106,23 +113,30 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                             /// Favorite Button
                             IconButton(
                                 onPressed: () async {
-                                  int resultFavorite = await _establishmentProvider.setFavoriteEstablishment(widget.establishmentModel.id);
+                                  int resultFavorite =
+                                      await _establishmentProvider
+                                          .setFavoriteEstablishment(
+                                              widget.establishmentModel.id);
 
-                                  if(resultFavorite == 200) {
+                                  if (resultFavorite == 200) {
                                     const snackBar = SnackBar(
-                                      content: Text('Салон успешно добавлен в избранные!'),
+                                      content: Text(
+                                          'Салон успешно добавлен в избранные!'),
                                     );
-                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                  } else if(resultFavorite == 406) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  } else if (resultFavorite == 406) {
                                     const snackBar = SnackBar(
                                       content: Text('Салон уже добавлен!'),
                                     );
-                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
                                   } else {
                                     const snackBar = SnackBar(
                                       content: Text('Ошибка'),
                                     );
-                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
                                   }
                                 },
                                 icon: const Icon(
@@ -163,11 +177,12 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                 const SizedBox(width: 10),
 
                                 /// Schedule
-                                Text(widget.establishmentModel.schedule[widget
-                                            .establishmentModel
-                                            .schedule
-                                            .length -
-                                        1].day +
+                                Text(widget
+                                        .establishmentModel
+                                        .schedule[widget.establishmentModel
+                                                .schedule.length -
+                                            1]
+                                        .day +
                                     " - " +
                                     widget.establishmentModel.schedule[0].day),
                                 const SizedBox(width: 10),
@@ -191,8 +206,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                   color: Colors.grey,
                                 ),
                                 Text(
-                                  widget.establishmentModel.amountOfLikes
-                                      .toString(),
+                                  widget.establishmentModel.rating.toString(),
                                   style: GoogleFonts.inter(
                                       fontSize: 14, color: Colors.grey),
                                 )
@@ -388,7 +402,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                         Text(
                                                                           state
                                                                               .loadedServices[index]
-                                                                              .name,
+                                                                              .description,
                                                                           style:
                                                                               GoogleFonts.inter(),
                                                                         ),
@@ -415,9 +429,19 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
                                                                     /// Go to Button
                                                                     IconButton(
-                                                                      onPressed: () {
-                                                                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                                            return OrderSetDatePage(establishmentModel: widget.establishmentModel, selectedService: state.loadedServices[index]);
+                                                                      onPressed:
+                                                                          () {
+                                                                        print(state
+                                                                            .loadedServices[index]
+                                                                            .id);
+
+                                                                        Navigator.push(
+                                                                            context,
+                                                                            MaterialPageRoute(builder:
+                                                                                (context) {
+                                                                          return OrderSetDatePage(
+                                                                              establishmentModel: widget.establishmentModel,
+                                                                              selectedService: state.loadedServices[index]);
                                                                         }));
                                                                       },
                                                                       icon:
@@ -521,13 +545,9 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                           .start,
                                                                   children: [
                                                                     Text(state
-                                                                            .loadedMastersOfEstablishment[
-                                                                                index]
-                                                                            .firstName +
-                                                                        " " +
-                                                                        state
-                                                                            .loadedMastersOfEstablishment[index]
-                                                                            .lastName),
+                                                                        .loadedMastersOfEstablishment[
+                                                                            index]
+                                                                        .name),
                                                                     Text(
                                                                       state
                                                                           .loadedMastersOfEstablishment[
@@ -571,280 +591,127 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
                                           ///  Reports
                                           Center(
-                                            child: ListView(
-                                              children: [
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
+                                            child: BlocBuilder<CommentBloc,
+                                                CommentState>(
+                                              builder: (context, state) {
+                                                CommentBloc commentBloc = BlocProvider.of<CommentBloc>(context);
 
-                                                /// Example of comment
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(20),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      border: Border.all(
-                                                          color:
-                                                              Colors.black38)),
-                                                  child: Column(
-                                                    children: [
-                                                      /// User Information
-                                                      Row(
-                                                        children: [
-                                                          const CircleAvatar(
-                                                            radius: 25,
-                                                            backgroundImage:
-                                                                AssetImage(
-                                                                    'assets/icons/master.png'),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 10),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: const [
-                                                              Text(
-                                                                  "Aidar Maratbekov"),
-                                                              Text(
-                                                                "12 января, 21:56",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black38,
-                                                                    fontSize:
-                                                                        14),
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
+                                                if(state is CommentInitialState) {
+                                                  commentBloc.add(CommentLoadEvent(id: widget.establishmentModel.id));
+                                                }
 
-                                                      /// Comment
-                                                      const Text(
-                                                          "Удивительно красивое место. Очень внимательный, д"
-                                                          "ображилательный  персонал. Удобное расположение"),
-                                                      const SizedBox(
-                                                          height: 20),
+                                                if(state is CommentLoadingState) {
+                                                  return const Center(
+                                                    child: CircularProgressIndicator(),
+                                                  );
+                                                }
 
-                                                      /// Master
-                                                      Row(
-                                                        children: [
-                                                          const CircleAvatar(
-                                                            radius: 15,
-                                                            backgroundImage:
-                                                                AssetImage(
-                                                                    'assets/icons/master.png'),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: const [
-                                                              Text(
-                                                                  "Aidar Maratbekov",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black38,
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold)),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
+                                                if(state is CommentErrorState) {
+                                                  return const Center(
+                                                    child: Text("Нету отзывов"),
+                                                  );
+                                                }
 
-                                                /// Example of comment
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(20),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      border: Border.all(
-                                                          color:
-                                                              Colors.black38)),
-                                                  child: Column(
-                                                    children: [
-                                                      /// User Information
-                                                      Row(
-                                                        children: [
-                                                          const CircleAvatar(
-                                                            radius: 25,
-                                                            backgroundImage:
-                                                                AssetImage(
-                                                                    'assets/icons/master.png'),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 10),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: const [
-                                                              Text(
-                                                                  "Aidar Maratbekov"),
-                                                              Text(
-                                                                "12 января, 21:56",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black38,
-                                                                    fontSize:
-                                                                        14),
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
+                                                if(state is CommentLoadedState) {
+                                                  return ListView.builder(
+                                                    itemCount: state.loadedCommentsOfEstablishment.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                        int index) {
+                                                      return Container(
+                                                        padding:
+                                                        const EdgeInsets.all(
+                                                            20),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .black38)),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            /// User Information
+                                                            Row(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              children: [
+                                                                const CircleAvatar(
+                                                                  radius: 25,
+                                                                  backgroundImage:
+                                                                  AssetImage(
+                                                                      'assets/icons/master.png'),
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 10),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                                  children: [
+                                                                    Text(state.loadedCommentsOfEstablishment[index].userfirstname + " " + state.loadedCommentsOfEstablishment[index].userfirstname),
+                                                                    const Text(
+                                                                      "12 января, 21:56",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .black38,
+                                                                          fontSize:
+                                                                          14),
+                                                                    )
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 10),
 
-                                                      /// Comment
-                                                      const Text(
-                                                          "Удивительно красивое место. Очень внимательный, дображилательный  персонал. Удобное расположение"),
-                                                      const SizedBox(
-                                                          height: 20),
+                                                            /// Comment
+                                                            Text(state.loadedCommentsOfEstablishment[index].text),
+                                                            const SizedBox(
+                                                                height: 20),
 
-                                                      /// Master
-                                                      Row(
-                                                        children: [
-                                                          const CircleAvatar(
-                                                            radius: 15,
-                                                            backgroundImage:
-                                                                AssetImage(
-                                                                    'assets/icons/master.png'),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: const [
-                                                              Text(
-                                                                  "Aidar Maratbekov",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black38,
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold)),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
+                                                            /// Master
+                                                            Row(
+                                                              children: [
+                                                                const CircleAvatar(
+                                                                  radius: 15,
+                                                                  backgroundImage:
+                                                                  AssetImage(
+                                                                      'assets/icons/master.png'),
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 5),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                                  children: [
+                                                                    Text(state.loadedCommentsOfEstablishment[index].mastername,
+                                                                        style: const TextStyle(
+                                                                            color: Colors
+                                                                                .black38,
+                                                                            fontSize:
+                                                                            14,
+                                                                            fontWeight:
+                                                                            FontWeight.bold)),
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
 
-                                                /// Example of comment
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(20),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      border: Border.all(
-                                                          color:
-                                                              Colors.black38)),
-                                                  child: Column(
-                                                    children: [
-                                                      /// User Information
-                                                      Row(
-                                                        children: [
-                                                          const CircleAvatar(
-                                                            radius: 25,
-                                                            backgroundImage:
-                                                                AssetImage(
-                                                                    'assets/icons/master.png'),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 10),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: const [
-                                                              Text(
-                                                                  "Aidar Maratbekov"),
-                                                              Text(
-                                                                "12 января, 21:56",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black38,
-                                                                    fontSize:
-                                                                        14),
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
+                                                return Container();
 
-                                                      /// Comment
-                                                      const Text(
-                                                          "Удивительно красивое место. Очень внимательный, дображилательный  персонал. Удобное расположение"),
-                                                      const SizedBox(
-                                                          height: 20),
-
-                                                      /// Master
-                                                      Row(
-                                                        children: [
-                                                          const CircleAvatar(
-                                                            radius: 15,
-                                                            backgroundImage:
-                                                                AssetImage(
-                                                                    'assets/icons/master.png'),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: const [
-                                                              Text(
-                                                                  "Aidar Maratbekov",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black38,
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold)),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                              },
                                             ),
                                           ),
 
+                                          /// Portfolio
                                           const Center(
                                             child: Text('Display Tab 4',
                                                 style: TextStyle(

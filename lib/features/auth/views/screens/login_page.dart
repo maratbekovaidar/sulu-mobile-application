@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   /// Checkbox
   bool isChecked = false;
 
+
   /// TextField Controller
   TextEditingController phoneNumberController = TextEditingController();
   bool isButtonDisabled = true;
@@ -131,12 +132,14 @@ class _LoginPageState extends State<LoginPage> {
                           width: 22,
                           height: 22,
                           child: Checkbox(
+                            checkColor: Colors.white,
+                            fillColor: MaterialStateProperty.all(Colors.redAccent),
                             value: isChecked,
-                            onChanged: (isChecked) {
+                            onChanged: (bool? value) {
                               setState(() {
-                                isChecked = !isChecked!;
+                                isChecked = value!;
                               });
-                            }
+                            },
                           ),
                         ),
                         Text(
@@ -178,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                         });
 
                         try {
-                          bool status = await provider.login(phoneNumberController.text, passwordController.text);
+                          bool status = await provider.login("+7" + phoneNumberController.text, passwordController.text);
                           setState(() {
                             circularIndicatorOpacity = false;
                           });

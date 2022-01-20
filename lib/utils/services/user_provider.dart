@@ -73,15 +73,17 @@ class UserProvider {
   Future<int> register(String firstName, String lastName, String patronymic, String phoneNumber, String password) async {
     var url = Uri.parse('https://sulu.azurewebsites.net/public/auth/register');
 
+    print(firstName + " " + lastName + " " + phoneNumber + " " + password);
+
     var response = await http.post(
         url,
         body: jsonEncode({
           "firstName": firstName,
           "lastName": lastName,
           "password": password,
-          "patronymic": patronymic,
+          "patronymic": "",
           "phoneNumber": phoneNumber,
-          "photo": "string"
+          "photo": ""
         }),
         headers: {
           'Content-Type':'application/json'

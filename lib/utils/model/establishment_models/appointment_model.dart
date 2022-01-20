@@ -1,16 +1,18 @@
 
 
-class AppointmentModel {
+import 'package:sulu_mobile_application/utils/model/establishment_models/master_type_model.dart';
 
+class AppointmentModel {
 
   final int id;
   final String appointmentDate;
   final String appointmentStartTime;
-  final String appointmentEndTime;
   final String establishmentAddress;
   final String establishmentName;
-  final String masterFirstname;
-  final String masterLastname;
+  final int establishmentId;
+  final String masterName;
+  final int masterDataId;
+  final List<MasterTypeModel> masterType;
   final String serviceType;
   final int serviceId;
 
@@ -19,28 +21,30 @@ class AppointmentModel {
     required this.id,
     required this.appointmentDate,
     required this.appointmentStartTime,
-    required this.appointmentEndTime,
     required this.establishmentAddress,
+    required this.establishmentId,
     required this.establishmentName,
-    required this.masterFirstname,
-    required this.masterLastname,
+    required this.masterName,
+    required this.masterDataId,
+    required this.masterType,
     required this.serviceType
   });
 
   factory AppointmentModel.fromJson(json) {
 
-    print(json['serviceId']);
+    List<dynamic> masterTypeJson = json['masterType'];
 
     return AppointmentModel(
         id: json['id'],
         appointmentDate: json['appointmentDate'],
         appointmentStartTime: json['appointmentStartTime'],
-        appointmentEndTime: json['appointmentEndTime'] ?? "",
         establishmentAddress: json['establishmentAddress'],
         establishmentName: json['establishmentName'],
-        masterFirstname: json['masterFirstname'],
-        masterLastname: json['masterLastname'],
+        establishmentId: json['establishmentId'],
+        masterName: json['masterName'],
         serviceType: json['serviceType'],
-        serviceId: json['serviceId']);
+        serviceId: json['serviceId'],
+        masterType: masterTypeJson.map((e) => MasterTypeModel.fromJson(e)).toList(),
+        masterDataId: json['masterDataId']);
   }
 }

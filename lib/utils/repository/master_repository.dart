@@ -5,5 +5,5 @@ import 'package:sulu_mobile_application/utils/services/establishment_provider.da
 class MasterRepository {
   final EstablishmentProvider _provider = EstablishmentProvider();
   Future<List<MasterModel>> getMasterOfEstablishment(int id) => _provider.getMastersOfEstablishment(id);
-  Future<List<MasterModel>> getMasterByTypeId(int id) => _provider.getMastersByTypeId(id);
+  Future<List<MasterModel>> getMasterByTypeId(int serviceTypeId, int establishmentId) => _provider.getMastersByTypeId(serviceTypeId, establishmentId);
 }

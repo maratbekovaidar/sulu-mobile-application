@@ -10,6 +10,7 @@ class MasterLoadEvent extends MasterEvent {
 
 
 class MasterLoadByTypeIdEvent extends MasterEvent {
-  final int id;
-  MasterLoadByTypeIdEvent({required this.id});
+  final int serviceTypeId;
+  final int establishmentId;
+  MasterLoadByTypeIdEvent({required this.serviceTypeId, required this.establishmentId});
 }

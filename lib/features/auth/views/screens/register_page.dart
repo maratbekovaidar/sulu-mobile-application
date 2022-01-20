@@ -1,9 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/utils/services/user_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -13,7 +14,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   /// Input Controllers
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -28,10 +28,11 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _phoneNumberValidate = true;
   bool _passwordValidate = true;
   bool _confirmPasswordValidate = true;
+  bool agree = true;
 
   /// Validator
   void registerValidator() {
-    if(firstNameController.text.isNotEmpty) {
+    if (firstNameController.text.isNotEmpty) {
       setState(() {
         _firstNameValidate = true;
       });
@@ -40,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _firstNameValidate = false;
       });
     }
-    if(lastNameController.text.isNotEmpty) {
+    if (lastNameController.text.isNotEmpty) {
       setState(() {
         _lastNameValidate = true;
       });
@@ -49,7 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _lastNameValidate = false;
       });
     }
-    if(phoneNumberController.text.isNotEmpty) {
+    if (phoneNumberController.text.isNotEmpty) {
       setState(() {
         _phoneNumberValidate = true;
       });
@@ -58,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _phoneNumberValidate = false;
       });
     }
-    if(passwordController.text.isNotEmpty) {
+    if (passwordController.text.isNotEmpty) {
       setState(() {
         _passwordValidate = true;
       });
@@ -67,7 +68,8 @@ class _RegisterPageState extends State<RegisterPage> {
         _passwordValidate = false;
       });
     }
-    if(confirmPasswordController.text == passwordController.text && confirmPasswordController.text.isNotEmpty) {
+    if (confirmPasswordController.text == passwordController.text &&
+        confirmPasswordController.text.isNotEmpty) {
       setState(() {
         _confirmPasswordValidate = true;
       });
@@ -83,19 +85,13 @@ class _RegisterPageState extends State<RegisterPage> {
   bool errorTextOpacity = false;
   bool isButtonDisabled = false;
 
-
   @override
   Widget build(BuildContext context) {
     /// Size
-    double width = MediaQuery
-        .of(context)
-        .size
-        .width;
-
+    double width = MediaQuery.of(context).size.width;
 
     /// Provider
     final UserProvider provider = UserProvider();
-
 
     return Scaffold(
       appBar: AppBar(),
@@ -127,9 +123,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 /// First Name
                 TextField(
                   decoration: InputDecoration(
-                    hintText: "Имя",
-                    errorText: _firstNameValidate ? null : "Введите имя"
-                  ),
+                      hintText: "Имя",
+                      errorText: _firstNameValidate ? null : "Введите имя"),
                   controller: firstNameController,
                 ),
                 const SizedBox(height: 10),
@@ -137,9 +132,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 /// Last Name
                 TextField(
                   decoration: InputDecoration(
-                    hintText: "Фамилия",
-                    errorText: _lastNameValidate ? null : "Введите фамилию"
-                  ),
+                      hintText: "Фамилия",
+                      errorText: _lastNameValidate ? null : "Введите фамилию"),
                   controller: lastNameController,
                 ),
                 const SizedBox(height: 10),
@@ -149,12 +143,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: phoneNumberController,
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
-                    if (value.isEmpty ||
-                        value.length <= 9) {
+                    if (value.isEmpty || value.length <= 9) {
                       setState(() {
                         isButtonDisabled = true;
                       });
-                    } else if(value.length>9) {
+                    } else if (value.length > 9) {
                       setState(() {
                         isButtonDisabled = false;
                       });
@@ -163,12 +156,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                     LengthLimitingTextInputFormatter(10),
-                    
                   ],
                   decoration: InputDecoration(
                     prefixIcon: const Padding(
-                        padding:
-                        EdgeInsets.only(left: 15, top: 15, bottom: 15),
+                        padding: EdgeInsets.only(left: 15, top: 15, bottom: 15),
                         child: Text(
                           '+7',
                           style: TextStyle(
@@ -187,9 +178,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: "Пароль",
-                    errorText: _passwordValidate == true ? null : "Введите пароль"
-                  ),
+                      hintText: "Пароль",
+                      errorText:
+                          _passwordValidate == true ? null : "Введите пароль"),
                   controller: passwordController,
                 ),
                 const SizedBox(height: 10),
@@ -198,22 +189,78 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: "Повторите пароль",
-                    errorText: _confirmPasswordValidate == false ? "Пароли не совпадают" : null
-                  ),
+                      hintText: "Повторите пароль",
+                      errorText: _confirmPasswordValidate == false
+                          ? "Пароли не совпадают"
+                          : null),
                   controller: confirmPasswordController,
                 ),
                 const SizedBox(height: 25),
 
+                /// Agree
+                Row(children: [
+                  InkWell(
+                      onTap: () {
+                        setState(() {
+                          agree = !agree;
+                        });
+                      },
+                      child: !agree
+                          ? const Icon(Icons.check_box_outline_blank, color: Colors.redAccent,)
+                          : const Icon(
+                              Icons.check_box,
+                              color: Colors.red,
+                            )),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Согласен с ',
+                      style: const TextStyle(
+                          fontFamily: 'Montserrat', color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: "условиями пользования",
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch('https://disk.yandex.ru/i/yEo3KKDFDONqUA');
+                            },
+                          style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.redAccent),
+                        ),
+                        const TextSpan(text: ' и \n'),
+                        TextSpan(
+                          text: "политикой конфиденциальности",
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch('https://disk.yandex.kz/i/ckhWeEc1lB0Tzw');
+                            },
+                          style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.redAccent),
+                        ),
+                      ],
+                    ),
+                  )
+                ]),
+                const SizedBox(height: 25),
+
+
                 /// Button
                 SizedBox(
                   width: width * 0.95,
-                  child: ElevatedButton(
-
+                  child: agree ? ElevatedButton(
                       onPressed: () async {
                         registerValidator();
-                        if(_confirmPasswordValidate && _passwordValidate && _phoneNumberValidate && _lastNameValidate && _firstNameValidate) {
-                          if(passwordController.text == confirmPasswordController.text) {
+                        if (_confirmPasswordValidate &&
+                            _passwordValidate &&
+                            _phoneNumberValidate &&
+                            _lastNameValidate &&
+                            _firstNameValidate) {
+                          if (passwordController.text ==
+                              confirmPasswordController.text) {
                             setState(() {
                               circularBarIndicatorOpacity = true;
                             });
@@ -221,23 +268,29 @@ class _RegisterPageState extends State<RegisterPage> {
                                 firstNameController.text,
                                 lastNameController.text,
                                 "",
-                                phoneNumberController.text,
+                                "+7" + phoneNumberController.text,
                                 passwordController.text);
-                            if(status == 200) {
+                            if (status == 200) {
                               setState(() {
                                 circularBarIndicatorOpacity = false;
-                                showDialog(context: context, builder: (_) {
-                                  return CupertinoAlertDialog(
-                                    content: const Text("Регистрация \n прошла успешлно!", style: TextStyle(
-                                        color: Colors.green
-                                    ),),
-                                    actions: [
-                                      TextButton(onPressed: () {
-                                        Navigator.pushNamed(context, '/login');
-                                      }, child: const Text("Ok"))
-                                    ],
-                                  );
-                                });
+                                showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return CupertinoAlertDialog(
+                                        content: const Text(
+                                          "Регистрация \n прошла успешлно!",
+                                          style: TextStyle(color: Colors.green),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                    context, '/login');
+                                              },
+                                              child: const Text("Ok"))
+                                        ],
+                                      );
+                                    });
                               });
                             } else {
                               setState(() {
@@ -247,21 +300,34 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                         }
                       },
-                      child: const Text("Регистрация")),
+                      child: const Text("Регистрация")) : ElevatedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.black12)
+                    ),
+                    child: const Text("Регистрация"),
+                  ),
                 ),
                 const SizedBox(height: 20),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    circularBarIndicatorOpacity ? const CircularProgressIndicator() : Container()
+                    circularBarIndicatorOpacity
+                        ? const CircularProgressIndicator()
+                        : Container()
                   ],
                 ),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    errorTextOpacity ? const Text("Такой пользователь уже существует!", style: TextStyle(color: Colors.red),) : Container()
+                    errorTextOpacity
+                        ? const Text(
+                            "Такой пользователь уже существует!",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : Container()
                   ],
                 )
               ],

@@ -20,7 +20,7 @@ class CommentPage extends StatefulWidget {
 class _CommentPageState extends State<CommentPage> {
 
   final EstablishmentProvider _establishmentProvider = EstablishmentProvider();
-  int ratingComment = 0;
+  double ratingComment = 0;
   final TextEditingController _feedbackController = TextEditingController();
 
   @override
@@ -77,9 +77,7 @@ class _CommentPageState extends State<CommentPage> {
                             Text("Дата: " +
                                 widget.appointmentModel.appointmentDate),
                             Text("Время: " +
-                                widget.appointmentModel.appointmentStartTime +
-                                " - " +
-                                widget.appointmentModel.appointmentEndTime),
+                                widget.appointmentModel.appointmentStartTime),
                           ],
                         ),
                       ],
@@ -118,7 +116,7 @@ class _CommentPageState extends State<CommentPage> {
                 ),
                 onRatingUpdate: (rating) {
                   setState(() {
-                    ratingComment = rating.round();
+                    ratingComment = rating;
                   });
                 },
               ),
@@ -151,14 +149,14 @@ class _CommentPageState extends State<CommentPage> {
                         ),
                       );
                     });
-                    bool result = await _establishmentProvider.setCommentService(widget.serviceId, ratingComment, _feedbackController.text);
+                    bool result = await _establishmentProvider.setCommentService(widget.appointmentModel.establishmentId, widget.appointmentModel.masterDataId, ratingComment, _feedbackController.text);
                     if(result) {
                       Navigator.pop(context);
                       showDialog(context: context, builder: (_) {
                         return CupertinoAlertDialog(
                           content: Column(
                             children: const [
-                              Text("Вы успешно записались!", style: TextStyle(
+                              Text("Спасибо за отзыв!", style: TextStyle(
                                   color: Colors.green
                               ),),
                               Icon(

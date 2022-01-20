@@ -150,7 +150,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.masterModel.firstName + " " + widget.masterModel.lastName),
+                              Text(widget.masterModel.name),
                               Text(
                                 widget.masterModel.masterType[0].type,
                                 style: GoogleFonts.inter(

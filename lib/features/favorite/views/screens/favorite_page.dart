@@ -135,7 +135,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                                   state
                                                       .establishments[
                                                           index]
-                                                      .amountOfLikes
+                                                      .rating
                                                       .toString(),
                                                   style: GoogleFonts
                                                       .inter(
@@ -170,7 +170,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                               state
                                                       .establishments[
                                                           index]
-                                                      .amountOfLikes
+                                                      .rating
                                                       .toString() +
                                                   " отзывов",
                                               style: GoogleFonts.inter(

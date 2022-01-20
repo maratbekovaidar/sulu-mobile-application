@@ -1,6 +1,4 @@
-import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:sulu_mobile_application/utils/model/schedule_model.dart';
 
 class EstablishmentModel {
@@ -13,21 +11,26 @@ class EstablishmentModel {
   final String toWorkSchedule;
   final String phoneNumber;
   final String address;
+  final int establishmentTypeId;
   List<String> images;
-  final int amountOfLikes;
+  final double rating;
+  final int ownerId;
 
-  EstablishmentModel(
-      {required this.id,
-      required this.name,
-      required this.description,
-      required this.city,
-      required this.schedule,
-      required this.fromWorkSchedule,
-      required this.toWorkSchedule,
-      required this.phoneNumber,
-      required this.address,
-      required this.images,
-      required this.amountOfLikes});
+  EstablishmentModel({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.city,
+    required this.schedule,
+    required this.fromWorkSchedule,
+    required this.toWorkSchedule,
+    required this.phoneNumber,
+    required this.address,
+    required this.images,
+    required this.rating,
+    required this.establishmentTypeId,
+    required this.ownerId,
+  });
 
   factory EstablishmentModel.fromJson(json) {
 
@@ -51,6 +54,8 @@ class EstablishmentModel {
         phoneNumber: json['phoneNumber'],
         address: json['address'] ?? "",
         images: images,
-        amountOfLikes: json['amountOfLikes'] ?? 0);
+        rating: json['rating'] ?? 0,
+        ownerId: json['ownerId'],
+        establishmentTypeId: json['establishmentTypeId']);
   }
 }

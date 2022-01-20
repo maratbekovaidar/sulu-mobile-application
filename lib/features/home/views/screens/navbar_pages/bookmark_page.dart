@@ -110,10 +110,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
                                             .appointmentDate),
                                     Text("Время: " +
                                         state.loadedAppointments[index]
-                                            .appointmentStartTime +
-                                        " - " +
-                                        state.loadedAppointments[index]
-                                            .appointmentEndTime),
+                                            .appointmentStartTime),
                                   ],
                                 ),
 

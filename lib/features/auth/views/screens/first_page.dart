@@ -48,7 +48,6 @@ class _FirstPageState extends State<FirstPage> {
                   colors: [
                     Color.fromRGBO(255, 255, 255, 0.9),
                     Color.fromRGBO(255, 255, 255, 0.2),
-                    Color.fromRGBO(00, 00, 00, 0.5),
                     Colors.transparent,
                     Colors.transparent,
                   ]

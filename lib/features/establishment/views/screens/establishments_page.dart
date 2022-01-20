@@ -538,7 +538,7 @@ class _EstablishmentsPageState extends State<EstablishmentsPage> {
                                                                   state
                                                                       .establishments[
                                                                           index]
-                                                                      .amountOfLikes
+                                                                      .rating
                                                                       .toString(),
                                                                   style: GoogleFonts
                                                                       .inter(
@@ -573,7 +573,7 @@ class _EstablishmentsPageState extends State<EstablishmentsPage> {
                                                               state
                                                                       .establishments[
                                                                           index]
-                                                                      .amountOfLikes
+                                                                      .rating
                                                                       .toString() +
                                                                   " отзывов",
                                                               style: GoogleFonts.inter(
