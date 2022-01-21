@@ -6,8 +6,10 @@ import 'package:sulu_mobile_application/features/establishment/views/screens/est
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
+import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
 import 'package:sulu_mobile_application/utils/model/main_banner_model.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HelloPage extends StatefulWidget {
   const HelloPage({Key? key}) : super(key: key);
@@ -54,14 +56,30 @@ class _HelloPageState extends State<HelloPage> {
   int _mainBannerIndex = 0;
   final CarouselController _mainBannerController = CarouselController();
 
+  List<int> favoritesId = [];
+
   /// Favorite status
   bool getFavoriteStatus(int id) {
-    List<int> favoritesId = [1, 3, 5];
     if(favoritesId.contains(id)) {
       return true;
     } else {
       return false;
     }
+  }
+
+  void updateFavorites() {
+    _establishmentProvider.getFavoriteEstablishments().then((favoriteEstablishments) {
+      setState(() {
+        favoritesId = favoriteEstablishments.map((e) => e.id).toList();
+      });
+    });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    updateFavorites();
   }
 
   /// Provider
@@ -182,22 +200,21 @@ class _HelloPageState extends State<HelloPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/services/hair.png',
+                                    SvgPicture.asset(
+                                      'assets/images/services/hair.svg',
+                                      color: Colors.redAccent,
                                       width: width / 4 - 60,
-                                      height: 50,
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
                                       "Волосы",
                                       style: GoogleFonts.inter(
-                                          fontSize: 14
+                                          fontSize: 12
                                       ),
                                     )
                                   ],
                                 ),
                               ),
-
 
                               /// Ногти
                               GestureDetector(
@@ -206,16 +223,16 @@ class _HelloPageState extends State<HelloPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/services/finger.png',
+                                    SvgPicture.asset(
+                                      'assets/images/services/finger.svg',
+                                      color: Colors.redAccent,
                                       width: width / 4 - 60,
-                                      height: 40,
                                     ),
                                     const SizedBox(height: 15),
                                     Text(
                                       "Ногти",
                                       style: GoogleFonts.inter(
-                                          fontSize: 14
+                                          fontSize: 12
                                       ),
                                     )
                                   ],
@@ -229,16 +246,16 @@ class _HelloPageState extends State<HelloPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/services/hair_delete.png',
+                                    SvgPicture.asset(
+                                      'assets/images/services/hair_delete.svg',
+                                      color: Colors.redAccent,
                                       width: width / 4 - 60,
-                                      height: 50,
                                     ),
                                     const SizedBox(height: 20),
                                     Text(
                                       "Удаление \n волос",
                                       style: GoogleFonts.inter(
-                                          fontSize: 14
+                                          fontSize: 12
                                       ),
                                       textAlign: TextAlign.center,
                                     )
@@ -253,17 +270,17 @@ class _HelloPageState extends State<HelloPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/services/cosmetic.png',
+                                    SvgPicture.asset(
+                                      'assets/images/services/cosmetic.svg',
+                                      color: Colors.redAccent,
                                       width: width / 4 - 60,
-                                      height: 50,
 
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
                                       "Косметалогия",
                                       style: GoogleFonts.inter(
-                                          fontSize: 14
+                                          fontSize: 12
                                       ),
                                     )
                                   ],
@@ -283,23 +300,22 @@ class _HelloPageState extends State<HelloPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/services/eyelashes.png',
+                                    SvgPicture.asset(
+                                      'assets/images/services/eyelashes.svg',
+                                      color: Colors.redAccent,
                                       width: width / 4 - 60,
-                                      height: 50,
 
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
                                       "Ресницы",
                                       style: GoogleFonts.inter(
-                                          fontSize: 14
+                                          fontSize: 12
                                       ),
                                     )
                                   ],
                                 ),
                               ),
-
 
                               /// Брови
                               GestureDetector(
@@ -308,17 +324,17 @@ class _HelloPageState extends State<HelloPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/services/brows.png',
+                                    SvgPicture.asset(
+                                      'assets/images/services/brow.svg',
+                                      color: Colors.redAccent,
                                       width: width / 4 - 60,
-                                      height: 50,
 
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
                                       "Брови",
                                       style: GoogleFonts.inter(
-                                          fontSize: 14
+                                          fontSize: 12
                                       ),
                                     )
                                   ],
@@ -332,17 +348,16 @@ class _HelloPageState extends State<HelloPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/services/makeup.png',
+                                    SvgPicture.asset(
+                                      'assets/images/services/makeup.svg',
+                                      color: Colors.redAccent,
                                       width: width / 4 - 60,
-                                      height: 50,
-
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
                                       "Макияж",
                                       style: GoogleFonts.inter(
-                                          fontSize: 14
+                                          fontSize: 12
                                       ),
                                     )
                                   ],
@@ -356,17 +371,17 @@ class _HelloPageState extends State<HelloPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/services/spa.png',
+                                    SvgPicture.asset(
+                                      'assets/images/services/spa.svg',
+                                      color: Colors.redAccent,
                                       width: width / 4 - 60,
-                                      height: 50,
 
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
                                       "Уход за телом",
                                       style: GoogleFonts.inter(
-                                          fontSize: 14
+                                          fontSize: 12
                                       ),
                                     )
                                   ],
@@ -460,7 +475,7 @@ class _HelloPageState extends State<HelloPage> {
                                                 },
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(10),
-                                                  child: Image.asset(
+                                                  child: Image.network(
                                                     state.establishments[index].images[0],
                                                     width: 250,
                                                     fit: BoxFit.cover,
@@ -473,7 +488,7 @@ class _HelloPageState extends State<HelloPage> {
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(5.0),
                                                   child: GestureDetector(
-                                                    onTap: () async {
+                                                    onTap: !getFavoriteStatus(state.establishments[index].id) ? () async {
 
                                                       int resultFavorite = await _establishmentProvider.setFavoriteEstablishment(state.establishments[index].id);
 
@@ -493,6 +508,28 @@ class _HelloPageState extends State<HelloPage> {
                                                         );
                                                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                       }
+                                                      updateFavorites();
+                                                    } : () async {
+
+                                                      int resultFavorite = await _establishmentProvider.removeFavoriteEstablishment(state.establishments[index].id);
+
+                                                      if(resultFavorite == 200) {
+                                                        const snackBar = SnackBar(
+                                                          content: Text('Салон успешно удален из избранных!'),
+                                                        );
+                                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                      } else if(resultFavorite == 406) {
+                                                        const snackBar = SnackBar(
+                                                          content: Text('Салон уже удален!'),
+                                                        );
+                                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                      } else {
+                                                        const snackBar = SnackBar(
+                                                          content: Text('Ошибка'),
+                                                        );
+                                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                      }
+                                                      updateFavorites();
                                                     },
                                                     child: CircleAvatar(
                                                       radius: 15,
@@ -658,7 +695,7 @@ class _HelloPageState extends State<HelloPage> {
                                                 },
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(10),
-                                                  child: Image.asset(
+                                                  child: Image.network(
                                                     state.establishments[index].images[0],
                                                     width: 250,
                                                     fit: BoxFit.cover,

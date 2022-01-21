@@ -35,13 +35,12 @@ class EstablishmentModel {
   factory EstablishmentModel.fromJson(json) {
 
     List<String> images = [
-      json['photo1'] ?? "assets/images/salon.jpg",
-      json['photo2'] ?? 'assets/images/salon.jpg',
-      json['photo3'] ?? 'assets/images/salon.jpg',
-      json['photo4'] ?? 'assets/images/salon.jpg',
-      json['photo5'] ?? 'assets/images/salon.jpg',
+      json['photo1'] ?? "https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg",
+      json['photo2'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
+      json['photo3'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
+      json['photo4'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
+      json['photo5'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
     ];
-
     List<dynamic> scheduleJson = json['schedule'];
     return EstablishmentModel(
         id: json['id'] ?? 1,

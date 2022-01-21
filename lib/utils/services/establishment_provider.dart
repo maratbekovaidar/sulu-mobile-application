@@ -142,12 +142,42 @@ class EstablishmentProvider {
   Future<int> setFavoriteEstablishment(int id) async {
 
     var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/favorite/update/establishment/$id');
+        'https://sulu.azurewebsites.net/private/favorite/addEstablishment/$id');
 
     String? token = await storage.read(key: 'token');
 
     if (token != null) {
       var response = await http.post(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+      );
+
+      /// Convert response to json list
+      if (response.body.isNotEmpty) {
+        int statusCode = jsonDecode(response.body)['httpStatus'];
+        return statusCode;
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
+    } else {
+      throw Exception("Null Token. User Unauthorized");
+    }
+  }
+
+  /// Remove Favorite Establishment
+  Future<int> removeFavoriteEstablishment(int id) async {
+
+    var url = Uri.parse(
+        'https://sulu.azurewebsites.net/private/favorite/deleteEstablishmentBy/$id');
+
+    String? token = await storage.read(key: 'token');
+
+    if (token != null) {
+      var response = await http.delete(
           url,
           headers: {
             'Content-Type': 'application/json',
@@ -403,6 +433,44 @@ class EstablishmentProvider {
         List<dynamic> jsonResult = jsonDecode(
             utf8.decode(response.bodyBytes))["data"];
         return jsonResult.map((json) => CommentModel.fromJson(json)).toList();
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
+    } else {
+      throw Exception("Null Token. User Unauthorized");
+    }
+
+
+  }
+
+  /// Get available time
+  Future<List<String>> getAvailableTimes(String date, int masterDataId) async {
+    var url = Uri.parse('https://sulu.azurewebsites.net/private/appointment/check/IsExistsInDate?date=$date&masterDataId=$masterDataId');
+
+    print(date + " " + masterDataId.toString());
+    String? token = await storage.read(key: 'token');
+
+    if (token != null) {
+      var response = await http.get(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+      );
+
+      /// Convert response to json list
+
+
+      if (response.body.isNotEmpty) {
+        dynamic jsonResult = jsonDecode(
+            utf8.decode(response.bodyBytes))["data"];
+        print(jsonResult);
+        List<dynamic> timesJson = jsonResult["availableTimes"];
+        List<String> times = timesJson.map((e) => e.toString()).toList();
+        print(times);
+        return times;
       } else {
         throw Exception("Response is null. Response status: " +
             response.statusCode.toString());

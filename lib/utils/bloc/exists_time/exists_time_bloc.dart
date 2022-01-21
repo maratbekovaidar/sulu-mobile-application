@@ -1,15 +1,25 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:sulu_mobile_application/utils/repository/exists_time_repository.dart';
 
 part 'exists_time_event.dart';
 part 'exists_time_state.dart';
 
 class ExistsTimeBloc extends Bloc<ExistsTimeEvent, ExistsTimeState> {
-  ExistsTimeBloc() : super(ExistsTimeInitial()) {
-    on<ExistsTimeEvent>((event, emit) {
-      // TODO: implement event handler
+  final ExistsTimeRepository existsTimeRepository;
+  ExistsTimeBloc({required this.existsTimeRepository}) : super(ExistsTimeInitialState()) {
+    on<ExistsTimeEvent>((event, emit) async {
+      if(event is ExistsTimeLoadEvent) {
+        emit(ExistsTimeLoadingState());
+        try {
+          List<String> loadedExistsTime = await existsTimeRepository.getExistsTime(event.date, event.masterDataId);
+          return emit(ExistsTimeLoadedState(loadedExistsTime: loadedExistsTime));
+        } catch(e) {
+          print(e);
+          return emit(ExistsTimeErrorState());
+        }
+      }
     });
   }
 }

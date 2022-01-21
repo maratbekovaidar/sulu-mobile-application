@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/order/order_set_date_page.dart';
@@ -30,6 +31,11 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
   /// Order Amount
   int orderAmount = 0;
+
+  /// Image carousel
+  int _mainBannerIndex = 0;
+  final CarouselController _mainBannerController = CarouselController();
+
 
   /// Repositories
   ServiceRepository serviceRepository = ServiceRepository();
@@ -154,13 +160,63 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                     Column(
                       children: [
                         /// Image
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Stack(
+                          alignment: Alignment.bottomCenter,
                           children: [
-                            Image.asset(
-                              widget.establishmentModel.images[0],
-                              width: width - 30,
-                              fit: BoxFit.cover,
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(5.0),
+                                child: Builder(
+                                  builder: (context) {
+                                    return CarouselSlider(
+                                      options: CarouselOptions(
+                                          height: 230,
+                                          viewportFraction: 1.0,
+                                          enlargeCenterPage: false,
+                                          autoPlay: true,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              _mainBannerIndex = index;
+                                            });
+                                          }
+                                      ),
+                                      carouselController: _mainBannerController,
+                                      items: widget.establishmentModel.images
+                                          .map((item) =>
+                                          Center(
+                                              child: Container(
+                                                width: width,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image: NetworkImage(
+                                                        item
+                                                      )
+                                                  ),
+                                                ),
+                                              )
+                                          ))
+                                          .toList(),
+                                    );
+                                  },
+                                )
+                            ),
+                            Align(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: widget.establishmentModel.images.asMap().entries.map((entry) {
+                                  return GestureDetector(
+                                    onTap: () => _mainBannerController.animateToPage(entry.key),
+                                    child: Container(
+                                      width: 10.0,
+                                      height: 10.0,
+                                      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: (Colors.white).withOpacity(_mainBannerIndex == entry.key ? 0.9 : 0.4)),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           ],
                         ),
