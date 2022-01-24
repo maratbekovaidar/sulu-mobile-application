@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
+import 'package:sulu_mobile_application/utils/model/master_models/master_portfolio_model.dart';
 
 
 class EstablishmentProvider {
@@ -196,6 +197,38 @@ class EstablishmentProvider {
     }
   }
 
+  /// Get Establishment portfolio
+  Future<List<MasterPortfolioModel>> getPortfolioOfEstablishment(int id) async {
+    var url = Uri.parse(
+        'https://sulu.azurewebsites.net/private/client/findAllPortfolioOfEstablishmentById/$id');
+
+    String? token = await storage.read(key: 'token');
+
+    if (token != null) {
+      var response = await http.get(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+      );
+
+      /// Convert response to json list
+      if (response.body.isNotEmpty) {
+        List<dynamic> jsonResult = jsonDecode(
+            utf8.decode(response.bodyBytes))["data"];
+        return jsonResult.map((json) => MasterPortfolioModel.fromJson(json))
+            .toList();
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
+    } else {
+      throw Exception("Null Token. User Unauthorized");
+    }
+  }
+
+
   /// Set Favorite Establishment
   Future<int> setFavoriteEstablishment(int id) async {
 
@@ -290,5 +323,7 @@ class EstablishmentProvider {
 
 
   }
+
+
 
 }

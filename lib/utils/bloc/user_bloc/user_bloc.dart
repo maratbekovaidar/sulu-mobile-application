@@ -1,8 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:meta/meta.dart';
-import 'package:sulu_mobile_application/main.dart';
 import 'package:sulu_mobile_application/utils/model/user_model.dart';
 import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 

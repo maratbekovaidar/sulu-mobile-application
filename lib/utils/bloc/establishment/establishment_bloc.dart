@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
+import 'package:sulu_mobile_application/utils/model/master_models/master_portfolio_model.dart';
 import 'package:sulu_mobile_application/utils/repository/establishment_repository.dart';
 
 part 'establishment_event.dart';
@@ -21,7 +22,6 @@ class EstablishmentBloc extends Bloc<EstablishmentEvent, EstablishmentState> {
           _establishments = await establishmentRepository.getEstablishments();
           return emit(EstablishmentLoadedState(establishments: _establishments));
         } catch(exception) {
-          print("Aidar load " + exception.toString());
           return emit(EstablishmentErrorState());
         }
       }
@@ -33,7 +33,6 @@ class EstablishmentBloc extends Bloc<EstablishmentEvent, EstablishmentState> {
           _establishments = await establishmentRepository.getPopularEstablishments();
           return emit(EstablishmentLoadedState(establishments: _establishments));
         } catch(exception) {
-          print("Aidar load " + exception.toString());
           return emit(EstablishmentErrorState());
         }
       }
@@ -45,7 +44,6 @@ class EstablishmentBloc extends Bloc<EstablishmentEvent, EstablishmentState> {
           _establishments = await establishmentRepository.getEstablishmentsByTypeId(event.typeId);
           return emit(EstablishmentLoadedState(establishments: _establishments));
         } catch(exception) {
-          print("Aidar load type " + exception.toString());
           return emit(EstablishmentErrorState());
         }
       }
@@ -79,7 +77,16 @@ class EstablishmentBloc extends Bloc<EstablishmentEvent, EstablishmentState> {
           _establishments = await establishmentRepository.getFavoriteEstablishments();
           return emit(EstablishmentLoadedState(establishments: _establishments));
         } catch(exception) {
-          print("Aidar load " + exception.toString());
+          return emit(EstablishmentErrorState());
+        }
+      }
+
+      if(event is EstablishmentLoadPortfolioEvent) {
+        emit(EstablishmentLoadingState());
+        try {
+          List<MasterPortfolioModel> _portfolio = await establishmentRepository.getPortfolioOfEstablishment(event.id);
+          return emit(EstablishmentLoadedPortfolioState(loadedPortfolio: _portfolio));
+        } catch(exception) {
           return emit(EstablishmentErrorState());
         }
       }

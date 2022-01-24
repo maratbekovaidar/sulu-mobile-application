@@ -75,9 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: phoneNumberController,
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
-                    print(phoneNumberController.text);
-                    if (value == null ||
-                        value.isEmpty ||
+                    if (value.isEmpty ||
                         value.length <= 9) {
                       setState(() {
                         isButtonDisabled = true;
@@ -185,7 +183,13 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             circularIndicatorOpacity = false;
                           });
-                          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                          if(status) {
+                            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                          } else {
+                            setState(() {
+                              errorStatusOpacity = true;
+                            });
+                          }
                         } catch(e) {
                           setState(() {
                             circularIndicatorOpacity = false;

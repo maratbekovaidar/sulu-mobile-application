@@ -16,7 +16,6 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
           List<AppointmentModel> loadedAppointments = await appointmentRepository.getAppointments();
           return emit(AppointmentLoadedState(loadedAppointments: loadedAppointments));
         } catch(e) {
-          print(e.toString());
           return emit(AppointmentErrorState());
         }
       }

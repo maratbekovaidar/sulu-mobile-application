@@ -16,7 +16,6 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           List<CommentModel> loadedCommentsOfEstablishment = await commentRepository.getCommentOfEstablishment(event.id);
           return emit(CommentLoadedState(loadedCommentsOfEstablishment: loadedCommentsOfEstablishment));
         } catch(e) {
-          print(e);
           return emit(CommentErrorState());
         }
 

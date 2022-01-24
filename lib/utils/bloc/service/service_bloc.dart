@@ -19,7 +19,6 @@ class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
               event.id);
           return emit(ServiceLoadedState(loadedServices: services));
         } catch (e) {
-          print(e);
           return emit(ServiceErrorState());
         }
       }

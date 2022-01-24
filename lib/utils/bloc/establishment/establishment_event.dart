@@ -30,3 +30,10 @@ class EstablishmentLoadByNameAndTypeIdEvent extends EstablishmentEvent {
   final int typeId;
   EstablishmentLoadByNameAndTypeIdEvent({required this.name, required this.typeId});
 }
+
+class EstablishmentLoadPortfolioEvent extends EstablishmentEvent {
+
+  final int id;
+  EstablishmentLoadPortfolioEvent({required this.id});
+
+}

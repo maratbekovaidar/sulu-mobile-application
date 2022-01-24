@@ -4,9 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
-import 'package:sulu_mobile_application/utils/model/establishment_models/master_model.dart';
+import 'package:sulu_mobile_application/utils/model/master_models/master_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/service_model.dart';
-import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
 import 'package:sulu_mobile_application/utils/services/service_provider.dart';
 
 class OrderConfirmPage extends StatefulWidget {

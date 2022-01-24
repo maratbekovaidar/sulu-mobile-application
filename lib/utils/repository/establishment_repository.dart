@@ -1,5 +1,6 @@
 
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
+import 'package:sulu_mobile_application/utils/model/master_models/master_portfolio_model.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
 
 class EstablishmentRepository {
@@ -17,6 +18,7 @@ class EstablishmentRepository {
 
   Future<List<EstablishmentModel>> getFavoriteEstablishments() => _establishmentProvider.getFavoriteEstablishments();
 
+  Future<List<MasterPortfolioModel>> getPortfolioOfEstablishment(int id) => _establishmentProvider.getPortfolioOfEstablishment(id);
 
 
 }

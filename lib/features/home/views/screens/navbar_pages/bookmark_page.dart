@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -121,7 +120,6 @@ class _BookmarkPageState extends State<BookmarkPage> {
                                     TextButton(
                                       onPressed: () {
                                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                          print(state.loadedAppointments[index].serviceId);
                                           return CommentPage(serviceId: state.loadedAppointments[index].serviceId, appointmentModel: state.loadedAppointments[index],);
                                         } ));
                                       },

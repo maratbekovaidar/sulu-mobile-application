@@ -1,6 +1,6 @@
 
 
-import 'package:sulu_mobile_application/utils/model/establishment_models/master_type_model.dart';
+import 'package:sulu_mobile_application/utils/model/master_models/master_type_model.dart';
 
 class AppointmentModel {
 

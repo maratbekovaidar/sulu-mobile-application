@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:sulu_mobile_application/utils/model/establishment_models/master_model.dart';
+import 'package:sulu_mobile_application/utils/model/master_models/master_model.dart';
 
 
 class MasterProvider {

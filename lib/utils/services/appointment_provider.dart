@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:sulu_mobile_application/utils/model/comment_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/appointment_model.dart';
-import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
 import 'package:sulu_mobile_application/utils/services/upload_image_provider.dart';
 
 
@@ -77,7 +76,6 @@ class AppointmentProvider {
       );
 
 
-      print(response.body);
 
       if (response.statusCode == 200) {
         if(jsonDecode(response.body)['httpStatus'] == 200) {

@@ -14,6 +14,13 @@ class EstablishmentLoadedState extends EstablishmentState {
 
 }
 
+class EstablishmentLoadedPortfolioState extends EstablishmentState {
+
+  final List<MasterPortfolioModel> loadedPortfolio;
+  EstablishmentLoadedPortfolioState({required this.loadedPortfolio});
+
+}
+
 class EstablishmentErrorState extends EstablishmentState {
 
 }

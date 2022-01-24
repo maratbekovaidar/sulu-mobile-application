@@ -6,7 +6,7 @@ import 'package:sulu_mobile_application/features/establishment/views/screens/ord
 import 'package:sulu_mobile_application/utils/bloc/exists_time/exists_time_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/master/master_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
-import 'package:sulu_mobile_application/utils/model/establishment_models/master_model.dart';
+import 'package:sulu_mobile_application/utils/model/master_models/master_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/service_model.dart';
 import 'package:sulu_mobile_application/utils/repository/exists_time_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/master_repository.dart';
@@ -390,7 +390,6 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                       }
 
                       if(state is ExistsTimeLoadedState) {
-                        print("Width: " + width.toString());
                         return Container(
                           height: (50 * (state.loadedExistsTime.length / 5).ceil()).toDouble(),
                           padding: const EdgeInsets.symmetric(horizontal: 30),

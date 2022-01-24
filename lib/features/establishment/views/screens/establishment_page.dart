@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/order/order_set_date_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/comment/comment_bloc.dart';
+import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/master/master_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/service/service_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sulu_mobile_application/utils/model/establishment_models/master_model.dart';
+import 'package:sulu_mobile_application/utils/model/master_models/master_model.dart';
 import 'package:sulu_mobile_application/utils/repository/comment_repository.dart';
+import 'package:sulu_mobile_application/utils/repository/establishment_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/master_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/service_repository.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
@@ -47,6 +49,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
   ServiceRepository serviceRepository = ServiceRepository();
   MasterRepository masterRepository = MasterRepository();
   CommentRepository commentRepository = CommentRepository();
+  EstablishmentRepository establishmentRepository = EstablishmentRepository();
 
   List<MasterModel> masters = [];
 
@@ -79,7 +82,10 @@ class _EstablishmentPageState extends State<EstablishmentPage>
         ),
         BlocProvider(
             create: (context) =>
-                CommentBloc(commentRepository: commentRepository))
+                CommentBloc(commentRepository: commentRepository)),
+        BlocProvider(
+            create: (context) =>
+                EstablishmentBloc(establishmentRepository: establishmentRepository)),
       ],
       child: Scaffold(
         appBar: AppBar(),
@@ -713,11 +719,10 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                   Row(
                                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                                     children: [
-                                                                      const CircleAvatar(
+                                                                      CircleAvatar(
                                                                         radius: 25,
                                                                         backgroundImage:
-                                                                        AssetImage(
-                                                                            'assets/icons/master.png'),
+                                                                        NetworkImage(state.loadedCommentsOfEstablishment[index].userPhoto),
                                                                       ),
                                                                       const SizedBox(
                                                                           width: 10),
@@ -779,11 +784,9 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                               /// Master
                                                               Row(
                                                                 children: [
-                                                                  const CircleAvatar(
+                                                                  CircleAvatar(
                                                                     radius: 15,
-                                                                    backgroundImage:
-                                                                    AssetImage(
-                                                                        'assets/icons/master.png'),
+                                                                    backgroundImage: NetworkImage(state.loadedCommentsOfEstablishment[index].masterPhoto),
                                                                   ),
                                                                   const SizedBox(
                                                                       width: 5),
@@ -819,12 +822,128 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                           ),
 
                                           /// Portfolio
-                                          const Center(
-                                            child: Text('Display Tab 4',
-                                                style: TextStyle(
-                                                    fontSize: 22,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
+                                          Center(
+                                            child: BlocBuilder<EstablishmentBloc,
+                                                EstablishmentState>(
+                                              builder: (context, state) {
+                                                EstablishmentBloc establishmentBloc = BlocProvider.of<EstablishmentBloc>(context);
+
+                                                if(state is EstablishmentInitialState) {
+                                                  establishmentBloc.add(EstablishmentLoadPortfolioEvent(id: widget.establishmentModel.id));
+                                                }
+
+                                                if(state is EstablishmentLoadingState) {
+                                                  return const Center(
+                                                    child: CircularProgressIndicator(),
+                                                  );
+                                                }
+
+                                                if(state is EstablishmentErrorState) {
+                                                  return const Center(
+                                                    child: Text("Нету отзывов"),
+                                                  );
+                                                }
+
+                                                if(state is EstablishmentLoadedPortfolioState) {
+                                                  return ListView.builder(
+                                                    physics: const ScrollPhysics(),
+                                                    itemCount: state.loadedPortfolio.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                        int index) {
+                                                      return Padding(
+                                                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                                        child: Container(
+                                                          padding:
+                                                          const EdgeInsets.all(
+                                                              20),
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4),
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .black38)),
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              /// Master Information
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+
+                                                                  /// Master Information
+                                                                  Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    children: [
+                                                                      CircleAvatar(
+                                                                        radius: 25,
+                                                                        backgroundImage:
+                                                                        NetworkImage(state.loadedPortfolio[index].masterPhoto),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                          width: 10),
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                        children: [
+                                                                          Text(state.loadedPortfolio[index].masterName),
+                                                                          const Text(
+                                                                            "12 января, 21:56",
+                                                                            style: TextStyle(
+                                                                                color: Colors
+                                                                                    .black38,
+                                                                                fontSize:
+                                                                                14),
+                                                                          )
+                                                                        ],
+                                                                      )
+                                                                    ],
+                                                                  ),
+
+                                                                  /// Star
+                                                                  Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                                    children: [
+                                                                      const Icon(Icons.star, color: Colors.yellow),
+                                                                      Text(state.loadedPortfolio[index].rating.toStringAsFixed(2).toString())
+                                                                    ],
+                                                                  ),
+
+                                                                ],
+                                                              ),
+
+                                                              const SizedBox(
+                                                                  height: 10),
+
+                                                              /// Images of comment or feedback
+                                                              Wrap(
+                                                                spacing: 10,
+                                                                runSpacing: 10,
+                                                                children: state.loadedPortfolio[index].images.map((image) {
+                                                                  return Image.network(
+                                                                    image,
+                                                                    width: 150,
+                                                                    height: 100,
+                                                                    fit: BoxFit.cover,
+                                                                  );
+                                                                }).toList(),
+                                                              ),
+                                                              const SizedBox(
+                                                                  height: 20),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
+
+                                                return Container();
+
+                                              },
+                                            ),
                                           ),
                                         ]))
                                   ])),

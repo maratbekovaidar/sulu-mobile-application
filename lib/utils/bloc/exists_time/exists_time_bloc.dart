@@ -16,7 +16,6 @@ class ExistsTimeBloc extends Bloc<ExistsTimeEvent, ExistsTimeState> {
           List<String> loadedExistsTime = await existsTimeRepository.getExistsTime(event.date, event.masterDataId);
           return emit(ExistsTimeLoadedState(loadedExistsTime: loadedExistsTime));
         } catch(e) {
-          print(e);
           return emit(ExistsTimeErrorState());
         }
       }

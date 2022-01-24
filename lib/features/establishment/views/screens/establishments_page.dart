@@ -475,7 +475,7 @@ class _EstablishmentsPageState extends State<EstablishmentsPage> {
         panelSnapping: true,
         collapsed: const SizedBox(height: 0),
         minHeight: 0,
-        maxHeight: 300,
+        maxHeight: width,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(50.0),
           topRight: Radius.circular(50.0),

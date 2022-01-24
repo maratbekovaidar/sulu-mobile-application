@@ -3,7 +3,6 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 
@@ -14,7 +13,6 @@ class UploadImageProvider {
 
   /// Upload user avatar image
   Future<bool> uploadUserImage(int id, String photo, String fileName) async {
-    var uri = Uri.parse('https://sulu.azurewebsites.net/public/auth/login');
     String token = (await storage.read(key: 'token'))!;
     var formData = FormData.fromMap(
       {
@@ -41,15 +39,8 @@ class UploadImageProvider {
 
   /// Upload comment or feedback image
   Future<bool> uploadFeedbackImage(List<XFile> images, int id) async {
-    var uri = Uri.parse('https://sulu.azurewebsites.net/private/image/feedback/uploadImageForEstablishmentFeedback?feedbackId=1');
     String token = (await storage.read(key: 'token'))!;
 
-
-    // var formData = FormData.fromMap(
-    //     {
-    //       "files": images.map((image) async => await MultipartFile.fromFile(image.path, filename: image.name)).toList()
-    //     }
-    // );
 
     var formData = FormData.fromMap(
         {

@@ -1,8 +1,7 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:sulu_mobile_application/utils/model/establishment_models/master_model.dart';
+import 'package:sulu_mobile_application/utils/model/master_models/master_model.dart';
 import 'package:sulu_mobile_application/utils/repository/master_repository.dart';
 
 part 'master_event.dart';
@@ -19,7 +18,6 @@ class MasterBloc extends Bloc<MasterEvent, MasterState> {
           List<MasterModel> _loadedMastersOfEstablishment = await masterRepository.getMasterOfEstablishment(event.id);
           return(emit(MasterLoadedState(loadedMastersOfEstablishment: _loadedMastersOfEstablishment)));
         } catch(e) {
-          print("Master error " + e.toString());
           return(emit(MasterErrorState()));
         }
       }
@@ -30,7 +28,6 @@ class MasterBloc extends Bloc<MasterEvent, MasterState> {
           List<MasterModel> _loadedMastersOfEstablishment = await masterRepository.getMasterByTypeId(event.serviceTypeId, event.establishmentId);
           return(emit(MasterLoadedState(loadedMastersOfEstablishment: _loadedMastersOfEstablishment)));
         } catch(e) {
-          print("Master error by type id " + e.toString());
           return(emit(MasterErrorState()));
         }
       }

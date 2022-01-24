@@ -11,6 +11,9 @@ class CommentModel {
   final int establishmentId;
   final int masterDataId;
   final String mastername;
+  final String userPhoto;
+  final String masterPhoto;
+
 
   CommentModel({
     required this.id,
@@ -23,9 +26,13 @@ class CommentModel {
     required this.userphonenumber,
     required this.establishmentId,
     required this.masterDataId,
-    required this.mastername});
+    required this.mastername,
+    required this.userPhoto,
+    required this.masterPhoto,
+  });
 
   factory CommentModel.fromJson(json) {
+
 
     List<String> images = [];
     json['photo1'] != null ? images.add(json['photo1']) : () {};
@@ -43,7 +50,9 @@ class CommentModel {
         userphonenumber: json['userphonenumber'],
         establishmentId: json['establishmentId'],
         masterDataId: json['masterDataId'],
-        mastername: json['mastername']);
+        mastername: json['mastername'],
+        userPhoto: json['userPhoto'] ?? 'https://afitat-bol.com/wp-content/uploads/2021/03/default-user-avatar.jpg',
+        masterPhoto: json['masterPhoto'] ?? 'https://afitat-bol.com/wp-content/uploads/2021/03/default-user-avatar.jpg');
   }
 
 }

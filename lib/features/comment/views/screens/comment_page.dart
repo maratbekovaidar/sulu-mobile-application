@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/appointment_model.dart';
 import 'package:sulu_mobile_application/utils/services/appointment_provider.dart';
-import 'package:sulu_mobile_application/utils/services/upload_image_provider.dart';
 
 class CommentPage extends StatefulWidget {
   const CommentPage(
@@ -25,7 +24,6 @@ class _CommentPageState extends State<CommentPage> {
 
   /// Providers
   final AppointmentProvider _appointmentProvider = AppointmentProvider();
-  final UploadImageProvider _uploadImageProvider = UploadImageProvider();
 
   /// Upload data
   double ratingComment = 0;
