@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/appointment_model.dart';
 import 'package:sulu_mobile_application/utils/services/appointment_provider.dart';
+import 'package:sulu_mobile_application/utils/services/upload_image_provider.dart';
 
 class CommentPage extends StatefulWidget {
   const CommentPage(
@@ -19,9 +23,17 @@ class CommentPage extends StatefulWidget {
 
 class _CommentPageState extends State<CommentPage> {
 
+  /// Providers
   final AppointmentProvider _appointmentProvider = AppointmentProvider();
+  final UploadImageProvider _uploadImageProvider = UploadImageProvider();
+
+  /// Upload data
   double ratingComment = 0;
   final TextEditingController _feedbackController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  List<XFile>? images;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +101,7 @@ class _CommentPageState extends State<CommentPage> {
           ),
           const SizedBox(height: 20),
 
-          /// Start
+          /// Star
           Column(
             children: [
               const Text(
@@ -135,6 +147,66 @@ class _CommentPageState extends State<CommentPage> {
               ),
               const SizedBox(height: 20),
 
+              /// Image picker
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        images = await _picker.pickMultiImage();
+                        setState(() {
+                        });
+                      },
+                      child: Container(
+                        width: width / 4 - 20 ,
+                        height: width / 4 - 20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.red, width: 2)
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.camera_alt_rounded, color: Colors.red),
+                            Text("Добавить \n фото", style: TextStyle(color: Colors.red, fontSize: 12), textAlign: TextAlign.center,)
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: width / 4 - 20,
+                      height: width / 4 - 20,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.red, width: 2)
+                      ),
+                      child: images != null ? Image.file(File(images![0].path), fit: BoxFit.cover,) : Container(),
+                    ),
+                    Container(
+                      width: width / 4 - 20,
+                      height: width / 4 - 20,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.red, width: 2)
+                      ),
+                      child: images != null && images!.length > 1 ? Image.file(File(images![1].path), fit: BoxFit.cover,) : Container(),
+                    ),
+                    Container(
+                      width: width / 4 - 20,
+                      height: width / 4 - 20,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.red, width: 2)
+                      ),
+                      child: images != null && images!.length > 2 ? Image.file(File(images![2].path), fit: BoxFit.cover,) : Container(),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+
               /// Send Button
               SizedBox(
                 width: width - 30,
@@ -149,7 +221,7 @@ class _CommentPageState extends State<CommentPage> {
                         ),
                       );
                     });
-                    bool result = await _appointmentProvider.setCommentService(widget.appointmentModel.establishmentId, widget.appointmentModel.masterDataId, ratingComment, _feedbackController.text);
+                    bool result = await _appointmentProvider.setCommentService(widget.appointmentModel.establishmentId, widget.appointmentModel.masterDataId, ratingComment, _feedbackController.text, images!);
                     if(result) {
                       Navigator.pop(context);
                       showDialog(context: context, builder: (_) {
@@ -196,7 +268,9 @@ class _CommentPageState extends State<CommentPage> {
                   },
                   child: const Text("Оставить отзыв")
                 ),
-              )
+              ),
+              const SizedBox(height: 20),
+
             ],
           )
         ],

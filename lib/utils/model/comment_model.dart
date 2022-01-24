@@ -27,11 +27,11 @@ class CommentModel {
 
   factory CommentModel.fromJson(json) {
 
-    List<String> images = [
-      json['photo1'] ?? "",
-      json['photo2'] ?? "",
-      json['photo3'] ?? "",
-    ];
+    List<String> images = [];
+    json['photo1'] != null ? images.add(json['photo1']) : () {};
+    json['photo2'] != null ? images.add(json['photo2']) : () {};
+    json['photo3'] != null ? images.add(json['photo3']) : () {};
+
 
     return CommentModel(id: json['id'],
         stars: json['stars'],

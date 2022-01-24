@@ -4,9 +4,11 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:sulu_mobile_application/utils/model/comment_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/appointment_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
+import 'package:sulu_mobile_application/utils/services/upload_image_provider.dart';
 
 
 class AppointmentProvider {
@@ -49,7 +51,11 @@ class AppointmentProvider {
 
 
   /// Set Comment
-  Future<bool> setCommentService(int establishmentId, int masterDataId, double star, String comment) async {
+  Future<bool> setCommentService(int establishmentId, int masterDataId, double star, String comment, List<XFile> images) async {
+
+    /// Image provider
+    UploadImageProvider _imageProvider = UploadImageProvider();
+
     var url = Uri.parse(
         'https://sulu.azurewebsites.net/private/comment/add/feedbackToEstablishment');
 
@@ -71,9 +77,18 @@ class AppointmentProvider {
       );
 
 
+      print(response.body);
+
       if (response.statusCode == 200) {
         if(jsonDecode(response.body)['httpStatus'] == 200) {
-          return true;
+
+          bool imageResult = await _imageProvider.uploadFeedbackImage(images, jsonDecode(response.body)['data']);
+
+          if(imageResult) {
+            return true;
+          } else {
+            return false;
+          }
         } else {
           return false;
         }

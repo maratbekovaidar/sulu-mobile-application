@@ -353,7 +353,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
                                     /// Tab's Items
                                     Container(
-                                        height: 300, //height of TabBarView
+                                        height: 400, //height of TabBarView
                                         decoration: const BoxDecoration(
                                             border: Border(
                                                 top: BorderSide(
@@ -683,6 +683,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
                                                 if(state is CommentLoadedState) {
                                                   return ListView.builder(
+                                                    physics: const ScrollPhysics(),
                                                     itemCount: state.loadedCommentsOfEstablishment.length,
                                                     itemBuilder:
                                                         (BuildContext context,
@@ -747,6 +748,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                       Text(state.loadedCommentsOfEstablishment[index].stars.toString())
                                                                     ],
                                                                   ),
+
                                                                 ],
                                                               ),
 
@@ -755,6 +757,22 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
                                                               /// Comment
                                                               Text(state.loadedCommentsOfEstablishment[index].text),
+                                                              const SizedBox(
+                                                                  height: 20),
+
+                                                              /// Images of comment or feedback
+                                                              Wrap(
+                                                                spacing: 10,
+                                                                runSpacing: 10,
+                                                                children: state.loadedCommentsOfEstablishment[index].images.map((image) {
+                                                                  return Image.network(
+                                                                    image,
+                                                                    width: 150,
+                                                                    height: 100,
+                                                                    fit: BoxFit.cover,
+                                                                  );
+                                                                }).toList(),
+                                                              ),
                                                               const SizedBox(
                                                                   height: 20),
 
