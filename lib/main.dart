@@ -8,7 +8,6 @@ import 'package:sulu_mobile_application/features/favorite/views/screens/favorite
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sulu_mobile_application/features/profile/views/screens/profile_edit_page.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
 
 String? token;
@@ -35,7 +34,6 @@ Map<String, WidgetBuilder> routes = {
   '/first_page' : (context) => const FirstPage(),
   '/login' : (context) => const LoginPage(),
   '/register' : (context) => const RegisterPage(),
-  '/edit_profile' : (context) => const ProfileEditPage(),
   '/salons' : (context) => const EstablishmentsPage(),
   '/category' : (context) => const CategoryPage(),
   '/favorite' : (context) => const FavoritePage()

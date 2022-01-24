@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/profile_page.dart';
+import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -144,24 +144,6 @@ class _SuluDrawerState extends State<SuluDrawer> {
                       ),
                     ),
 
-                    /// Редактирование Профиля
-                    ListTile(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/edit_profile');
-                      },
-                      leading: const CircleAvatar(
-                        backgroundColor: Colors.redAccent,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: Text(
-                        "Редактирование профиля",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-
                     /// Фавориты
                     ListTile(
                       onTap: () {
@@ -179,6 +161,8 @@ class _SuluDrawerState extends State<SuluDrawer> {
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
+
+                    /// History of payment
                     const ListTile(
                       leading: CircleAvatar(
                         backgroundColor: Colors.redAccent,
@@ -192,6 +176,8 @@ class _SuluDrawerState extends State<SuluDrawer> {
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
+
+                    /// Cards
                     const ListTile(
                       leading: CircleAvatar(
                         backgroundColor: Colors.redAccent,
@@ -205,6 +191,8 @@ class _SuluDrawerState extends State<SuluDrawer> {
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
+
+                    /// Can partners
                     ListTile(
                       onTap: () {
                         _launchURL();
@@ -221,6 +209,8 @@ class _SuluDrawerState extends State<SuluDrawer> {
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
+
+                    /// Tech support
                     ListTile(
                       onTap: () {
                         showDialog(context: context, builder: (_) {
@@ -288,9 +278,12 @@ class _SuluDrawerState extends State<SuluDrawer> {
                   ],
                 ),
                 const SizedBox(height: 70),
+
+                /// Logout
                 ListTile(
                   onTap: () {
-                    FlutterSecureStorage storage = const FlutterSecureStorage();
+                    FlutterSecureStorage storage =
+                    const FlutterSecureStorage();
                     storage.delete(key: 'token');
                     Navigator.popAndPushNamed(context, '/first_page');
                   },

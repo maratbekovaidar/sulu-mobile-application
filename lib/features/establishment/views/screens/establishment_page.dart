@@ -13,6 +13,8 @@ import 'package:sulu_mobile_application/utils/repository/master_repository.dart'
 import 'package:sulu_mobile_application/utils/repository/service_repository.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
 import 'package:share/share.dart';
+import 'package:sulu_mobile_application/constants/app_constants.dart' as constants;
+
 
 class EstablishmentPage extends StatefulWidget {
   const EstablishmentPage({Key? key, required this.establishmentModel})
@@ -32,6 +34,10 @@ class _EstablishmentPageState extends State<EstablishmentPage>
   /// Order Amount
   int orderAmount = 0;
 
+  /// Establishment schedule
+  late int firstDay;
+  late int lastDay;
+
   /// Image carousel
   int _mainBannerIndex = 0;
   final CarouselController _mainBannerController = CarouselController();
@@ -43,6 +49,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
   CommentRepository commentRepository = CommentRepository();
 
   List<MasterModel> masters = [];
+
 
   final EstablishmentProvider _establishmentProvider = EstablishmentProvider();
 
@@ -233,14 +240,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                 const SizedBox(width: 10),
 
                                 /// Schedule
-                                Text(widget
-                                        .establishmentModel
-                                        .schedule[widget.establishmentModel
-                                                .schedule.length -
-                                            1]
-                                        .day +
-                                    " - " +
-                                    widget.establishmentModel.schedule[0].day),
+                                Text(constants.days[firstDay - 1] + " - " + constants.days[lastDay - 1]),
                                 const SizedBox(width: 10),
 
                                 /// Time
@@ -431,86 +431,91 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                             itemBuilder:
                                                                 (context,
                                                                     index) {
-                                                              return Container(
-                                                                padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical:
-                                                                        12,
-                                                                    horizontal:
-                                                                        10),
-                                                                decoration: const BoxDecoration(
-                                                                    border: Border(
-                                                                        bottom: BorderSide(
-                                                                            color:
-                                                                                Colors.black12))),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    /// Information
-                                                                    Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        /// Title
-                                                                        Text(
-                                                                          state
-                                                                              .loadedServices[index]
-                                                                              .description,
-                                                                          style:
-                                                                              GoogleFonts.inter(),
-                                                                        ),
+                                                              return GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(builder:
+                                                                          (context) {
+                                                                        return OrderSetDatePage(
+                                                                            establishmentModel: widget.establishmentModel,
+                                                                            selectedService: state.loadedServices[index]);
+                                                                      }));
+                                                                },
+                                                                child: Container(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          12,
+                                                                      horizontal:
+                                                                          10),
+                                                                  decoration: const BoxDecoration(
+                                                                      border: Border(
+                                                                          bottom: BorderSide(
+                                                                              color:
+                                                                                  Colors.black12))),
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
 
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          children: [
-                                                                            /// Time
-                                                                            Text(
-                                                                              "1 час",
-                                                                              style: GoogleFonts.inter(color: Colors.black38),
+                                                                      /// Information
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment
+                                                                                .start,
+                                                                        children: [
+                                                                          /// Title
+                                                                          Text(
+                                                                            constants.subcategories[state.loadedServices[index].subTypeId - 1],
+                                                                            style:
+                                                                                GoogleFonts.inter(
+                                                                                  color: Colors.black,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                  fontSize: 16
+                                                                                ),
+                                                                          ),
+
+                                                                          SizedBox(
+                                                                            width: width * 0.5,
+                                                                            child: Text(
+                                                                              state.loadedServices[index].description,
+                                                                              style:
+                                                                              GoogleFonts.inter(
+                                                                                  color: Colors.black38,
+                                                                                  fontSize: 12
+                                                                              ),
                                                                             ),
-
-                                                                            /// Price
-                                                                            Text(
-                                                                              "  • " + state.loadedServices[index].cost.toString() + "₸",
-                                                                              style: GoogleFonts.inter(),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-
-                                                                    /// Go to Button
-                                                                    IconButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        print(state
-                                                                            .loadedServices[index]
-                                                                            .id);
-
-                                                                        Navigator.push(
-                                                                            context,
-                                                                            MaterialPageRoute(builder:
-                                                                                (context) {
-                                                                          return OrderSetDatePage(
-                                                                              establishmentModel: widget.establishmentModel,
-                                                                              selectedService: state.loadedServices[index]);
-                                                                        }));
-                                                                      },
-                                                                      icon:
-                                                                          const Icon(
-                                                                        Icons
-                                                                            .arrow_forward,
-                                                                        color: Colors
-                                                                            .black38,
-                                                                        size:
-                                                                            30,
+                                                                          ),
+                                                                        ],
                                                                       ),
-                                                                    )
-                                                                  ],
+
+                                                                      /// Price
+                                                                      Column(
+                                                                        mainAxisAlignment:
+                                                                        MainAxisAlignment.start,
+                                                                        children: [
+                                                                          /// Price
+                                                                          Text(
+                                                                            state.loadedServices[index].cost.toString() + "₸",
+                                                                            style: GoogleFonts.inter(
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: 14
+                                                                            ),
+                                                                          ),
+
+                                                                          /// Time
+                                                                          Text(
+                                                                            "1 час",
+                                                                            style: GoogleFonts.inter(color: Colors.black38, fontSize: 12),
+                                                                          ),
+
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
                                                               );
                                                             },
@@ -586,11 +591,9 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                     width: 10),
 
                                                                 /// Avatar
-                                                                const CircleAvatar(
+                                                                CircleAvatar(
                                                                     radius: 25,
-                                                                    backgroundImage:
-                                                                        AssetImage(
-                                                                            'assets/icons/master.png')),
+                                                                    backgroundImage: NetworkImage(state.loadedMastersOfEstablishment[index].photo)),
                                                                 const SizedBox(
                                                                     width: 10),
 
@@ -674,87 +677,107 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                     itemBuilder:
                                                         (BuildContext context,
                                                         int index) {
-                                                      return Container(
-                                                        padding:
-                                                        const EdgeInsets.all(
-                                                            20),
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(4),
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .black38)),
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            /// User Information
-                                                            Row(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              children: [
-                                                                const CircleAvatar(
-                                                                  radius: 25,
-                                                                  backgroundImage:
-                                                                  AssetImage(
-                                                                      'assets/icons/master.png'),
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 10),
-                                                                Column(
-                                                                  crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                                  children: [
-                                                                    Text(state.loadedCommentsOfEstablishment[index].userfirstname + " " + state.loadedCommentsOfEstablishment[index].userfirstname),
-                                                                    const Text(
-                                                                      "12 января, 21:56",
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .black38,
-                                                                          fontSize:
-                                                                          14),
-                                                                    )
-                                                                  ],
-                                                                )
-                                                              ],
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 10),
+                                                      return Padding(
+                                                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                                        child: Container(
+                                                          padding:
+                                                          const EdgeInsets.all(
+                                                              20),
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4),
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .black38)),
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              /// User Information
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
 
-                                                            /// Comment
-                                                            Text(state.loadedCommentsOfEstablishment[index].text),
-                                                            const SizedBox(
-                                                                height: 20),
+                                                                  /// User Information
+                                                                  Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    children: [
+                                                                      const CircleAvatar(
+                                                                        radius: 25,
+                                                                        backgroundImage:
+                                                                        AssetImage(
+                                                                            'assets/icons/master.png'),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                          width: 10),
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                        children: [
+                                                                          Text(state.loadedCommentsOfEstablishment[index].userfirstname + " " + state.loadedCommentsOfEstablishment[index].userfirstname),
+                                                                          const Text(
+                                                                            "12 января, 21:56",
+                                                                            style: TextStyle(
+                                                                                color: Colors
+                                                                                    .black38,
+                                                                                fontSize:
+                                                                                14),
+                                                                          )
+                                                                        ],
+                                                                      )
+                                                                    ],
+                                                                  ),
 
-                                                            /// Master
-                                                            Row(
-                                                              children: [
-                                                                const CircleAvatar(
-                                                                  radius: 15,
-                                                                  backgroundImage:
-                                                                  AssetImage(
-                                                                      'assets/icons/master.png'),
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 5),
-                                                                Column(
-                                                                  crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                                  children: [
-                                                                    Text(state.loadedCommentsOfEstablishment[index].mastername,
-                                                                        style: const TextStyle(
-                                                                            color: Colors
-                                                                                .black38,
-                                                                            fontSize:
-                                                                            14,
-                                                                            fontWeight:
-                                                                            FontWeight.bold)),
-                                                                  ],
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ],
+                                                                  /// Star
+                                                                  Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                                    children: [
+                                                                      const Icon(Icons.star, color: Colors.yellow),
+                                                                      Text(state.loadedCommentsOfEstablishment[index].stars.toString())
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              const SizedBox(
+                                                                  height: 10),
+
+                                                              /// Comment
+                                                              Text(state.loadedCommentsOfEstablishment[index].text),
+                                                              const SizedBox(
+                                                                  height: 20),
+
+                                                              /// Master
+                                                              Row(
+                                                                children: [
+                                                                  const CircleAvatar(
+                                                                    radius: 15,
+                                                                    backgroundImage:
+                                                                    AssetImage(
+                                                                        'assets/icons/master.png'),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                      width: 5),
+                                                                  Column(
+                                                                    crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                    children: [
+                                                                      Text(state.loadedCommentsOfEstablishment[index].mastername,
+                                                                          style: const TextStyle(
+                                                                              color: Colors
+                                                                                  .black38,
+                                                                              fontSize:
+                                                                              14,
+                                                                              fontWeight:
+                                                                              FontWeight.bold)),
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       );
                                                     },

@@ -7,14 +7,13 @@ import 'package:sulu_mobile_application/utils/bloc/exists_time/exists_time_bloc.
 import 'package:sulu_mobile_application/utils/bloc/master/master_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/master_model.dart';
-import 'package:sulu_mobile_application/utils/model/establishment_models/master_type_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/service_model.dart';
-import 'package:sulu_mobile_application/utils/model/schedule_model.dart';
 import 'package:sulu_mobile_application/utils/repository/exists_time_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/master_repository.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:sulu_mobile_application/constants/app_constants.dart' as constants;
 
 class OrderSetDatePage extends StatefulWidget {
   const OrderSetDatePage(
@@ -31,6 +30,17 @@ class OrderSetDatePage extends StatefulWidget {
 }
 
 class _OrderSetDatePageState extends State<OrderSetDatePage> {
+
+  List<String> days = [
+    "Пн",
+    "Вт",
+    "Ср",
+    "Чт",
+    "Пт",
+    "Сб",
+    "Вс"
+  ];
+
   /// Calendar Date
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
@@ -45,6 +55,10 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
   List<bool> _selectedTimesStatus = List.filled(100, false);
   late ExistsTimeBloc existsTimeBloc;
 
+  /// Establishment schedule
+  late int firstDay;
+  late int lastDay;
+
   /// Update time
   // void updateTime(context) {
   //   ExistsTimeBloc existsTimeBloc = BlocProvider.of<ExistsTimeBloc>(context);
@@ -54,6 +68,10 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
   void initState() {
     super.initState();
     initializeDateFormatting();
+    List<int> days = widget.establishmentModel.schedule.map((e) => e.id).toList();
+    days.sort();
+    firstDay = days[0];
+    lastDay = days[days.length - 1];
   }
 
   /// Repositories
@@ -102,7 +120,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                         children: [
                           /// Title
                           Text(
-                            widget.selectedService.name,
+                            constants.subcategories[widget.selectedService.subTypeId - 1],
                             style: GoogleFonts.inter(),
                           ),
 
@@ -163,10 +181,12 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                       if (state is MasterLoadedState) {
                         if (state.loadedMastersOfEstablishment.isNotEmpty) {
                           Future.delayed(Duration.zero, () async {
-                            setState(() {
-                              _selectedMasterModel =
-                                  state.loadedMastersOfEstablishment[0];
-                            });
+                            if(_selectedMasterModel == null) {
+                              setState(() {
+                                _selectedMasterModel =
+                                state.loadedMastersOfEstablishment[0];
+                              });
+                            }
                           });
 
                           return DropdownButton(
@@ -192,10 +212,11 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                                           const SizedBox(width: 10),
 
                                           /// Avatar
-                                          const CircleAvatar(
+                                          CircleAvatar(
                                               radius: 25,
-                                              backgroundImage: AssetImage(
-                                                  'assets/icons/master.png')),
+                                              backgroundImage: NetworkImage(
+                                                items.photo
+                                              )),
                                           const SizedBox(width: 10),
 
                                           /// Info
@@ -249,17 +270,22 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 30.0, vertical: 15),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Выберите дату: ",
                         style: GoogleFonts.inter(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        "График работы: c " + widget.establishmentModel.schedule[0].day + " до " + widget.establishmentModel.schedule[widget.establishmentModel.schedule.length - 1].day,
-                        style: GoogleFonts.inter(
-                            fontSize: 14),
-                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "График работы: " + constants.days[firstDay - 1] + " - " + constants.days[lastDay - 1],
+                            style: GoogleFonts.inter(
+                                fontSize: 14),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -273,6 +299,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                     focusedDay: _focusedDay,
                     calendarFormat: _calendarFormat,
                     locale: 'ru_RU',
+                    startingDayOfWeek: StartingDayOfWeek.monday,
                     selectedDayPredicate: (day) {
                       return isSameDay(_selectedDay, day);
                     },
@@ -299,7 +326,6 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                       dowBuilder: (context, day) {
                         if (day.weekday == DateTime.sunday) {
                           final text = DateFormat.E().format(day);
-
                           return Center(
                             child: Text(
                               text,
@@ -319,7 +345,8 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
             ),
 
             /// Select Time
-            Column(
+            Flex(
+              direction: Axis.vertical,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
@@ -342,35 +369,36 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                   ),
                 ),
                 if (_selectedMasterModel != null)
-                  Container(
-                    height: 200,
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: BlocBuilder<ExistsTimeBloc, ExistsTimeState>(
-                      builder: (context, state) {
-                        
-                        if(state is ExistsTimeInitialState) {
-                          existsTimeBloc = BlocProvider.of<ExistsTimeBloc>(context);
-                          return const Center(child: Text("Выберите день"));
-                        }
+                  BlocBuilder<ExistsTimeBloc, ExistsTimeState>(
+                    builder: (context, state) {
 
-                        if(state is ExistsTimeLoadingState) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
+                      if(state is ExistsTimeInitialState) {
+                        existsTimeBloc = BlocProvider.of<ExistsTimeBloc>(context);
+                        return const Center(child: Text("Выберите день"));
+                      }
 
-                        if(state is ExistsTimeErrorState) {
-                          return const Center(
-                            child: Text("Этот день занят"),
-                          );
-                        }
+                      if(state is ExistsTimeLoadingState) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
 
-                        if(state is ExistsTimeLoadedState) {
-                          return GridView.builder(
+                      if(state is ExistsTimeErrorState) {
+                        return const Center(
+                          child: Text("Этот день занят"),
+                        );
+                      }
+
+                      if(state is ExistsTimeLoadedState) {
+                        print("Width: " + width.toString());
+                        return Container(
+                          height: (50 * (state.loadedExistsTime.length / 5).ceil()).toDouble(),
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: GridView.builder(
                               physics: const ScrollPhysics(),
                               gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 5,
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: width > 400 ? 5 : 4,
                                   crossAxisSpacing: 10,
                                   mainAxisSpacing: 10,
                                   childAspectRatio: 1.5),
@@ -401,13 +429,14 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                                         .replaceRange(5, 8, '')),
                                   ),
                                 );
-                              });
-                        }
+                              }),
+                        );
+                      }
 
-                        return Container();
 
-                      },
-                    ),
+                      return Container();
+
+                    },
                   )
                 else
                   Container(),

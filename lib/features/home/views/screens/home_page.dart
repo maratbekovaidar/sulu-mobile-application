@@ -5,7 +5,7 @@ import 'package:sulu_mobile_application/features/home/views/screens/appbar/drawe
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/bookmark_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/cart_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/hello_page.dart';
-import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/profile_page.dart';
+import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/appointment/appointment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/appointment_model.dart';
-import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
+import 'package:sulu_mobile_application/utils/services/appointment_provider.dart';
 
 class CommentPage extends StatefulWidget {
   const CommentPage(
@@ -19,7 +19,7 @@ class CommentPage extends StatefulWidget {
 
 class _CommentPageState extends State<CommentPage> {
 
-  final EstablishmentProvider _establishmentProvider = EstablishmentProvider();
+  final AppointmentProvider _appointmentProvider = AppointmentProvider();
   double ratingComment = 0;
   final TextEditingController _feedbackController = TextEditingController();
 
@@ -149,7 +149,7 @@ class _CommentPageState extends State<CommentPage> {
                         ),
                       );
                     });
-                    bool result = await _establishmentProvider.setCommentService(widget.appointmentModel.establishmentId, widget.appointmentModel.masterDataId, ratingComment, _feedbackController.text);
+                    bool result = await _appointmentProvider.setCommentService(widget.appointmentModel.establishmentId, widget.appointmentModel.masterDataId, ratingComment, _feedbackController.text);
                     if(result) {
                       Navigator.pop(context);
                       showDialog(context: context, builder: (_) {

@@ -5,7 +5,7 @@ class MasterModel {
   final int id;
   final double rating;
   final List<MasterTypeModel> masterType;
-  final String? photo;
+  final String photo;
   final List<ScheduleModel> schedule;
   final String name;
   final List<String> masterStartTime;
@@ -29,7 +29,7 @@ class MasterModel {
         id: json['id'],
         rating: json['rating'],
         masterType: masterTypeJson.map((e) => MasterTypeModel.fromJson(e)).toList(),
-        photo: "",
+        photo: json['photo'] ?? 'https://afitat-bol.com/wp-content/uploads/2021/03/default-user-avatar.jpg',
         schedule: scheduleJson.map((e) => ScheduleModel.fromJson(e)).toList(),
         name: json['name'],
         masterStartTime: masterTime.map((e) => e.toString()).toList()

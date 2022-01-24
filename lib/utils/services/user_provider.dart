@@ -73,7 +73,6 @@ class UserProvider {
   Future<int> register(String firstName, String lastName, String patronymic, String phoneNumber, String password) async {
     var url = Uri.parse('https://sulu.azurewebsites.net/public/auth/register');
 
-    print(firstName + " " + lastName + " " + phoneNumber + " " + password);
 
     var response = await http.post(
         url,
@@ -90,7 +89,65 @@ class UserProvider {
         }
     );
 
+
     return response.statusCode;
   }
 
+  /// User Change info
+  Future<bool> changeUserInfo(String firstName, String lastName, String photo) async {
+    String token;
+    token = (await storage.read(key: 'token'))!;
+    var url = Uri.parse('https://sulu.azurewebsites.net/private/user/editUserDetails');
+
+    var response = await http.put(
+      url,
+      headers: {
+        'Content-Type':'application/json',
+        'Authorization': token
+      },
+      body: jsonEncode({
+        "firstName": firstName,
+        "lastName": lastName,
+        "patronymic": "",
+        "photo": photo
+      })
+    );
+
+
+    if(response.statusCode == 200) {
+      if(jsonDecode(response.body)["httpStatus"] == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /// User Change password
+  Future<bool> changeUserPassword(String oldPassword, String newPassword) async {
+    String token;
+    token = (await storage.read(key: 'token'))!;
+    var url = Uri.parse('https://sulu.azurewebsites.net/private/user/changePassword?newPassword=$newPassword&oldPassword=$oldPassword');
+
+    var response = await http.post(
+        url,
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization': token
+        },
+    );
+
+
+    if(response.statusCode == 200) {
+      if(jsonDecode(response.body)["httpStatus"] == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }

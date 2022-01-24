@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key}) : super(key: key);
@@ -13,6 +14,16 @@ class _CategoryPageState extends State<CategoryPage> {
 
   bool hairSubcategory = false;
   bool fingerSubcategory = false;
+  bool deleteHairSubcategory = false;
+  bool cosmeticSubcategory = false;
+  bool eyelashesSubcategory = false;
+  bool browsSubcategory = false;
+  bool makeupSubcategory = false;
+  bool spaSubcategory = false;
+
+  /// Search Controller
+  TextEditingController searchController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +38,20 @@ class _CategoryPageState extends State<CategoryPage> {
       ),
       body: ListView(
         children: [
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: searchController,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                hintText: "Поиск..."
+              ),
+              onSubmitted: (text) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => EstablishmentsPage(name: searchController.text,)));
+              },
+            ),
+          ),
 
           /// Hairs
           GestureDetector(
@@ -62,7 +87,13 @@ class _CategoryPageState extends State<CategoryPage> {
           /// Hairs Subcategories
           hairSubcategory ? GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/salons');
+                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EstablishmentsPage(
+                                                  title: "Волосы",
+                                                  typeId: 1)));
             },
             child: Column(
               children: [
@@ -173,7 +204,6 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           ) : Container(),
 
-
           /// Finger
           GestureDetector(
             onTap: () {
@@ -205,10 +235,16 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           ),
 
-          /// Hairs Subcategories
+          /// Finger Subcategories
           fingerSubcategory ? GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/salons');
+                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EstablishmentsPage(
+                                                  title: "Маникюр",
+                                                  typeId: 2)));
             },
             child: Column(
               children: [
@@ -319,10 +355,11 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           ) : Container(),
 
+          /// Delete Hair
           GestureDetector(
             onTap: () {
               setState(() {
-                hairSubcategory = !hairSubcategory;
+                deleteHairSubcategory = !deleteHairSubcategory;
               });
             },
             child: Container(
@@ -348,10 +385,114 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
           ),
+
+          /// Delete Hair Subcategories
+          deleteHairSubcategory ? GestureDetector(
+            onTap: () {
+                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EstablishmentsPage(
+                                                  title: "Удаление волос",
+                                                  typeId: 3)));
+            },
+            child: Column(
+              children: [
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Шугаринг",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Эпиляция",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Депиляция",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Skins",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Лазерное удаление",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ) : Container(),
+
+          /// Cosmetics
           GestureDetector(
             onTap: () {
               setState(() {
-                hairSubcategory = !hairSubcategory;
+                cosmeticSubcategory = !cosmeticSubcategory;
               });
             },
             child: Container(
@@ -364,7 +505,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Косметалогия",
+                    "Косметология",
                     style: GoogleFonts.inter(
                         fontWeight: FontWeight.bold
                     ),
@@ -377,10 +518,132 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
           ),
+
+          /// Cosmetics Subcategory
+          cosmeticSubcategory ? GestureDetector(
+            onTap: () {
+                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EstablishmentsPage(
+                                                  title: "Косметология",
+                                                  typeId: 4)));
+            },
+            child: Column(
+              children: [
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Уход за лицом",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Чистка лица",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Аппаратное омоложивания",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Уколы красоты",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Лечебная косметология",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Пилинг",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+              ],
+            ),
+          ) : Container(),
+
+          /// Eyelashes
           GestureDetector(
             onTap: () {
               setState(() {
-                hairSubcategory = !hairSubcategory;
+                eyelashesSubcategory = !eyelashesSubcategory;
               });
             },
             child: Container(
@@ -406,10 +669,78 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
           ),
+          eyelashesSubcategory ? GestureDetector(
+            onTap: () {
+                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EstablishmentsPage(
+                                                  title: "Ресницы",
+                                                  typeId: 6)));
+            },
+            child: Column(
+              children: [
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Наращивание",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Коррекция",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Ламинирование",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ) : Container(),
+
+          /// Brows
           GestureDetector(
             onTap: () {
               setState(() {
-                hairSubcategory = !hairSubcategory;
+                browsSubcategory = !browsSubcategory;
               });
             },
             child: Container(
@@ -435,10 +766,98 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
           ),
+          browsSubcategory ? GestureDetector(
+            onTap: () {
+                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EstablishmentsPage(
+                                                  title: "Брови",
+                                                  typeId: 7)));
+            },
+            child: Column(
+              children: [
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Коррекция",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Татуаж",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Окрашивание",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Ламинирование",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+
+
+              ],
+            ),
+          ) : Container(),
+
+          /// Makeup
           GestureDetector(
             onTap: () {
               setState(() {
-                hairSubcategory = !hairSubcategory;
+                makeupSubcategory = !makeupSubcategory;
               });
             },
             child: Container(
@@ -464,10 +883,78 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
           ),
+          makeupSubcategory ? GestureDetector(
+            onTap: () {
+                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EstablishmentsPage(
+                                                  title: "Макияж",
+                                                  typeId: 8)));
+            },
+            child: Column(
+              children: [
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Дневной",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Вечерний",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Свадебный",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ) : Container(),
+
+          /// Spa
           GestureDetector(
             onTap: () {
               setState(() {
-                hairSubcategory = !hairSubcategory;
+                spaSubcategory = !spaSubcategory;
               });
             },
             child: Container(
@@ -493,7 +980,72 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
           ),
-
+          spaSubcategory ? GestureDetector(
+            onTap: () {
+                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EstablishmentsPage(
+                                                  title: "Уход за телом",
+                                                  typeId: 9)));
+            },
+            child: Column(
+              children: [
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Массаж",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Парение",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Банные процедуры",
+                        style: GoogleFonts.inter(
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ) : Container(),
 
         ],
       ),

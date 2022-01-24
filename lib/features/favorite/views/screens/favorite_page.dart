@@ -87,7 +87,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                 children: [
                                   /// Image
                                   Expanded(
-                                    child: Image.asset(
+                                    child: Image.network(
                                       state.establishments[index]
                                           .images[0],
                                       width: width * 0.9,
@@ -169,8 +169,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                             Text(
                                               state
                                                       .establishments[
-                                                          index]
-                                                      .rating
+                                                          index].rating
                                                       .toString() +
                                                   " отзывов",
                                               style: GoogleFonts.inter(

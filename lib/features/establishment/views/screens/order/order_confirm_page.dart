@@ -7,6 +7,7 @@ import 'package:sulu_mobile_application/utils/model/establishment_models/establi
 import 'package:sulu_mobile_application/utils/model/establishment_models/master_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/service_model.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
+import 'package:sulu_mobile_application/utils/services/service_provider.dart';
 
 class OrderConfirmPage extends StatefulWidget {
   const OrderConfirmPage({Key? key, required this.date, required this.time, required this.establishmentModel, required this.serviceModel, required this.masterId, required this.masterModel}) : super(key: key);
@@ -26,7 +27,7 @@ class OrderConfirmPage extends StatefulWidget {
 class _OrderConfirmPageState extends State<OrderConfirmPage> {
 
 
-  final EstablishmentProvider _provider = EstablishmentProvider();
+  final ServiceProvider _provider = ServiceProvider();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
 
@@ -55,7 +56,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Image.asset(
+                  Image.network(
                     widget.establishmentModel.images[0],
                     fit: BoxFit.cover,
                     height: 200,
@@ -139,10 +140,11 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
                           const SizedBox(width: 10),
 
                           /// Avatar
-                          const CircleAvatar(
+                          CircleAvatar(
                             radius: 25,
                             backgroundImage: NetworkImage(
-                                "https://sun9-5.userapi.com/impg/oZ3XputBBgRTCFrfuZGS9oM0RaehoA0BqPpV9g/oCkA5645n-k.jpg?size=1620x2160&quality=96&sign=d17ab50ecaf7a3c364fe524dd060a026&type=album"),
+                              widget.masterModel.photo
+                            ),
                           ),
                           const SizedBox(width: 10),
 

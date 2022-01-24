@@ -1,11 +1,10 @@
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/service_model.dart';
-import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
+import 'package:sulu_mobile_application/utils/services/service_provider.dart';
 
 class ServiceRepository {
 
-  final EstablishmentProvider _provider = EstablishmentProvider();
+  final ServiceProvider _provider = ServiceProvider();
 
   Future<List<ServiceModel>> getServices(int id) => _provider.getServiceByEstablishmentId(id);
 

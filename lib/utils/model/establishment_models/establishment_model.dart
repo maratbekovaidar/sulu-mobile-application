@@ -41,6 +41,7 @@ class EstablishmentModel {
       json['photo4'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
       json['photo5'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
     ];
+
     List<dynamic> scheduleJson = json['schedule'];
     return EstablishmentModel(
         id: json['id'] ?? 1,
@@ -53,7 +54,7 @@ class EstablishmentModel {
         phoneNumber: json['phoneNumber'],
         address: json['address'] ?? "",
         images: images,
-        rating: json['rating'] ?? 0,
+        rating: double.parse((json['rating'] ?? 0).toStringAsFixed(2)),
         ownerId: json['ownerId'],
         establishmentTypeId: json['establishmentTypeId']);
   }

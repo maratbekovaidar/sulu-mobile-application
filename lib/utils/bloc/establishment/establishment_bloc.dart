@@ -26,6 +26,18 @@ class EstablishmentBloc extends Bloc<EstablishmentEvent, EstablishmentState> {
         }
       }
 
+      /// Load popular
+      if(event is EstablishmentLoadPopularEvent) {
+        emit(EstablishmentLoadingState());
+        try {
+          _establishments = await establishmentRepository.getPopularEstablishments();
+          return emit(EstablishmentLoadedState(establishments: _establishments));
+        } catch(exception) {
+          print("Aidar load " + exception.toString());
+          return emit(EstablishmentErrorState());
+        }
+      }
+
       /// Load Establishment by typeId
       if(event is EstablishmentLoadByTypeIdEvent) {
         emit(EstablishmentLoadingState());
@@ -49,6 +61,18 @@ class EstablishmentBloc extends Bloc<EstablishmentEvent, EstablishmentState> {
         }
       }
 
+      /// Load Establishment by name and type id
+      if(event is EstablishmentLoadByNameAndTypeIdEvent) {
+        emit(EstablishmentLoadingState());
+        try {
+          _establishments = await establishmentRepository.getEstablishmentsByNameAndTypeId(event.name, event.typeId);
+          return emit(EstablishmentLoadedState(establishments: _establishments));
+        } catch(exception) {
+          return emit(EstablishmentErrorState());
+        }
+      }
+
+      /// Load Establishment of favorite
       if(event is EstablishmentFavoriteLoadEvent) {
         emit(EstablishmentLoadingState());
         try {
