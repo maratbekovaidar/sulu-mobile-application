@@ -53,6 +53,16 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
   final EstablishmentProvider _establishmentProvider = EstablishmentProvider();
 
+
+  @override
+  void initState() {
+    super.initState();
+    List<int> days = widget.establishmentModel.schedule.map((e) => e.id).toList();
+    days.sort();
+    firstDay = days[0];
+    lastDay = days[days.length - 1];
+  }
+
   @override
   Widget build(BuildContext context) {
     /// Size
