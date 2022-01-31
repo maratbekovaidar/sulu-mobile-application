@@ -50,7 +50,7 @@ class AppointmentProvider {
 
 
   /// Set Comment
-  Future<bool> setCommentService(int establishmentId, int masterDataId, double star, String comment, List<XFile> images) async {
+  Future<bool> setCommentService(int establishmentId, int masterDataId, double star, String comment, List<XFile>? images) async {
 
     /// Image provider
     UploadImageProvider _imageProvider = UploadImageProvider();
@@ -76,16 +76,19 @@ class AppointmentProvider {
       );
 
 
-
       if (response.statusCode == 200) {
         if(jsonDecode(response.body)['httpStatus'] == 200) {
 
-          bool imageResult = await _imageProvider.uploadFeedbackImage(images, jsonDecode(response.body)['data']);
+          if(images != null) {
+            bool imageResult = await _imageProvider.uploadFeedbackImage(images, jsonDecode(response.body)['data']);
 
-          if(imageResult) {
-            return true;
+            if(imageResult) {
+              return true;
+            } else {
+              return false;
+            }
           } else {
-            return false;
+            return true;
           }
         } else {
           return false;
@@ -93,6 +96,7 @@ class AppointmentProvider {
       } else {
         return false;
       }
+
     } else {
       return false;
     }
