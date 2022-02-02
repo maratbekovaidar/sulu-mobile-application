@@ -224,7 +224,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           text: "условиями пользования",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              launch('https://disk.yandex.ru/i/yEo3KKDFDONqUA');
+                              launch('https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
                             },
                           style: const TextStyle(
                               fontFamily: 'Montserrat',
@@ -235,7 +235,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           text: "политикой конфиденциальности",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              launch('https://disk.yandex.kz/i/ckhWeEc1lB0Tzw');
+                              launch('https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
                             },
                           style: const TextStyle(
                               fontFamily: 'Montserrat',
