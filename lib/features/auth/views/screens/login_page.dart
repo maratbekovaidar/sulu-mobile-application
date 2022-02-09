@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         Text(
-                          "Запномнить меня",
+                          "Запомнить меня",
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             color: Colors.black,
