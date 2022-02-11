@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:sulu_mobile_application/configuration/configuration.dart';
 import 'package:sulu_mobile_application/utils/model/master_models/master_model.dart';
 
 
@@ -14,7 +15,7 @@ class MasterProvider {
   /// Get Masters
   Future<List<MasterModel>> getMastersOfEstablishment(int id) async {
     var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/client/getAllMastersOfEstablishment/$id');
+        '${Configuration.host}private/client/getAllMastersOfEstablishment/$id');
 
     String? token = await storage.read(key: 'token');
 
@@ -52,7 +53,7 @@ class MasterProvider {
 
   /// Get Masters with Type Id
   Future<List<MasterModel>> getMastersByTypeId(int serviceTypeId, int establishmentId) async {
-    var url = Uri.parse('https://sulu.azurewebsites.net/private/client/findMastersByServiceTypeIdAndEstablishmentId/$serviceTypeId/$establishmentId');
+    var url = Uri.parse('${Configuration.host}private/client/findMastersByServiceTypeIdAndEstablishmentId/$serviceTypeId/$establishmentId');
 
     String? token = await storage.read(key: 'token');
 

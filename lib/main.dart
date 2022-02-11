@@ -10,6 +10,8 @@ import 'package:sulu_mobile_application/features/home/views/screens/home_page.da
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
 
+import 'features/auth/views/screens/no_auth_page.dart';
+
 String? token;
 
 Future<void> main() async {
@@ -36,7 +38,8 @@ Map<String, WidgetBuilder> routes = {
   '/register' : (context) => const RegisterPage(),
   '/salons' : (context) => const EstablishmentsPage(),
   '/category' : (context) => const CategoryPage(),
-  '/favorite' : (context) => const FavoritePage()
+  '/favorite' : (context) => const FavoritePage(),
+  '/no_auth_page' : (context) => const NoAuthPage()
 };
 
 class MyApp extends StatelessWidget {

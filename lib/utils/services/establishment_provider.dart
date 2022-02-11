@@ -2,230 +2,134 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:sulu_mobile_application/configuration/configuration.dart';
+import 'package:sulu_mobile_application/utils/api_clients/network_client.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
 import 'package:sulu_mobile_application/utils/model/master_models/master_portfolio_model.dart';
 
 
 class EstablishmentProvider {
+  //client to use get and posts
+  final _networkClient = NetworkClient();
 
   /// Secure Storage
   FlutterSecureStorage storage = const FlutterSecureStorage();
 
   /// Get Establishments
   Future<List<EstablishmentModel>> getEstablishments() async {
-    var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/client/findAll/establishments');
 
     String? token = await storage.read(key: 'token');
 
-    if (token != null) {
-      var response = await http.get(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
+    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findAll/establishments",parser: establishmentParser,headerParameters: {
+              'Content-Type': 'application/json',
+              'Authorization': token!
+            });
 
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        List<dynamic> jsonResult = jsonDecode(
-            utf8.decode(response.bodyBytes))["data"];
-        return jsonResult.map((json) => EstablishmentModel.fromJson(json))
-            .toList();
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
+    return result;
   }
+
 
   /// Get Popular Establishments
   Future<List<EstablishmentModel>> getPopularEstablishments() async {
-    var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/client/findAllFavoritesOfTheEstablishment');
 
     String? token = await storage.read(key: 'token');
 
-    if (token != null) {
-      var response = await http.get(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
 
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        List<dynamic> jsonResult = jsonDecode(
-            utf8.decode(response.bodyBytes))["data"];
-        return jsonResult.map((json) => EstablishmentModel.fromJson(json))
-            .toList();
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
+
+    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findAllFavoritesOfTheEstablishment",parser: establishmentParser,headerParameters: {
+      'Content-Type': 'application/json',
+      'Authorization': token!
+    });
+
+    return result;
+
   }
+
 
   /// Get Establishments with Type Id
   Future<List<EstablishmentModel>> getEstablishmentsWithFilter(int typeId) async {
-    var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/client/findEstablishments/byServiceTypeId/$typeId');
-
+    // var url = Uri.parse(
+    //     'http://94.247.129.64:8080/private/client/findEstablishments/byServiceTypeId/$typeId');
     String? token = await storage.read(key: 'token');
 
-    if (token != null) {
-      var response = await http.get(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
 
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        List<dynamic> jsonResult = jsonDecode(
-            utf8.decode(response.bodyBytes))["data"];
-        return jsonResult.map((json) => EstablishmentModel.fromJson(json))
-            .toList();
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
+    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findEstablishments/byServiceTypeId/$typeId",parser: establishmentParser,headerParameters: {
+      'Content-Type': 'application/json',
+      'Authorization': token!
+    });
+
+    return result;
   }
 
   /// Get Establishments with name
   Future<List<EstablishmentModel>> getEstablishmentsWithName(String name) async {
-    var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/client/findByEstablishmentName/$name');
-
+    // var url = Uri.parse(
+    //     'http://94.247.129.64:8080/private/client/findByEstablishmentName/$name');
     String? token = await storage.read(key: 'token');
 
-    if (token != null) {
-      var response = await http.get(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
 
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        List<dynamic> jsonResult = jsonDecode(
-            utf8.decode(response.bodyBytes))["data"];
-        return jsonResult.map((json) => EstablishmentModel.fromJson(json))
-            .toList();
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
+    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findByEstablishmentName/$name",parser: establishmentParser,headerParameters: {
+      'Content-Type': 'application/json',
+      'Authorization': token!
+    });
+
+    return result;
+  }
+  //parser for getting establishments
+  List<EstablishmentModel> establishmentParser(dynamic json) {
+    final jsonToList=jsonDecode(utf8.decode(json.bodyBytes))["data"];
+    final response= jsonToList.map<EstablishmentModel>((item)=>EstablishmentModel.fromJson(item)).toList();
+    return response;
+  }
+
+  //parser for getting establishments
+  List<MasterPortfolioModel> masterPortfolioParser(dynamic json) {
+    final jsonToList=jsonDecode(utf8.decode(json.bodyBytes))["data"];
+    final response= jsonToList.map<MasterPortfolioModel>((item)=>MasterPortfolioModel.fromJson(item)).toList();
+    return response;
   }
 
   /// Get Establishment with name and Service Type Id
   Future<List<EstablishmentModel>> getEstablishmentsWithNameAndTypeId(String name, int typeId) async {
-    var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/client/getEstablishmentByNameAndServiceTypeId?establishmentName=$name&serviceTypeId=$typeId');
 
     String? token = await storage.read(key: 'token');
 
-    if (token != null) {
-      var response = await http.get(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
+    final Future<List<EstablishmentModel>> result = _networkClient.get(path:"private/client/findAllPortfolioOfEstablishmentById/$typeId",parser: establishmentParser,headerParameters: {
+      'Authorization': token!,
+      'Content-Type': 'application/json'
+    });
+    return result;
 
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        List<dynamic> jsonResult = jsonDecode(
-            utf8.decode(response.bodyBytes))["data"];
-        return jsonResult.map((json) => EstablishmentModel.fromJson(json))
-            .toList();
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
   }
 
   /// Get Establishments that favorite
   Future<List<EstablishmentModel>> getFavoriteEstablishments() async {
-    var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/favorite/get/establishments');
+
 
     String? token = await storage.read(key: 'token');
 
-    if (token != null) {
-      var response = await http.get(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
 
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        List<dynamic> jsonResult = jsonDecode(
-            utf8.decode(response.bodyBytes))["data"];
-            return jsonResult.map((json) => EstablishmentModel.fromJson(json["establishmentDTO"]))
-            .toList();
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
+    final Future<List<EstablishmentModel>> result = _networkClient.get(path: "private/favorite/get/establishments",parser: establishmentParser, headerParameters: {
+      'Authorization': token!,
+      'Content-Type': 'application/json'
+    });
+    return result;
+
   }
 
   /// Get Establishment portfolio
   Future<List<MasterPortfolioModel>> getPortfolioOfEstablishment(int id) async {
-    var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/client/findAllPortfolioOfEstablishmentById/$id');
+    // var url = Uri.parse(
+    //     'http://94.247.129.64:8080/private/client/findAllPortfolioOfEstablishmentById/$id');
 
     String? token = await storage.read(key: 'token');
 
-    if (token != null) {
-      var response = await http.get(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
 
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        List<dynamic> jsonResult = jsonDecode(
-            utf8.decode(response.bodyBytes))["data"];
-        return jsonResult.map((json) => MasterPortfolioModel.fromJson(json))
-            .toList();
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
+    final Future<List<MasterPortfolioModel>> result = _networkClient.get(path: "private/client/findAllPortfolioOfEstablishmentById/$id",parser: establishmentParser, headerParameters: {
+      'Authorization': token!,
+      'Content-Type': 'application/json'
+    });
+    return result;
   }
 
 
@@ -233,7 +137,7 @@ class EstablishmentProvider {
   Future<int> setFavoriteEstablishment(int id) async {
 
     var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/favorite/addEstablishment/$id');
+        '${Configuration.host}private/favorite/addEstablishment/$id');
 
     String? token = await storage.read(key: 'token');
 
@@ -263,7 +167,7 @@ class EstablishmentProvider {
   Future<int> removeFavoriteEstablishment(int id) async {
 
     var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/favorite/deleteEstablishmentBy/$id');
+        '${Configuration.host}private/favorite/deleteEstablishmentBy/$id');
 
     String? token = await storage.read(key: 'token');
 
@@ -291,7 +195,7 @@ class EstablishmentProvider {
 
   /// Get available time
   Future<List<String>> getAvailableTimes(String date, int masterDataId) async {
-    var url = Uri.parse('https://sulu.azurewebsites.net/private/appointment/check/IsExistsInDate?date=$date&masterDataId=$masterDataId');
+    var url = Uri.parse('${Configuration.host}private/appointment/check/IsExistsInDate?date=$date&masterDataId=$masterDataId');
 
     String? token = await storage.read(key: 'token');
 

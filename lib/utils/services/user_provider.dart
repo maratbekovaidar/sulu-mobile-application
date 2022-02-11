@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:sulu_mobile_application/configuration/configuration.dart';
 import 'package:sulu_mobile_application/utils/model/user_model.dart';
 
 class UserProvider {
@@ -12,7 +13,7 @@ class UserProvider {
 
   /// Login query
   Future<bool> login(String username, String password) async {
-      var url = Uri.parse('https://sulu.azurewebsites.net/public/auth/login');
+      var url = Uri.parse('http://94.247.129.64:8080/public/auth/login');
 
       var response = await http.post(
           url,
@@ -71,7 +72,7 @@ class UserProvider {
 
   /// Register
   Future<int> register(String firstName, String lastName, String patronymic, String phoneNumber, String password) async {
-    var url = Uri.parse('https://sulu.azurewebsites.net/public/auth/register');
+    var url = Uri.parse('${Configuration.host}public/auth/register');
 
 
     var response = await http.post(
@@ -97,7 +98,7 @@ class UserProvider {
   Future<bool> changeUserInfo(String firstName, String lastName, String photo) async {
     String token;
     token = (await storage.read(key: 'token'))!;
-    var url = Uri.parse('https://sulu.azurewebsites.net/private/user/editUserDetails');
+    var url = Uri.parse('${Configuration.host}private/user/editUserDetails');
 
     var response = await http.put(
       url,
@@ -129,7 +130,7 @@ class UserProvider {
   Future<bool> changeUserPassword(String oldPassword, String newPassword) async {
     String token;
     token = (await storage.read(key: 'token'))!;
-    var url = Uri.parse('https://sulu.azurewebsites.net/private/user/changePassword?newPassword=$newPassword&oldPassword=$oldPassword');
+    var url = Uri.parse('${Configuration.host}private/user/changePassword?newPassword=$newPassword&oldPassword=$oldPassword');
 
     var response = await http.post(
         url,

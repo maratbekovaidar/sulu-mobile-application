@@ -28,6 +28,7 @@ class _FirstPageState extends State<FirstPage> {
         body: Stack(
           children: [
 
+
             /// Background Image
             Container(
               decoration: const BoxDecoration(
@@ -37,6 +38,8 @@ class _FirstPageState extends State<FirstPage> {
                 ),
               ),
             ),
+            
+
 
             /// Color and Content
             Container(
@@ -147,7 +150,9 @@ class _FirstPageState extends State<FirstPage> {
                   )
                 ],
               ),
-            )
+            ),
+
+           
           ],
         ),
       ),
