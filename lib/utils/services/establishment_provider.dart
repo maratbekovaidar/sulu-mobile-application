@@ -105,15 +105,33 @@ class EstablishmentProvider {
   /// Get Establishments that favorite
   Future<List<EstablishmentModel>> getFavoriteEstablishments() async {
 
+    var url = Uri.parse(
+        '${Configuration.host}private/favorite/get/establishments');
 
     String? token = await storage.read(key: 'token');
 
+    if (token != null) {
+      var response = await http.get(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+      );
 
-    final Future<List<EstablishmentModel>> result = _networkClient.get(path: "private/favorite/get/establishments",parser: establishmentParser, headerParameters: {
-      'Authorization': token!,
-      'Content-Type': 'application/json'
-    });
-    return result;
+      /// Convert response to json list
+      if (response.body.isNotEmpty) {
+        List<dynamic> jsonResult = jsonDecode(
+            utf8.decode(response.bodyBytes))["data"];
+        return jsonResult.map((json) => EstablishmentModel.fromJson(json["establishmentDTO"]))
+            .toList();
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
+    } else {
+      throw Exception("Null Token. User Unauthorized");
+    }
 
   }
 

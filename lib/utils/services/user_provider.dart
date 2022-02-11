@@ -45,7 +45,7 @@ class UserProvider {
     String token;
     // try {
       token = (await storage.read(key: 'token'))!;
-      var url = Uri.parse('https://sulu.azurewebsites.net/private/client/getLoggedUserInfo');
+      var url = Uri.parse('${Configuration.host}private/client/getLoggedUserInfo');
 
       // try {
         var response = await http.get(

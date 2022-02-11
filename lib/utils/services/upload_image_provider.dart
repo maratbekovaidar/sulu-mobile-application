@@ -53,7 +53,7 @@ class UploadImageProvider {
         }
     );
     var response = await Dio().post(
-        'https://sulu.azurewebsites.net/private/image/feedback/uploadImageForEstablishmentFeedback?feedbackId=$id',
+        '${Configuration.host}private/image/feedback/uploadImageForEstablishmentFeedback?feedbackId=$id',
         data: formData,
         options: Options(
             headers: {
