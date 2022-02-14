@@ -4,6 +4,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sulu_mobile_application/configuration/configuration.dart';
 
 
 class UploadImageProvider {
@@ -20,7 +21,7 @@ class UploadImageProvider {
       }
     );
     var response = await Dio().post(
-        'https://sulu.azurewebsites.net/private/image/user/uploadImage?userId=$id',
+        '${Configuration.host}private/image/user/uploadImage?userId=$id',
         data: formData,
         options: Options(
             headers: {
@@ -52,7 +53,7 @@ class UploadImageProvider {
         }
     );
     var response = await Dio().post(
-        'https://sulu.azurewebsites.net/private/image/feedback/uploadImageForEstablishmentFeedback?feedbackId=$id',
+        '${Configuration.host}private/image/feedback/uploadImageForEstablishmentFeedback?feedbackId=$id',
         data: formData,
         options: Options(
             headers: {

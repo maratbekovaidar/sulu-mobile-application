@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sulu_mobile_application/configuration/configuration.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/service_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:sulu_mobile_application/utils/model/establishment_models/service_type_model.dart';
@@ -16,7 +17,7 @@ class ServiceProvider {
   /// Get Service of Establishment
   Future<List<ServiceModel>> getServiceByEstablishmentId(int id) async {
     var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/client/findServicesOfEstablishment/byEstablishmentId/$id');
+        '${Configuration.host}private/client/findServicesOfEstablishment/byEstablishmentId/$id');
 
     String? token = await storage.read(key: 'token');
 
@@ -48,7 +49,7 @@ class ServiceProvider {
   /// Get Service Types
   Future<List<ServiceTypeModel>> getServiceTypes() async {
     var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/type/getServiceTypes');
+        '${Configuration.host}private/type/getServiceTypes');
 
     String? token = await storage.read(key: 'token');
 
@@ -82,7 +83,7 @@ class ServiceProvider {
       String appointmentStartTime, int masterId, String phoneNumber,
       int serviceId, String username) async {
     var url = Uri.parse(
-        'https://sulu.azurewebsites.net/private/appointment/create');
+        '${Configuration.host}private/appointment/create');
 
     String? token = await storage.read(key: 'token');
 
