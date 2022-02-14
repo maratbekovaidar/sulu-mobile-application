@@ -321,7 +321,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 lastNameController.text,
                                 "",
                                 "+7" + phoneNumberController.text,
-                                passwordController.text);
+                                passwordController.text,
+                                city.id
+                            );
                             if (status == 200) {
                               setState(() {
                                 circularBarIndicatorOpacity = false;

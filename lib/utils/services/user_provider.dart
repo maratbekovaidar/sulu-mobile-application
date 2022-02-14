@@ -71,7 +71,7 @@ class UserProvider {
   }
 
   /// Register
-  Future<int> register(String firstName, String lastName, String patronymic, String phoneNumber, String password) async {
+  Future<int> register(String firstName, String lastName, String patronymic, String phoneNumber, String password, int cityId) async {
     var url = Uri.parse('${Configuration.host}public/auth/register');
 
 
@@ -83,6 +83,7 @@ class UserProvider {
           "password": password,
           "patronymic": "",
           "phoneNumber": phoneNumber,
+          "cityId": cityId,
           "photo": ""
         }),
         headers: {
