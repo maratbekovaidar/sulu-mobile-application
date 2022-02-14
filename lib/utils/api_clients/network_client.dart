@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
@@ -54,6 +53,10 @@ class NetworkClient {
       throw ApiClientException(ApiClientExceptionType.other);
     }
   }
+
+  /// Post request for all [TEMPLATE]
+  // TODO add parser for all requests
+
 //
 //   Future<T> post<T>(
 //       String path,

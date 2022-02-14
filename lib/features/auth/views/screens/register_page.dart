@@ -14,6 +14,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  
   /// Input Controllers
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -21,7 +22,8 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-
+  String city = "Алматы";
+  
   /// Validate
   bool _firstNameValidate = true;
   bool _lastNameValidate = true;
@@ -87,6 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+
     /// Size
     double width = MediaQuery.of(context).size.width;
 
@@ -138,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 10),
 
-                /// Phone NUmber
+                /// Phone Number
                 TextFormField(
                   controller: phoneNumberController,
                   keyboardType: TextInputType.number,
@@ -170,6 +173,36 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(20)),
                     hintText: "777-777-77-77",
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                /// Select City
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  width: width - 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: Colors.red)
+                  ),
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: city,
+                    underline: Container(
+                      height: 0,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        city = newValue!;
+                      });
+                    },
+                    items: <String>['Алматы', 'Нур-Султан', 'Кызылорда', 'Семей']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
                 ),
                 const SizedBox(height: 10),
