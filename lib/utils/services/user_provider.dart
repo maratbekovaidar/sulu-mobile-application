@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:sulu_mobile_application/configuration/configuration.dart';
+import 'package:sulu_mobile_application/utils/model/city_model.dart';
 import 'package:sulu_mobile_application/utils/model/user_model.dart';
 
 class UserProvider {
 
   /// Secure Storage
   FlutterSecureStorage storage = const FlutterSecureStorage();
-
 
   /// Login query
   Future<bool> login(String username, String password) async {
@@ -151,4 +151,31 @@ class UserProvider {
       return false;
     }
   }
+
+  /// Get Cities
+  Future<List<CityModel>> getCities() async {
+    var url = Uri.parse('${Configuration.host}public/auth/getAllCities');
+
+    var response = await http.get(
+      url,
+      headers: {
+      'Content-Type':'application/json',
+      },
+    );
+
+    if(response.statusCode == 200) {
+      if(jsonDecode(response.body)["httpStatus"] == 200) {
+        List<dynamic> jsonResult = jsonDecode(
+            utf8.decode(response.bodyBytes))["data"];
+
+        return jsonResult.map((json) => CityModel.fromJson(json)).toList();
+      } else {
+        throw Exception("Bad Request from http");
+      }
+    } else {
+      throw Exception("Bad Request http status " + response.statusCode.toString());
+    }
+
+  }
+
 }

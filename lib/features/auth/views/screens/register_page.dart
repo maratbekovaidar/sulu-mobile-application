@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sulu_mobile_application/utils/model/city_model.dart';
 import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,7 +15,20 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  
+
+  /// Provider
+  final UserProvider _userProvider = UserProvider();
+
+  /// Cities
+  List<CityModel> cities = [];
+  void getCities(BuildContext context) async {
+    cities = await _userProvider.getCities();
+    city = cities[0];
+    setState(() {
+
+    });
+  }
+
   /// Input Controllers
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -22,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  String city = "Алматы";
+  CityModel city = CityModel(id: 1, name: "Алма-ата");
   
   /// Validate
   bool _firstNameValidate = true;
@@ -87,14 +101,20 @@ class _RegisterPageState extends State<RegisterPage> {
   bool errorTextOpacity = false;
   bool isButtonDisabled = false;
 
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance
+        ?.addPostFrameCallback((_) => getCities(context));
+  }
+
   @override
   Widget build(BuildContext context) {
 
     /// Size
     double width = MediaQuery.of(context).size.width;
 
-    /// Provider
-    final UserProvider provider = UserProvider();
 
     return Scaffold(
       appBar: AppBar(),
@@ -185,22 +205,21 @@ class _RegisterPageState extends State<RegisterPage> {
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.red)
                   ),
-                  child: DropdownButton<String>(
+                  child: DropdownButton<CityModel>(
                     isExpanded: true,
                     value: city,
                     underline: Container(
                       height: 0,
                     ),
-                    onChanged: (String? newValue) {
+                    onChanged: (CityModel? newValue) {
                       setState(() {
                         city = newValue!;
                       });
                     },
-                    items: <String>['Алматы', 'Нур-Султан', 'Кызылорда', 'Семей']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
+                    items: cities.map<DropdownMenuItem<CityModel>>((CityModel value) {
+                      return DropdownMenuItem<CityModel>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value.name),
                       );
                     }).toList(),
                   ),
@@ -297,7 +316,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             setState(() {
                               circularBarIndicatorOpacity = true;
                             });
-                            int status = await provider.register(
+                            int status = await _userProvider.register(
                                 firstNameController.text,
                                 lastNameController.text,
                                 "",
