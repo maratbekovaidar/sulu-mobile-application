@@ -20,7 +20,7 @@ class EstablishmentProvider {
 
     String? token = await storage.read(key: 'token');
 
-    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findAll/establishments",parser: establishmentParser,headerParameters: {
+    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findEstablishmentsByUserToken",parser: establishmentParser,headerParameters: {
               'Content-Type': 'application/json',
               'Authorization': token!
             });
