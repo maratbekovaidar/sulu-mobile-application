@@ -92,15 +92,15 @@ class _SuluDrawerState extends State<SuluDrawer> {
 
                                         /// City
                                         Row(
-                                          children: const [
-                                            Icon(
+                                          children: [
+                                            const Icon(
                                               Icons.location_on_outlined,
                                               color: Colors.black38,
                                               size: 14,
                                             ),
                                             Text(
-                                              "Нур-Султан",
-                                              style: TextStyle(color: Colors.black38),
+                                              state.userModel.city.name,
+                                              style: const TextStyle(color: Colors.black38),
                                             ),
                                           ],
                                         )

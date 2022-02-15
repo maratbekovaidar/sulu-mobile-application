@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -316,6 +318,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             setState(() {
                               circularBarIndicatorOpacity = true;
                             });
+
+                            log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
+
                             int status = await _userProvider.register(
                                 firstNameController.text,
                                 lastNameController.text,
