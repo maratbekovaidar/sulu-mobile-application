@@ -89,6 +89,7 @@ class _SuluDrawerState extends State<SuluDrawer> {
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
                                         ),
+                                        const SizedBox(height: 5),
 
                                         /// City
                                         Row(
@@ -96,11 +97,14 @@ class _SuluDrawerState extends State<SuluDrawer> {
                                             const Icon(
                                               Icons.location_on_outlined,
                                               color: Colors.black38,
-                                              size: 14,
+                                              size: 18,
                                             ),
                                             Text(
                                               state.userModel.city.name,
-                                              style: const TextStyle(color: Colors.black38),
+                                              style: const TextStyle(
+                                                color: Colors.black38,
+                                                fontSize: 18
+                                              ),
                                             ),
                                           ],
                                         )
