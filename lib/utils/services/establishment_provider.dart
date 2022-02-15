@@ -102,39 +102,6 @@ class EstablishmentProvider {
 
   }
 
-  /// Get Establishments that favorite
-  Future<List<EstablishmentModel>> getFavoriteEstablishments() async {
-
-    var url = Uri.parse(
-        '${Configuration.host}private/favorite/get/establishments');
-
-    String? token = await storage.read(key: 'token');
-
-    if (token != null) {
-      var response = await http.get(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
-
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        List<dynamic> jsonResult = jsonDecode(
-            utf8.decode(response.bodyBytes))["data"];
-        return jsonResult.map((json) => EstablishmentModel.fromJson(json["establishmentDTO"]))
-            .toList();
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
-
-  }
-
   /// Get Establishment portfolio
   Future<List<MasterPortfolioModel>> getPortfolioOfEstablishment(int id) async {
     // var url = Uri.parse(
@@ -150,66 +117,6 @@ class EstablishmentProvider {
     return result;
   }
 
-
-  /// Set Favorite Establishment
-  Future<int> setFavoriteEstablishment(int id) async {
-
-    var url = Uri.parse(
-        '${Configuration.host}private/favorite/addEstablishment/$id');
-
-    String? token = await storage.read(key: 'token');
-
-    if (token != null) {
-      var response = await http.post(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
-
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        int statusCode = jsonDecode(response.body)['httpStatus'];
-        return statusCode;
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
-  }
-
-  /// Remove Favorite Establishment
-  Future<int> removeFavoriteEstablishment(int id) async {
-
-    var url = Uri.parse(
-        '${Configuration.host}private/favorite/deleteEstablishmentBy/$id');
-
-    String? token = await storage.read(key: 'token');
-
-    if (token != null) {
-      var response = await http.delete(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
-
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        int statusCode = jsonDecode(response.body)['httpStatus'];
-        return statusCode;
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
-  }
 
   /// Get available time
   Future<List<String>> getAvailableTimes(String date, int masterDataId) async {
@@ -243,6 +150,39 @@ class EstablishmentProvider {
       throw Exception("Null Token. User Unauthorized");
     }
 
+
+  }
+
+  /// Get Establishments that favorite
+  Future<List<EstablishmentModel>> getFavoriteEstablishments() async {
+
+    var url = Uri.parse(
+        '${Configuration.host}private/favorite/get/establishments');
+
+    String? token = await storage.read(key: 'token');
+
+    if (token != null) {
+      var response = await http.get(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+      );
+
+      /// Convert response to json list
+      if (response.body.isNotEmpty) {
+        List<dynamic> jsonResult = jsonDecode(
+            utf8.decode(response.bodyBytes))["data"];
+        return jsonResult.map((json) => EstablishmentModel.fromJson(json["establishmentDTO"]))
+            .toList();
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
+    } else {
+      throw Exception("Null Token. User Unauthorized");
+    }
 
   }
 

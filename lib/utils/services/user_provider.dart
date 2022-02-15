@@ -13,7 +13,7 @@ class UserProvider {
 
   /// Login query
   Future<bool> login(String username, String password) async {
-      var url = Uri.parse('http://94.247.129.64:8080/public/auth/login');
+      var url = Uri.parse('${Configuration.host}public/auth/login');
 
       var response = await http.post(
           url,
@@ -75,21 +75,26 @@ class UserProvider {
     var url = Uri.parse('${Configuration.host}public/auth/register');
 
 
+
     var response = await http.post(
         url,
         body: jsonEncode({
           "firstName": firstName,
+          "id": 0,
           "lastName": lastName,
           "password": password,
           "patronymic": "",
           "phoneNumber": phoneNumber,
           "cityId": cityId,
-          "photo": ""
+          "photo": "",
+
         }),
         headers: {
           'Content-Type':'application/json'
         }
     );
+    print(response.body);
+
 
 
     return response.statusCode;

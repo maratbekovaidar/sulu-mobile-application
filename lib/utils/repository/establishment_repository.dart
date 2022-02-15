@@ -2,10 +2,12 @@
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
 import 'package:sulu_mobile_application/utils/model/master_models/master_portfolio_model.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
+import 'package:sulu_mobile_application/utils/services/favorite_provider.dart';
 
 class EstablishmentRepository {
 
   final EstablishmentProvider _establishmentProvider = EstablishmentProvider();
+  final FavoriteProvider _favoriteProvider = FavoriteProvider();
   Future<List<EstablishmentModel>> getEstablishments() => _establishmentProvider.getEstablishments();
 
   Future<List<EstablishmentModel>> getPopularEstablishments() => _establishmentProvider.getPopularEstablishments();
