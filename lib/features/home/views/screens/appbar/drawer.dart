@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 
 class SuluDrawer extends StatefulWidget {
@@ -89,18 +90,22 @@ class _SuluDrawerState extends State<SuluDrawer> {
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
                                         ),
+                                        const SizedBox(height: 5),
 
                                         /// City
                                         Row(
-                                          children: const [
-                                            Icon(
+                                          children: [
+                                            const Icon(
                                               Icons.location_on_outlined,
                                               color: Colors.black38,
-                                              size: 14,
+                                              size: 18,
                                             ),
                                             Text(
-                                              "Нур-Султан",
-                                              style: TextStyle(color: Colors.black38),
+                                              state.userModel.city.name,
+                                              style: const TextStyle(
+                                                color: Colors.black38,
+                                                fontSize: 18
+                                              ),
                                             ),
                                           ],
                                         )
@@ -226,7 +231,7 @@ class _SuluDrawerState extends State<SuluDrawer> {
                             ),
                             title: const Text("Напишите отчет", textAlign: TextAlign.center),
                             content: SizedBox(
-                              height: 200,
+                              height: 170,
                               child: Center(
                                 child: Column(
                                   children: [
@@ -239,7 +244,7 @@ class _SuluDrawerState extends State<SuluDrawer> {
                                     const SizedBox(height: 10),
                                     TextField(
                                       controller: _feedbackController,
-                                      maxLines:4,
+                                      maxLines: 2,
                                       decoration: const InputDecoration(
                                         hintText: "Ваш предложение",
                                       ),
@@ -255,7 +260,8 @@ class _SuluDrawerState extends State<SuluDrawer> {
                                     String feedbackText = _feedbackController.value.text;
                                     String personText = _personController.value.text;
                                     String textOutput = "Контакты: " + personText + ".\nСообщение: " + feedbackText;
-                                    Uri.parse('https://api.telegram.org/bot5058514406:AAHBko2SdNPqQIemzUUEcB0sRBUBwABJx98/sendMessage?chat_id=-1001658501273&text=$textOutput');
+                                    var url = Uri.parse('https://api.telegram.org/bot5058514406:AAHBko2SdNPqQIemzUUEcB0sRBUBwABJx98/sendMessage?chat_id=-1001658501273&text=$textOutput');
+                                    await http.post(url);
                                   },
                                   child: const Text("Отправить")
                               )

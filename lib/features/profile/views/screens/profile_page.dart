@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -112,13 +113,45 @@ class _ProfilePageState extends State<ProfilePage> {
                       Text(
                         state.userModel.firstName +
                             " " +
-                            state.userModel.lastName +
-                            " \n " +
-                            state.userModel.patronymic,
+                            state.userModel.lastName,
                         style: GoogleFonts.inter(
                             fontSize: 20, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+
+                  /// City
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 30),
+                      Text(
+                        state.userModel.city.name,
+                        style: GoogleFonts.inter(
+                            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(width: 5),
+                      GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: const Icon(
+                          Icons.edit_rounded,
+                          color: Colors.red,
+                          size: 16,
+                        ),
+                      )
+                      // Text(
+                      //   "Изменить",
+                      //   style: GoogleFonts.inter(
+                      //       fontSize: 12, color: Colors.blue, decoration: TextDecoration.underline),
+                      //   textAlign: TextAlign.center,
+                      // ),
+
                     ],
                   ),
                   const SizedBox(height: 25),
