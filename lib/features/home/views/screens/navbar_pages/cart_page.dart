@@ -8,11 +8,11 @@ class CartPage extends StatefulWidget {
   _CartPageState createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CartPage> {
+class _CartPageState extends State<CartPage> { //todo бэк убрать у профиля  у кнопок убрать красные грани
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("Функция пока \n Не достпуна D:", textAlign: TextAlign.center,),
+      child: Text("В разработке", textAlign: TextAlign.center,),
     );
   }
 }

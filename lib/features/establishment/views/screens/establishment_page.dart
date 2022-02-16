@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/order/order_set_date_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/comment/comment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
+import 'package:sulu_mobile_application/utils/bloc/favorite/favorite_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/master/master_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/service/service_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
@@ -68,6 +69,8 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
   @override
   Widget build(BuildContext context) {
+
+
     /// Size
     double width = MediaQuery.of(context).size.width;
 
@@ -76,6 +79,11 @@ class _EstablishmentPageState extends State<EstablishmentPage>
         BlocProvider(
           create: (context) =>
               ServiceBloc(serviceRepository: serviceRepository),
+        ),
+
+        BlocProvider(
+          create: (context) =>
+              FavoriteBloc(),
         ),
         BlocProvider(
           create: (context) => MasterBloc(masterRepository: masterRepository),
@@ -140,39 +148,44 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                 )),
 
                             /// Favorite Button
-                            IconButton(
-                                onPressed: () async {
-                                  int resultFavorite =
-                                      await _establishmentProvider
-                                          .setFavoriteEstablishment(
-                                              widget.establishmentModel.id);
+                            Builder(
+                              builder: (context) {
+                                FavoriteBloc favoriteBloc =
+                                BlocProvider.of<FavoriteBloc>(context);
+                                return BlocBuilder<FavoriteBloc, FavoriteState>(
+                                  builder: (favContext, favState) {
 
-                                  if (resultFavorite == 200) {
-                                    const snackBar = SnackBar(
-                                      content: Text(
-                                          'Салон успешно добавлен в избранные!'),
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  } else if (resultFavorite == 406) {
-                                    const snackBar = SnackBar(
-                                      content: Text('Салон уже добавлен!'),
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  } else {
-                                    const snackBar = SnackBar(
-                                      content: Text('Ошибка'),
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  }
-                                },
-                                icon: const Icon(
-                                  Icons.favorite_outline_rounded,
-                                  color: Colors.black38,
-                                  size: 30,
-                                )),
+                                    if(favState is FavoriteInitial){
+                                      favoriteBloc.add(FavoriteLoadEvent(widget.establishmentModel.id));
+                                    }
+                                    if(favState is FavoriteLoad){
+                                      return Align(
+                                        alignment: Alignment.topRight,
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets.all(5.0),
+                                          child: GestureDetector(
+                                            onTap:(){
+                                              favoriteBloc.add(FavoriteSetEvent(branchId:widget.establishmentModel.id, context: favContext));
+                                            },
+                                            child: Icon(
+                                              favState.isFavorite
+                                                  ? Icons.favorite
+                                                  : Icons
+                                                  .favorite_outline_rounded,
+                                              color: Colors.black38,
+                                              size: 30,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }else{
+                                      return SizedBox();
+                                    }
+                                  },
+                                );
+                              }
+                            )
                           ],
                         )
                       ],

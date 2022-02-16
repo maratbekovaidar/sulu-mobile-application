@@ -15,8 +15,21 @@ class SuluDrawer extends StatefulWidget {
 }
 
 class _SuluDrawerState extends State<SuluDrawer> {
+  GestureTapCallback? navigateToPage(BuildContext context,String pathName){
+    Navigator.pushNamed(context, pathName);
+  }
   @override
   Widget build(BuildContext context) {
+
+    /// array of listItems
+    // List<ListTileItem> listTileItems=  [
+    //    ListTileItem(onTap: navigateToPage(context,'/'), text: "Главная", icon: const Icon(Icons.home,color: Colors.white,)),
+    //     ListTileItem(onTap: navigateToPage(context, '/favorite'), text: "Избранные", icon: const Icon(Icons.favorite, color: Colors.white)),
+    //     ListTileItem( onTap:(){}, text: "История платежей", icon:const  Icon(Icons.home)),
+    //     ListTileItem( onTap:(){},text: "Мои карты", icon: const Icon(Icons.home)),
+    //     ListTileItem( onTap:(){}, text: "Стать партнером", icon: const Icon(Icons.home)),
+    //     ListTileItem( onTap: ()async{_launchURL();}, text: "Техническая поддержка", icon: Icon(Icons.home))
+    // ];
 
     /// Bloc
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
@@ -139,12 +152,12 @@ class _SuluDrawerState extends State<SuluDrawer> {
                       leading: const CircleAvatar(
                         backgroundColor: Colors.redAccent,
                         child: Icon(
-                          Icons.home,
+                          Icons.favorite,
                           color: Colors.white,
                         ),
                       ),
                       title: const Text(
-                        "Главная",
+                        "Избранные",
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -314,9 +327,36 @@ class _SuluDrawerState extends State<SuluDrawer> {
   }
 }
 
+class ListTileItem extends StatelessWidget {
+  final GestureTapCallback? onTap;
+  final String text;
+  final Icon icon;
+  const ListTileItem({
+    required this.onTap,
+    required this.text,
+    required this.icon,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      leading: CircleAvatar(
+        backgroundColor: Colors.redAccent,
+        child: icon
+      ),
+      title:  Text(
+        text,
+        style: const TextStyle(fontSize: 16),
+      ),
+    );
+  }
+}
+
 
 /// Open url of partners
 const String _url = 'https://sulu.life';
-void _launchURL() async {
+Future _launchURL() async {
   if (!await launch(_url)) throw 'Could not launch $_url';
 }

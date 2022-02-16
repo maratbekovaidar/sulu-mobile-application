@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
-import 'package:sulu_mobile_application/features/home/views/screens/appbar/drawer.dart';
+import 'package:sulu_mobile_application/features/home/views/screens/appbar/drawer/drawer.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/bookmark_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/cart_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/hello_page.dart';
 import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/appointment/appointment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
+import 'package:sulu_mobile_application/utils/bloc/favorite/favorite_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sulu_mobile_application/utils/repository/appointment_repository.dart';
@@ -57,11 +58,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         EstablishmentBloc(establishmentRepository: establishmentRepository);
     AppointmentBloc appointmentBloc =
         AppointmentBloc(appointmentRepository: appointmentRepository);
+    FavoriteBloc favoriteBloc=FavoriteBloc();
 
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) => userBloc,
+        ),
+        BlocProvider(
+          create: (context) => favoriteBloc,
         ),
         BlocProvider(
           create: (context) => establishmentBloc,
