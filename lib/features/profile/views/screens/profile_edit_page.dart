@@ -85,6 +85,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 TextField(
                   controller: lastNameController,
                   decoration: const InputDecoration(
+
                       hintText: "Фамилия"
                   ),
                 ),

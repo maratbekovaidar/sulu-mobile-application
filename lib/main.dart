@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sulu_mobile_application/configuration/route_generator.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/first_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/login_page.dart';
+import 'package:sulu_mobile_application/features/auth/views/screens/otp_checking_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/register_page.dart';
 import 'package:sulu_mobile_application/features/favorite/views/screens/favorite_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
@@ -39,7 +41,7 @@ Map<String, WidgetBuilder> routes = {
   '/salons' : (context) => const EstablishmentsPage(),
   '/category' : (context) => const CategoryPage(),
   '/favorite' : (context) => const FavoritePage(),
-  '/no_auth_page' : (context) => const NoAuthPage()
+  '/no_auth_page' : (context) => const NoAuthPage(),
 };
 
 class MyApp extends StatelessWidget {
@@ -90,11 +92,11 @@ class MyApp extends StatelessWidget {
                 ),
                 disabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: const BorderSide(color:  Color(0xffFF385C))
+                    borderSide: const BorderSide(color:  Color(0xffBBBBBB))
                 ),
                 errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: const BorderSide(color: Colors.red)
+                    borderSide: const BorderSide(color: Color(0xffBBBBBB))
                 ),
                 contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 hintStyle: const TextStyle(
@@ -139,7 +141,7 @@ class MyApp extends StatelessWidget {
 
         ),
         title: 'Sulu',
-        routes: routes,
+        onGenerateRoute: RouteGenerator.generateRoute,
         initialRoute: token != null ? '/' : '/first_page',
       );
   }

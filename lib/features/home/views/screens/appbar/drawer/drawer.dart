@@ -92,8 +92,11 @@ class _SuluDrawerState extends State<SuluDrawer> {
 
           /// Header
           Container(
+
             decoration: const BoxDecoration(
                 image: DecorationImage(
+
+
                   fit: BoxFit.cover,
                   image: AssetImage(
                     'assets/background/drawer.png',
@@ -180,6 +183,7 @@ class _SuluDrawerState extends State<SuluDrawer> {
 
                                     /// Avatar
                                     CircleAvatar(
+                                      backgroundColor: Colors.white,
                                       backgroundImage:
                                       NetworkImage(state.userModel.photo),
                                       radius: 40,

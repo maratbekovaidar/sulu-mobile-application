@@ -25,6 +25,7 @@ class UserProvider {
             'Content-Type':'application/json'
           }
       );
+      print(response.body);
 
       FlutterSecureStorage flutterSecureStorage = const FlutterSecureStorage();
 
@@ -70,10 +71,10 @@ class UserProvider {
 
   }
 
+
   /// Register
   Future<int> register(String firstName, String lastName, String patronymic, String phoneNumber, String password, int cityId) async {
     var url = Uri.parse('${Configuration.host}public/auth/register');
-
 
 
     var response = await http.post(
@@ -93,11 +94,54 @@ class UserProvider {
           'Content-Type':'application/json'
         }
     );
+
+    return jsonDecode(response.body)["httpStatus"];
+  }/// Register
+
+  /// Register
+  Future<int> sendOtp( String phoneNumber) async {
+
+    String code=await getOtp(phoneNumber);
+    print(code);
+
+
+    var url = Uri.parse('${Configuration.host}public/auth/addUserToVerification?code=$code&phoneNumber=$phoneNumber');
+
+
+    var response = await http.post(
+        url,
+        headers: {
+          'Content-Type':'application/json'
+        }
+    );
+
+    return jsonDecode(response.body)["httpStatus"];
+  }
+  /// confirm Otp
+  Future<int> confirmOtp( String phoneNumber, String userCode) async {
+
+    var url = Uri.parse('${Configuration.host}public/auth/verifyPhoneNumber?code=$userCode&phoneNumber=$phoneNumber');
+
+    var response = await http.post(
+        url,
+        headers: {
+          'Content-Type':'application/json'
+        }
+    );
+
+    return jsonDecode(response.body)["httpStatus"];
+  }
+
+  Future<String> getOtp(String phoneNumber) async {
+    var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');
+    var response = await http.post(
+        url
+    );
     print(response.body);
-
-
-
-    return response.statusCode;
+    String fulString= response.body.substring(response.body.indexOf("CODE"));
+    String partString=fulString.substring(6);
+    partString = partString.replaceFirst(" ", "");
+    return partString;
   }
 
   /// User Change info

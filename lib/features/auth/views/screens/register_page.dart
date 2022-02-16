@@ -330,30 +330,35 @@ class _RegisterPageState extends State<RegisterPage> {
                                 city.id
                             );
                             if (status == 200) {
-                              setState(() {
-                                circularBarIndicatorOpacity = false;
-                                showDialog(
-                                    context: context,
-                                    builder: (_) {
-                                      return CupertinoAlertDialog(
-                                        content: const Text(
-                                          "Регистрация \n прошла успешлно!",
-                                          style: TextStyle(color: Colors.green),
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.pushNamed(
-                                                    context, '/login');
-                                              },
-                                              child: const Text("Ok"))
-                                        ],
-                                      );
-                                    });
-                              });
-                            } else {
+                             await _userProvider.sendOtp("+7"+phoneNumberController.text);
+                              circularBarIndicatorOpacity = false;
+                                Navigator.pushNamed(context, '/check_otp',arguments: (phoneNumberController.text));
+                              // setState(() {
+                              //   circularBarIndicatorOpacity = false;
+                              //   showDialog(
+                              //       context: context,
+                              //       builder: (_) {
+                              //         return CupertinoAlertDialog(
+                              //           content: const Text(
+                              //             "Регистрация \n прошла успешлно!",
+                              //             style: TextStyle(color: Colors.green),
+                              //           ),
+                              //           actions: [
+                              //             TextButton(
+                              //                 onPressed: () {
+                              //                   Navigator.pushNamed(
+                              //                       context, '/login');
+                              //                 },
+                              //                 child: const Text("Ok"))
+                              //           ],
+                              //         );
+                              //       });
+                              // });
+                            }
+                            else {
                               setState(() {
                                 errorTextOpacity = true;
+                                circularBarIndicatorOpacity = false;
                               });
                             }
                           }
