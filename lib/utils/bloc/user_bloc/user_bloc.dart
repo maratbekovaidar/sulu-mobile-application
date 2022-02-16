@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sulu_mobile_application/utils/model/city_model.dart';
 import 'package:sulu_mobile_application/utils/model/user_model.dart';
 import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 
@@ -27,6 +28,16 @@ class  UserBloc extends Bloc<UserEvent, UserState> {
           //   WidgetsBinding.instance!
           //       .addPostFrameCallback((_) => main());
           // }
+          return emit(UserErrorState());
+        }
+      }
+      if(event is UserLoadCitiesEvent) {
+        emit(UserLoadingState());
+        try {
+          List<CityModel> _cities = await provider.getCities();
+          return emit(UserCitiesLoadedState(cities: _cities));
+        } catch(e) {
+          debugPrint("GetLoggedUserInfo exception: " + e.toString());
           return emit(UserErrorState());
         }
       }
