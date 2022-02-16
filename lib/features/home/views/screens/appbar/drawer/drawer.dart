@@ -15,21 +15,73 @@ class SuluDrawer extends StatefulWidget {
 }
 
 class _SuluDrawerState extends State<SuluDrawer> {
-  GestureTapCallback? navigateToPage(BuildContext context,String pathName){
+  Function? navigateToPage(BuildContext context,String pathName){
     Navigator.pushNamed(context, pathName);
+
+  }
+  Function? becomePartner() {
+          showDialog(context: context, builder: (_) {
+
+            TextEditingController _personController = TextEditingController();
+            TextEditingController _feedbackController = TextEditingController();
+
+
+
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              title: const Text("Напишите отчет", textAlign: TextAlign.center),
+              content: SizedBox(
+                height: 170,
+                child: Center(
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _personController,
+                        decoration: const InputDecoration(
+                            hintText: "Ваши контакты"
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: _feedbackController,
+                        maxLines: 2,
+                        decoration: const InputDecoration(
+                          hintText: "Ваш предложение",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      String feedbackText = _feedbackController.value.text;
+                      String personText = _personController.value.text;
+                      String textOutput = "Контакты: " + personText + ".\nСообщение: " + feedbackText;
+                      var url = Uri.parse('https://api.telegram.org/bot5058514406:AAHBko2SdNPqQIemzUUEcB0sRBUBwABJx98/sendMessage?chat_id=-1001658501273&text=$textOutput');
+                      await http.post(url);
+                    },
+                    child: const Text("Отправить")
+                )
+              ],
+            );
+          });
   }
   @override
   Widget build(BuildContext context) {
 
-    /// array of listItems
-    // List<ListTileItem> listTileItems=  [
-    //    ListTileItem(onTap: navigateToPage(context,'/'), text: "Главная", icon: const Icon(Icons.home,color: Colors.white,)),
-    //     ListTileItem(onTap: navigateToPage(context, '/favorite'), text: "Избранные", icon: const Icon(Icons.favorite, color: Colors.white)),
-    //     ListTileItem( onTap:(){}, text: "История платежей", icon:const  Icon(Icons.home)),
-    //     ListTileItem( onTap:(){},text: "Мои карты", icon: const Icon(Icons.home)),
-    //     ListTileItem( onTap:(){}, text: "Стать партнером", icon: const Icon(Icons.home)),
-    //     ListTileItem( onTap: ()async{_launchURL();}, text: "Техническая поддержка", icon: Icon(Icons.home))
-    // ];
+    List<ListTileItem> listTileItems=  [
+       ListTileItem(onTap: (){navigateToPage(context,'/');}, text: "Главная", icon: Icons.home),
+        ListTileItem(onTap: (){navigateToPage(context, '/favorite');}, text: "Избранные", icon: Icons.favorite),
+        ListTileItem( onTap:(){}, text: "История платежей", icon:Icons.history),
+        ListTileItem( onTap:(){},text: "Мои карты", icon: Icons.payment_outlined),
+        ListTileItem( onTap:()async{_launchURL();}, text: "Стать партнером", icon: Icons.wallet_travel_rounded),
+        ListTileItem( onTap: (){becomePartner();}, text: "Техническая поддержка", icon: Icons.help_outline_rounded)
+    ];
 
     /// Bloc
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
@@ -143,157 +195,166 @@ class _SuluDrawerState extends State<SuluDrawer> {
                       ),
                     ),
                     const SizedBox(height: 0),
-
-                    /// Главная
-                    ListTile(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/');
-                      },
-                      leading: const CircleAvatar(
-                        backgroundColor: Colors.redAccent,
-                        child: Icon(
-                          Icons.favorite,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: const Text(
-                        "Избранные",
-                        style: TextStyle(fontSize: 16),
-                      ),
+                    
+                   SizedBox(
+                      height: 340,
+                      child: ListView.builder(
+                        itemCount: listTileItems.length,
+                          itemBuilder: (context,index){
+                        return listTileItems[index];
+                      }),
                     ),
 
-                    /// Фавориты
-                    ListTile(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/favorite');
-                      },
-                      leading: const CircleAvatar(
-                        backgroundColor: Colors.redAccent,
-                        child: Icon(
-                          Icons.favorite,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: const Text(
-                        "Избранные",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-
-                    /// History of payment
-                    const ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.redAccent,
-                        child: Icon(
-                          Icons.history,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: Text(
-                        "История платежей",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-
-                    /// Cards
-                    const ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.redAccent,
-                        child: Icon(
-                          Icons.payment_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: Text(
-                        "Мои карты",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-
-                    /// Can partners
-                    ListTile(
-                      onTap: () {
-                        _launchURL();
-                      },
-                      leading: const CircleAvatar(
-                        backgroundColor: Colors.redAccent,
-                        child: Icon(
-                          Icons.wallet_travel_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: const Text(
-                        "Стать партнером",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-
-                    /// Tech support
-                    ListTile(
-                      onTap: () {
-                        showDialog(context: context, builder: (_) {
-
-                          TextEditingController _personController = TextEditingController();
-                          TextEditingController _feedbackController = TextEditingController();
-
-
-
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            title: const Text("Напишите отчет", textAlign: TextAlign.center),
-                            content: SizedBox(
-                              height: 170,
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    TextField(
-                                      controller: _personController,
-                                      decoration: const InputDecoration(
-                                          hintText: "Ваши контакты"
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    TextField(
-                                      controller: _feedbackController,
-                                      maxLines: 2,
-                                      decoration: const InputDecoration(
-                                        hintText: "Ваш предложение",
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                  onPressed: () async {
-                                    Navigator.pop(context);
-                                    String feedbackText = _feedbackController.value.text;
-                                    String personText = _personController.value.text;
-                                    String textOutput = "Контакты: " + personText + ".\nСообщение: " + feedbackText;
-                                    var url = Uri.parse('https://api.telegram.org/bot5058514406:AAHBko2SdNPqQIemzUUEcB0sRBUBwABJx98/sendMessage?chat_id=-1001658501273&text=$textOutput');
-                                    await http.post(url);
-                                  },
-                                  child: const Text("Отправить")
-                              )
-                            ],
-                          );
-                        });
-                      },
-                      leading: const CircleAvatar(
-                        backgroundColor: Colors.redAccent,
-                        child: Icon(
-                          Icons.help_outline_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: const Text(
-                        "Техническая поддержка",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
+                //     /// Главная
+                //     ListTile(
+                //       onTap: () {
+                //         Navigator.pushNamed(context, '/');
+                //       },
+                //       leading: const CircleAvatar(
+                //         backgroundColor: Colors.redAccent,
+                //         child: Icon(
+                //           Icons.favorite,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //       title: const Text(
+                //         "Избранные",
+                //         style: TextStyle(fontSize: 16),
+                //       ),
+                //     ),
+                //
+                //     /// Фавориты
+                //     ListTile(
+                //       onTap: () {
+                //         Navigator.pushNamed(context, '/favorite');
+                //       },
+                //       leading: const CircleAvatar(
+                //         backgroundColor: Colors.redAccent,
+                //         child: Icon(
+                //           Icons.favorite,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //       title: const Text(
+                //         "Избранные",
+                //         style: TextStyle(fontSize: 16),
+                //       ),
+                //     ),
+                //
+                //     /// History of payment
+                //     const ListTile(
+                //       leading: CircleAvatar(
+                //         backgroundColor: Colors.redAccent,
+                //         child: Icon(
+                //           Icons.history,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //       title: Text(
+                //         "История платежей",
+                //         style: TextStyle(fontSize: 16),
+                //       ),
+                //     ),
+                //
+                //     /// Cards
+                //     const ListTile(
+                //       leading: CircleAvatar(
+                //         backgroundColor: Colors.redAccent,
+                //         child: Icon(
+                //           Icons.payment_rounded,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //       title: Text(
+                //         "Мои карты",
+                //         style: TextStyle(fontSize: 16),
+                //       ),
+                //     ),
+                //
+                //     /// Can partners
+                //     ListTile(
+                //       onTap: () {
+                //         _launchURL();
+                //       },
+                //       leading: const CircleAvatar(
+                //         backgroundColor: Colors.redAccent,
+                //         child: Icon(
+                //           Icons.wallet_travel_rounded,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //       title: const Text(
+                //         "Стать партнером",
+                //         style: TextStyle(fontSize: 16),
+                //       ),
+                //     ),
+                //
+                //     /// Tech support
+                //     ListTile(
+                //       onTap: () {
+                //         showDialog(context: context, builder: (_) {
+                //
+                //           TextEditingController _personController = TextEditingController();
+                //           TextEditingController _feedbackController = TextEditingController();
+                //
+                //
+                //
+                //           return AlertDialog(
+                //             shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(20.0),
+                //             ),
+                //             title: const Text("Напишите отчет", textAlign: TextAlign.center),
+                //             content: SizedBox(
+                //               height: 170,
+                //               child: Center(
+                //                 child: Column(
+                //                   children: [
+                //                     TextField(
+                //                       controller: _personController,
+                //                       decoration: const InputDecoration(
+                //                           hintText: "Ваши контакты"
+                //                       ),
+                //                     ),
+                //                     const SizedBox(height: 10),
+                //                     TextField(
+                //                       controller: _feedbackController,
+                //                       maxLines: 2,
+                //                       decoration: const InputDecoration(
+                //                         hintText: "Ваш предложение",
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //               ),
+                //             ),
+                //             actions: [
+                //               TextButton(
+                //                   onPressed: () async {
+                //                     Navigator.pop(context);
+                //                     String feedbackText = _feedbackController.value.text;
+                //                     String personText = _personController.value.text;
+                //                     String textOutput = "Контакты: " + personText + ".\nСообщение: " + feedbackText;
+                //                     var url = Uri.parse('https://api.telegram.org/bot5058514406:AAHBko2SdNPqQIemzUUEcB0sRBUBwABJx98/sendMessage?chat_id=-1001658501273&text=$textOutput');
+                //                     await http.post(url);
+                //                   },
+                //                   child: const Text("Отправить")
+                //               )
+                //             ],
+                //           );
+                //         });
+                //       },
+                //       leading: const CircleAvatar(
+                //         backgroundColor: Colors.redAccent,
+                //         child: Icon(
+                //           Icons.help_outline_rounded,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //       title: const Text(
+                //         "Техническая поддержка",
+                //         style: TextStyle(fontSize: 16),
+                //       ),
+                //     ),
                   ],
                 ),
                 const SizedBox(height: 70),
@@ -328,9 +389,9 @@ class _SuluDrawerState extends State<SuluDrawer> {
 }
 
 class ListTileItem extends StatelessWidget {
-  final GestureTapCallback? onTap;
+  final Function() onTap;
   final String text;
-  final Icon icon;
+  final IconData icon;
   const ListTileItem({
     required this.onTap,
     required this.text,
@@ -344,7 +405,7 @@ class ListTileItem extends StatelessWidget {
       onTap: onTap,
       leading: CircleAvatar(
         backgroundColor: Colors.redAccent,
-        child: icon
+        child: Icon(icon, color: Colors.white,)
       ),
       title:  Text(
         text,
