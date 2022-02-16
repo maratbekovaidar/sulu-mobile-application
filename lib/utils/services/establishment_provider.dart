@@ -9,25 +9,50 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
 
 
 class EstablishmentProvider {
-  //client to use get and posts
+
+
+  /// Client to use get and posts
   final _networkClient = NetworkClient();
+
+  /// Parser for getting establishments
+  List<EstablishmentModel> establishmentParser(dynamic json) {
+    final jsonToList=jsonDecode(utf8.decode(json.bodyBytes))["data"];
+    final response = jsonToList.map<EstablishmentModel>((item)=>EstablishmentModel.fromJson(item)).toList();
+    return response;
+  }
+
+  /// Parser for getting masters
+  List<MasterPortfolioModel> masterPortfolioParser(dynamic json) {
+    final jsonToList=jsonDecode(utf8.decode(json.bodyBytes))["data"];
+    final response= jsonToList.map<MasterPortfolioModel>((item)=>MasterPortfolioModel.fromJson(item)).toList();
+    return response;
+  }
 
   /// Secure Storage
   FlutterSecureStorage storage = const FlutterSecureStorage();
+
+
+  /**
+   *  Queries and Requests
+   */
+
 
   /// Get Establishments
   Future<List<EstablishmentModel>> getEstablishments() async {
 
     String? token = await storage.read(key: 'token');
 
-    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findEstablishmentsByUserToken",parser: establishmentParser,headerParameters: {
-              'Content-Type': 'application/json',
-              'Authorization': token!
-            });
+    final Future<List<EstablishmentModel>> result = _networkClient.get(
+        path: "private/client/findEstablishmentsByUserToken",
+        parser: establishmentParser,
+        headerParameters: {
+          'Content-Type': 'application/json',
+          'Authorization': token!
+        }
+    );
 
     return result;
   }
-
 
   /// Get Popular Establishments
   Future<List<EstablishmentModel>> getPopularEstablishments() async {
@@ -45,7 +70,6 @@ class EstablishmentProvider {
 
   }
 
-
   /// Get Establishments with Type Id
   Future<List<EstablishmentModel>> getEstablishmentsWithFilter(int typeId) async {
     // var url = Uri.parse(
@@ -53,7 +77,7 @@ class EstablishmentProvider {
     String? token = await storage.read(key: 'token');
 
 
-    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findEstablishments/byServiceTypeId/$typeId",parser: establishmentParser,headerParameters: {
+    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findEstablishmentByName/serviceTypeId/userToken?serviceTypeId=$typeId",parser: establishmentParser,headerParameters: {
       'Content-Type': 'application/json',
       'Authorization': token!
     });
@@ -68,25 +92,12 @@ class EstablishmentProvider {
     String? token = await storage.read(key: 'token');
 
 
-    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findByEstablishmentName/$name",parser: establishmentParser,headerParameters: {
+    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findEstablishmentByName/serviceTypeId/userToken?establishmentName=$name",parser: establishmentParser,headerParameters: {
       'Content-Type': 'application/json',
       'Authorization': token!
     });
 
     return result;
-  }
-  //parser for getting establishments
-  List<EstablishmentModel> establishmentParser(dynamic json) {
-    final jsonToList=jsonDecode(utf8.decode(json.bodyBytes))["data"];
-    final response= jsonToList.map<EstablishmentModel>((item)=>EstablishmentModel.fromJson(item)).toList();
-    return response;
-  }
-
-  //parser for getting establishments
-  List<MasterPortfolioModel> masterPortfolioParser(dynamic json) {
-    final jsonToList=jsonDecode(utf8.decode(json.bodyBytes))["data"];
-    final response= jsonToList.map<MasterPortfolioModel>((item)=>MasterPortfolioModel.fromJson(item)).toList();
-    return response;
   }
 
   /// Get Establishment with name and Service Type Id
@@ -94,7 +105,7 @@ class EstablishmentProvider {
 
     String? token = await storage.read(key: 'token');
 
-    final Future<List<EstablishmentModel>> result = _networkClient.get(path:"private/client/findAllPortfolioOfEstablishmentById/$typeId",parser: establishmentParser,headerParameters: {
+    final Future<List<EstablishmentModel>> result = _networkClient.get(path:"private/client/findEstablishmentByName/serviceTypeId/userToken?establishmentName=$name&serviceTypeId=$typeId",parser: establishmentParser,headerParameters: {
       'Authorization': token!,
       'Content-Type': 'application/json'
     });
@@ -116,7 +127,6 @@ class EstablishmentProvider {
     });
     return result;
   }
-
 
   /// Get available time
   Future<List<String>> getAvailableTimes(String date, int masterDataId) async {
@@ -185,7 +195,6 @@ class EstablishmentProvider {
     }
 
   }
-
 
 
 }
