@@ -7,7 +7,7 @@ import 'package:sulu_mobile_application/utils/services/favorite_provider.dart';
 class EstablishmentRepository {
 
   final EstablishmentProvider _establishmentProvider = EstablishmentProvider();
-  final FavoriteProvider _favoriteProvider = FavoriteProvider();
+
   Future<List<EstablishmentModel>> getEstablishments() => _establishmentProvider.getEstablishments();
 
   Future<List<EstablishmentModel>> getPopularEstablishments() => _establishmentProvider.getPopularEstablishments();
