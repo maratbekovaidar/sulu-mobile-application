@@ -179,4 +179,31 @@ class UserProvider {
 
   }
 
+  /// Change City
+  Future<bool> changeCity(int cityId) async {
+    String token;
+    token = (await storage.read(key: 'token'))!;
+    var url = Uri.parse('${Configuration.host}private/user/changeUserCityByUserToken?id=$cityId');
+
+    var response = await http.put(
+      url,
+      headers: {
+        'Content-Type':'application/json',
+        'Authorization': token
+      },
+    );
+
+
+    if(response.statusCode == 200) {
+      if(jsonDecode(response.body)["httpStatus"] == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+
 }
