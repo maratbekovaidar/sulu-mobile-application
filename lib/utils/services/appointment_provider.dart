@@ -28,8 +28,9 @@ class AppointmentProvider {
     String? token = await storage.read(key: 'token');
 
   ///parses the json
-    AppointmentModel parser(dynamic json) {
-      final jsonToList=jsonDecode(utf8.decode(json));
+    List<AppointmentModel >parser(dynamic json) {
+
+      final jsonToList=jsonDecode(utf8.decode(json.bodyBytes))["data"];
       final response= jsonToList.map<AppointmentModel>((item)=>AppointmentModel.fromJson(item)).toList();
       return response;
     }

@@ -205,7 +205,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: width - 30,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.red)
+                    border: Border.all(color: const Color(0xffBBBBBB))
                   ),
                   child: DropdownButton<CityModel>(
                     isExpanded: true,

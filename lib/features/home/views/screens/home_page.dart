@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
-import 'package:sulu_mobile_application/features/home/views/screens/appbar/drawer.dart';
+import 'package:sulu_mobile_application/features/home/views/screens/appbar/drawer/drawer.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/bookmark_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/cart_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/hello_page.dart';

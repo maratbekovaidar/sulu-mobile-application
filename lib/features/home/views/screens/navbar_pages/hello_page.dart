@@ -658,10 +658,7 @@ class _HelloPageState extends State<HelloPage> {
                                     color: Colors.black),
                               ),
                               const SizedBox(width: 5),
-                              const Icon(
-                                Icons.arrow_forward_rounded,
-                                color: Colors.black,
-                              )
+
                             ],
                           ),
                         ),

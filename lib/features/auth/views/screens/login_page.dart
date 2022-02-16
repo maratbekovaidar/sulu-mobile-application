@@ -105,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(20)),
                     hintText: "777-777-77-77",
+                    counterText: ""
                   ),
                   maxLength: 10,
                 ),
