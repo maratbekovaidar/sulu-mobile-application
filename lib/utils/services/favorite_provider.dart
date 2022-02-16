@@ -86,11 +86,6 @@ class FavoriteProvider{
     }
   }
 
-
-
-
-
-
   /// Set Favorite Establishment
   Future<int> setFavoriteEstablishment(int id) async {
 
@@ -120,6 +115,5 @@ class FavoriteProvider{
       throw Exception("Null Token. User Unauthorized");
     }
   }
-
 
 }

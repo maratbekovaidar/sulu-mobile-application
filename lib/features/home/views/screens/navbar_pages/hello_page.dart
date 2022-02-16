@@ -11,9 +11,6 @@ import 'package:sulu_mobile_application/utils/model/main_banner_model.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
-
-
 class HelloPage extends StatefulWidget {
   const HelloPage({Key? key}) : super(key: key);
 
@@ -58,7 +55,6 @@ class _HelloPageState extends State<HelloPage> {
   int _mainBannerIndex = 0;
   final CarouselController _mainBannerController = CarouselController();
 
-
   // List<int> favoritesId = [];
   //
   // /// Favorite status
@@ -69,8 +65,6 @@ class _HelloPageState extends State<HelloPage> {
   //     return false;
   //   }
   // }
-
-
 
   @override
   void initState() {
@@ -89,7 +83,6 @@ class _HelloPageState extends State<HelloPage> {
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
     EstablishmentBloc establishmentBloc =
         BlocProvider.of<EstablishmentBloc>(context);
-
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -179,7 +172,6 @@ class _HelloPageState extends State<HelloPage> {
                         ),
                       ],
                     ),
-
 
                     /// Услгуи
                     Container(
@@ -447,7 +439,11 @@ class _HelloPageState extends State<HelloPage> {
                       child: BlocBuilder<EstablishmentBloc, EstablishmentState>(
                         builder: (context, state) {
                           if (state is EstablishmentInitialState) {
-                            establishmentBloc.add(EstablishmentLoadPopularEvent());
+                            establishmentBloc
+                                .add(EstablishmentLoadPopularEvent());
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
                           }
 
                           if (state is EstablishmentLoadingState) {
@@ -468,165 +464,185 @@ class _HelloPageState extends State<HelloPage> {
                           if (state is EstablishmentLoadedState) {
                             int itemLength = state.establishments.length;
 
-
-                                return ListView.separated(
-                                    physics: const PageScrollPhysics(),
-                                    separatorBuilder: (context, index) =>
-                                        const Divider(
-                                          indent: 10,
-                                        ),
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: state.establishments.length,
-                                    itemBuilder: (context, index) {
-                                      Widget item = SizedBox(
-                                        width: 250,
-                                        child: Column(
-                                          children: [
-                                            /// Image
-                                            Expanded(
-                                              child: Stack(
-                                                alignment: Alignment.topRight,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              EstablishmentPage(
-                                                                  establishmentModel:
-                                                                      state.establishments[
-                                                                          index]),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(10),
-                                                      child: Image.network(
-                                                        state.establishments[index]
-                                                            .images[0],
-                                                        width: 250,
-                                                        fit: BoxFit.cover,
-                                                      ),
+                            return ListView.separated(
+                                physics: const PageScrollPhysics(),
+                                separatorBuilder: (context, index) =>
+                                    const Divider(
+                                      indent: 10,
+                                    ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: state.establishments.length,
+                                itemBuilder: (context, index) {
+                                  Widget item = SizedBox(
+                                    width: 250,
+                                    child: Column(
+                                      children: [
+                                        /// Image
+                                        Expanded(
+                                          child: Stack(
+                                            alignment: Alignment.topRight,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EstablishmentPage(
+                                                              establishmentModel:
+                                                                  state.establishments[
+                                                                      index]),
                                                     ),
+                                                  );
+                                                },
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Image.network(
+                                                    state.establishments[index]
+                                                        .images[0],
+                                                    width: 250,
+                                                    fit: BoxFit.cover,
                                                   ),
-                                                  BlocBuilder<FavoriteBloc,FavoriteState>(
+                                                ),
+                                              ),
+                                              BlocBuilder<FavoriteBloc,
+                                                      FavoriteState>(
+                                                  builder:
+                                                      (favContext, favState) {
+                                                FavoriteBloc favoriteBloc =
+                                                    BlocProvider.of<
+                                                            FavoriteBloc>(
+                                                        favContext);
 
+                                                if (favState
+                                                    is FavoriteInitial) {
+                                                  favoriteBloc.add(
+                                                      FavoriteLoadEvent(state
+                                                          .establishments[index]
+                                                          .id));
+                                                }
 
-                                                    builder: (favContext, favState) {
-                                                      FavoriteBloc favoriteBloc =
-                                                      BlocProvider.of<FavoriteBloc>(favContext);
-
-                                                      if(favState is FavoriteInitial){
-                                                        favoriteBloc.add(FavoriteLoadEvent(state.establishments[index].id));
-                                                      }
-
-                                                      if(favState is FavoriteLoad){
-                                                      return Align(
-                                                        alignment: Alignment.topRight,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets.all(5.0),
-                                                          child: GestureDetector(
-                                                            onTap:(){
-                                                              favoriteBloc.add(FavoriteSetEvent(branchId:state.establishments[index].id,context: favContext));
-                                      },
-
-                                                            child: CircleAvatar(
-                                                              radius: 15,
-                                                              child: FutureBuilder(
-                                                                future:favoriteBloc.checkFavorite(state.establishments[index].id),
-                                                                builder: (context,AsyncSnapshot snapshot) {
-                                                                  if(snapshot.hasData){
+                                                if (favState is FavoriteLoad) {
+                                                  return Align(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          favoriteBloc.add(
+                                                              FavoriteSetEvent(
+                                                                  branchId: state
+                                                                      .establishments[
+                                                                          index]
+                                                                      .id,
+                                                                  context:
+                                                                      favContext));
+                                                        },
+                                                        child: CircleAvatar(
+                                                          radius: 15,
+                                                          child: FutureBuilder(
+                                                              future: favoriteBloc
+                                                                  .checkFavorite(state
+                                                                      .establishments[
+                                                                          index]
+                                                                      .id),
+                                                              builder: (context,
+                                                                  AsyncSnapshot
+                                                                      snapshot) {
+                                                                if (snapshot
+                                                                    .hasData) {
                                                                   return Icon(
-                                                                        snapshot.data? Icons.favorite
+                                                                    snapshot.data
+                                                                        ? Icons
+                                                                            .favorite
                                                                         : Icons
                                                                             .favorite_outline_rounded,
-                                                                    color: Colors.redAccent,
+                                                                    color: Colors
+                                                                        .redAccent,
                                                                     size: 16,
                                                                   );
-                                                                  }else{
-                                                                    return SizedBox();
-                                                                  }
+                                                                } else {
+                                                                  return SizedBox();
                                                                 }
-                                                              ),
-                                                              backgroundColor:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
+                                                              }),
+                                                          backgroundColor:
+                                                              Colors.white,
                                                         ),
-                                                      );}
-                                                      else{
-                                                        return const SizedBox();
-                                                      }
-                                                    }
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 5),
-
-                                            /// Name and Rating
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                /// Title
-                                                Text(
-                                                  state.establishments[index].name,
-                                                  style: GoogleFonts.inter(),
-                                                ),
-
-                                                /// Rating
-                                                Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.star,
-                                                      size: 16,
-                                                      color: Colors.grey,
+                                                      ),
                                                     ),
-                                                    Text(
-                                                      state.establishments[index]
-                                                          .rating
-                                                          .toString(),
-                                                      style: GoogleFonts.inter(
-                                                          fontSize: 16,
-                                                          color: Colors.grey),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
+                                                  );
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              })
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+
+                                        /// Name and Rating
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            /// Title
+                                            Text(
+                                              state.establishments[index].name,
+                                              style: GoogleFonts.inter(),
                                             ),
 
+                                            /// Rating
                                             Row(
                                               children: [
+                                                const Icon(
+                                                  Icons.star,
+                                                  size: 16,
+                                                  color: Colors.grey,
+                                                ),
                                                 Text(
                                                   state.establishments[index]
-                                                      .address,
+                                                      .rating
+                                                      .toString(),
                                                   style: GoogleFonts.inter(
-                                                      color: Colors.grey,
-                                                      fontSize: 14),
+                                                      fontSize: 16,
+                                                      color: Colors.grey),
                                                 )
                                               ],
                                             )
                                           ],
                                         ),
-                                      );
-                                      if (index == 0) {
-                                        return Padding(
-                                          child: item,
-                                          padding: const EdgeInsets.only(left: 0),
-                                        );
-                                      } else if (index == itemLength - 1) {
-                                        return Padding(
-                                          child: item,
-                                          padding: const EdgeInsets.only(right: 10),
-                                        );
-                                      }
-                                      return item;
-                                    });
 
+                                        Row(
+                                          children: [
+                                            Text(
+                                              state.establishments[index]
+                                                  .address,
+                                              style: GoogleFonts.inter(
+                                                  color: Colors.grey,
+                                                  fontSize: 14),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                  if (index == 0) {
+                                    return Padding(
+                                      child: item,
+                                      padding: const EdgeInsets.only(left: 0),
+                                    );
+                                  } else if (index == itemLength - 1) {
+                                    return Padding(
+                                      child: item,
+                                      padding: const EdgeInsets.only(right: 10),
+                                    );
+                                  }
+                                  return item;
+                                });
                           }
 
                           return const Center(
@@ -658,7 +674,6 @@ class _HelloPageState extends State<HelloPage> {
                                     color: Colors.black),
                               ),
                               const SizedBox(width: 5),
-
                             ],
                           ),
                         ),
@@ -667,200 +682,222 @@ class _HelloPageState extends State<HelloPage> {
                     const SizedBox(height: 10),
 
                     /// Bloc Carousel
-      SizedBox(
-        height: 180,
-        child: BlocBuilder<EstablishmentBloc, EstablishmentState>(
-          builder: (context, state) {
-            if (state is EstablishmentInitialState) {
-              establishmentBloc.add(EstablishmentLoadPopularEvent());
-            }
+                    SizedBox(
+                      height: 180,
+                      child: BlocBuilder<EstablishmentBloc, EstablishmentState>(
+                        builder: (context, state) {
+                          if (state is EstablishmentInitialState) {
+                            establishmentBloc.add(EstablishmentLoadEvent());
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
 
-            if (state is EstablishmentLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+                          if (state is EstablishmentLoadingState) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
 
-            if (state is EstablishmentErrorState) {
-              return Center(
-                child: Text(
-                  "Some Error",
-                  style: GoogleFonts.inter(color: Colors.red),
-                ),
-              );
-            }
-
-            if (state is EstablishmentLoadedState) {
-              int itemLength = state.establishments.length;
-
-
-              return ListView.separated(
-                  physics: const PageScrollPhysics(),
-                  separatorBuilder: (context, index) =>
-                  const Divider(
-                    indent: 10,
-                  ),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: state.establishments.length,
-                  itemBuilder: (context, index) {
-                    Widget item = SizedBox(
-                      width: 250,
-                      child: Column(
-                        children: [
-                          /// Image
-                          Expanded(
-                            child: Stack(
-                              alignment: Alignment.topRight,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            EstablishmentPage(
-                                                establishmentModel:
-                                                state.establishments[
-                                                index]),
-                                      ),
-                                    );
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius:
-                                    BorderRadius.circular(10),
-                                    child: Image.network(
-                                      state.establishments[index]
-                                          .images[0],
-                                      width: 250,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                BlocBuilder<FavoriteBloc,FavoriteState>(
-
-
-                                    builder: (favContext, favState) {
-                                      FavoriteBloc favoriteBloc =
-                                      BlocProvider.of<FavoriteBloc>(favContext);
-
-                                      if(favState is FavoriteInitial){
-                                        favoriteBloc.add(FavoriteLoadEvent(state.establishments[index].id));
-                                      }
-
-                                      if(favState is FavoriteLoad){
-                                        return Align(
-                                          alignment: Alignment.topRight,
-                                          child: Padding(
-                                            padding:
-                                            const EdgeInsets.all(5.0),
-                                            child: GestureDetector(
-                                              onTap:(){
-                                                favoriteBloc.add(FavoriteSetEvent(branchId:state.establishments[index].id,context: favContext));
-                                              },
-
-                                              child: CircleAvatar(
-                                                radius: 15,
-                                                child: FutureBuilder(
-                                                    future:favoriteBloc.checkFavorite(state.establishments[index].id),
-                                                    builder: (context,AsyncSnapshot snapshot) {
-                                                      if(snapshot.hasData){
-                                                        return Icon(
-                                                          snapshot.data? Icons.favorite
-                                                              : Icons
-                                                              .favorite_outline_rounded,
-                                                          color: Colors.redAccent,
-                                                          size: 16,
-                                                        );
-                                                      }else{
-                                                        return SizedBox();
-                                                      }
-                                                    }
-                                                ),
-                                                backgroundColor:
-                                                Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        );}
-                                      else{
-                                        return const SizedBox();
-                                      }
-                                    }
-                                )
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-
-                          /// Name and Rating
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              /// Title
-                              Text(
-                                state.establishments[index].name,
-                                style: GoogleFonts.inter(),
+                          if (state is EstablishmentErrorState) {
+                            return Center(
+                              child: Text(
+                                "Some Error",
+                                style: GoogleFonts.inter(color: Colors.red),
                               ),
+                            );
+                          }
 
-                              /// Rating
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.star,
-                                    size: 16,
-                                    color: Colors.grey,
-                                  ),
-                                  Text(
-                                    state.establishments[index]
-                                        .rating
-                                        .toString(),
-                                    style: GoogleFonts.inter(
-                                        fontSize: 16,
-                                        color: Colors.grey),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
+                          if (state is EstablishmentLoadedState) {
+                            int itemLength = state.establishments.length;
 
-                          Row(
-                            children: [
-                              Text(
-                                state.establishments[index]
-                                    .address,
-                                style: GoogleFonts.inter(
-                                    color: Colors.grey,
-                                    fontSize: 14),
-                              )
-                            ],
-                          )
-                        ],
+                            return ListView.separated(
+                                physics: const PageScrollPhysics(),
+                                separatorBuilder: (context, index) =>
+                                    const Divider(
+                                      indent: 10,
+                                    ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: state.establishments.length,
+                                itemBuilder: (context, index) {
+                                  Widget item = SizedBox(
+                                    width: 250,
+                                    child: Column(
+                                      children: [
+                                        /// Image
+                                        Expanded(
+                                          child: Stack(
+                                            alignment: Alignment.topRight,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EstablishmentPage(
+                                                              establishmentModel:
+                                                                  state.establishments[
+                                                                      index]),
+                                                    ),
+                                                  );
+                                                },
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Image.network(
+                                                    state.establishments[index]
+                                                        .images[0],
+                                                    width: 250,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              BlocBuilder<FavoriteBloc,
+                                                      FavoriteState>(
+                                                  builder:
+                                                      (favContext, favState) {
+                                                FavoriteBloc favoriteBloc =
+                                                    BlocProvider.of<
+                                                            FavoriteBloc>(
+                                                        favContext);
+
+                                                if (favState
+                                                    is FavoriteInitial) {
+                                                  favoriteBloc.add(
+                                                      FavoriteLoadEvent(state
+                                                          .establishments[index]
+                                                          .id));
+                                                }
+
+                                                if (favState is FavoriteLoad) {
+                                                  return Align(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          favoriteBloc.add(
+                                                              FavoriteSetEvent(
+                                                                  branchId: state
+                                                                      .establishments[
+                                                                          index]
+                                                                      .id,
+                                                                  context:
+                                                                      favContext));
+                                                        },
+                                                        child: CircleAvatar(
+                                                          radius: 15,
+                                                          child: FutureBuilder(
+                                                              future: favoriteBloc
+                                                                  .checkFavorite(state
+                                                                      .establishments[
+                                                                          index]
+                                                                      .id),
+                                                              builder: (context,
+                                                                  AsyncSnapshot
+                                                                      snapshot) {
+                                                                if (snapshot
+                                                                    .hasData) {
+                                                                  return Icon(
+                                                                    snapshot.data
+                                                                        ? Icons
+                                                                            .favorite
+                                                                        : Icons
+                                                                            .favorite_outline_rounded,
+                                                                    color: Colors
+                                                                        .redAccent,
+                                                                    size: 16,
+                                                                  );
+                                                                } else {
+                                                                  return SizedBox();
+                                                                }
+                                                              }),
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              })
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+
+                                        /// Name and Rating
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            /// Title
+                                            Text(
+                                              state.establishments[index].name,
+                                              style: GoogleFonts.inter(),
+                                            ),
+
+                                            /// Rating
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.star,
+                                                  size: 16,
+                                                  color: Colors.grey,
+                                                ),
+                                                Text(
+                                                  state.establishments[index]
+                                                      .rating
+                                                      .toString(),
+                                                  style: GoogleFonts.inter(
+                                                      fontSize: 16,
+                                                      color: Colors.grey),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+
+                                        Row(
+                                          children: [
+                                            Text(
+                                              state.establishments[index]
+                                                  .address,
+                                              style: GoogleFonts.inter(
+                                                  color: Colors.grey,
+                                                  fontSize: 14),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                  if (index == 0) {
+                                    return Padding(
+                                      child: item,
+                                      padding: const EdgeInsets.only(left: 0),
+                                    );
+                                  } else if (index == itemLength - 1) {
+                                    return Padding(
+                                      child: item,
+                                      padding: const EdgeInsets.only(right: 10),
+                                    );
+                                  }
+                                  return item;
+                                });
+                          }
+
+                          return const Center(
+                            child: Text("Unknown error"),
+                          );
+                        },
                       ),
-                    );
-                    if (index == 0) {
-                      return Padding(
-                        child: item,
-                        padding: const EdgeInsets.only(left: 0),
-                      );
-                    } else if (index == itemLength - 1) {
-                      return Padding(
-                        child: item,
-                        padding: const EdgeInsets.only(right: 10),
-                      );
-                    }
-                    return item;
-                  });
-
-            }
-
-            return const Center(
-              child: Text("Unknown error"),
-            );
-          },
-        ),
-      ),
-
+                    ),
                   ],
                 ),
               ],
