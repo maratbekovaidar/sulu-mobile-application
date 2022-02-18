@@ -22,36 +22,26 @@ class _HelloPageState extends State<HelloPage> {
   /// Data of MainBanner
   List<MainBannerModel> mainBanners = [
     MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
+        title: "",
+        description: "",
         imageUrl:
-            "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
+            "https://firebasestorage.googleapis.com/v0/b/sulutest-3de34.appspot.com/o/1.png?alt=media&token=84dde307-fe57-4b69-b7aa-95c6982e5090"),
     MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
+        title: "",
+        description: "",
         imageUrl:
-            "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
+            "https://firebasestorage.googleapis.com/v0/b/sulutest-3de34.appspot.com/o/2.png?alt=media&token=feb048f3-bbda-4bc0-891f-796975eab802"),
     MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
+        title: "",
+        description: "",
         imageUrl:
-            "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
+            "https://firebasestorage.googleapis.com/v0/b/sulutest-3de34.appspot.com/o/3.png?alt=media&token=0f3b96f8-615b-4f3b-b7ff-b417eabcaa43"),
     MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
+        title: "",
+        description: "",
         imageUrl:
-            "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
-    MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
-        imageUrl:
-            "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
-    MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
-        imageUrl:
-            "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
-  ];
+            "https://firebasestorage.googleapis.com/v0/b/sulutest-3de34.appspot.com/o/4.png?alt=media&token=9c4782db-1130-4617-bc06-b1a27c621f54"),
+    ];
   int _mainBannerIndex = 0;
   final CarouselController _mainBannerController = CarouselController();
 
@@ -106,7 +96,7 @@ class _HelloPageState extends State<HelloPage> {
                           builder: (context) {
                             return CarouselSlider(
                               options: CarouselOptions(
-                                  height: width / 2.2,
+                                  height: width / 2,
                                   viewportFraction: 1.0,
                                   enlargeCenterPage: false,
                                   autoPlay: true,
@@ -120,11 +110,11 @@ class _HelloPageState extends State<HelloPage> {
                                   .map((item) => Center(
                                           child: Container(
                                         width: width,
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                           image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: AssetImage(
-                                                  "assets/images/mainBanner.png")),
+                                              image: NetworkImage(
+                                                  item.imageUrl)),
                                         ),
                                       )))
                                   .toList(),

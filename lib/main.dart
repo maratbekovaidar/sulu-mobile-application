@@ -66,10 +66,11 @@ class MyApp extends StatelessWidget {
             /// Elevated Button Theme
             elevatedButtonTheme: ElevatedButtonThemeData(
                 style: ElevatedButton.styleFrom(
+
                     padding: const EdgeInsets.all(15),
                     primary: const Color(0xffFF385C),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0.0),
+                      borderRadius: BorderRadius.circular(4.0),
                     )
                 ).merge(
                   ButtonStyle(elevation: MaterialStateProperty.all(0)),
