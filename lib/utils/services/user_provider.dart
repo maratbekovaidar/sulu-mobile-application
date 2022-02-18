@@ -137,7 +137,6 @@ class UserProvider {
     var response = await http.post(
         url
     );
-    print(response.body);
     String fulString= response.body.substring(response.body.indexOf("CODE"));
     String partString=fulString.substring(6);
     partString = partString.replaceFirst(" ", "");
