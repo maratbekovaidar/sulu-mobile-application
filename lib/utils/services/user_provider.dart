@@ -98,8 +98,8 @@ class UserProvider {
     return jsonDecode(response.body)["httpStatus"];
   }
 
-  /// Register
-  Future<int> sendOtp( String phoneNumber) async {
+  /// Send otp to backend with phone number
+  Future<int> sendOtp(String phoneNumber) async {
     print("Before sending code" + phoneNumber);
     String code = await getOtp(phoneNumber);
     print(code);
@@ -119,20 +119,22 @@ class UserProvider {
     return jsonDecode(response.body)["httpStatus"];
   }
 
-  /// GErt
-  Future<String> getOtp(String phoneNumber) async {
-    var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');
+  /// Check phone number
+  Future<bool> checkPhoneNumber(String phoneNumber) async {
+    var url = Uri.parse('https://sulutest.kz/public/auth/checkPhoneNumber?phoneNumber=$phoneNumber');
     var response = await http.post(
         url
     );
-    String fulString= response.body.substring(response.body.indexOf("CODE"));
-    String partString=fulString.substring(6);
-    partString = partString.replaceFirst(" ", "");
-    return partString;
+
+    if(jsonDecode(response.body)["httpStatus"] == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /// confirm Otp
-  Future<int> confirmOtp( String phoneNumber, String userCode) async {
+  Future<int> confirmOtp(String phoneNumber, String userCode) async {
 
     var url = Uri.parse('${Configuration.host}public/auth/verifyPhoneNumber?code=$userCode&phoneNumber=$phoneNumber');
 
@@ -147,16 +149,16 @@ class UserProvider {
   }
 
   /// Get OTP from smsc
-  // Future<String> getOtp(String phoneNumber) async {
-  //   var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');
-  //   var response = await http.post(
-  //       url
-  //   );
-  //   String fulString= response.body.substring(response.body.indexOf("CODE"));
-  //   String partString=fulString.substring(6);
-  //   partString = partString.replaceFirst(" ", "");
-  //   return partString;
-  // }
+  Future<String> getOtp(String phoneNumber) async {
+    var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');
+    var response = await http.post(
+        url
+    );
+    String fulString= response.body.substring(response.body.indexOf("CODE"));
+    String partString=fulString.substring(6);
+    partString = partString.replaceFirst(" ", "");
+    return partString;
+  }
 
   /// User Change info
   Future<bool> changeUserInfo(String firstName, String lastName, String photo) async {

@@ -5,8 +5,13 @@ import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 
 class OtpCheckingPage extends StatefulWidget {
 
-  const OtpCheckingPage({Key? key, required this.phoneNumber}) : super(key: key);
+  const OtpCheckingPage({Key? key, required this.phoneNumber, required this.firstName, required this.lastName, required this.patronymic, required this.password, required this.cityId}) : super(key: key);
+  final String firstName;
+  final String lastName;
+  final String patronymic;
   final String phoneNumber;
+  final String password;
+  final int cityId;
 
 
   @override
@@ -14,7 +19,8 @@ class OtpCheckingPage extends StatefulWidget {
 }
 
 class _OtpCheckingPageState extends State<OtpCheckingPage> {
-  UserProvider _userProvider = UserProvider();
+
+  final UserProvider _userProvider = UserProvider();
 
 
   double opacity = 0;
@@ -87,10 +93,25 @@ class _OtpCheckingPageState extends State<OtpCheckingPage> {
             ElevatedButton(
                 onPressed: () async {
 
-                  int otpStatus= await _userProvider.confirmOtp("+7"+widget.phoneNumber, _pinPutController.text);
-                  if(otpStatus==200){
-                    Navigator.pushNamed(context, '/login');
-                  }else if(await _userProvider.confirmOtp("+7"+widget.phoneNumber, _pinPutController.text)==403){
+                  int otpStatus= await _userProvider.confirmOtp("7" + widget.phoneNumber, _pinPutController.text);
+                  if(otpStatus == 200){
+                    /// Registration
+                    int status = await _userProvider.register(
+                        widget.firstName,
+                        widget.lastName,
+                        "",
+                        "+7" + widget.phoneNumber,
+                        widget.password,
+                        widget.cityId
+                    );
+                    if(status == 200) {
+                      Navigator.pushNamed(context, '/login');
+                    }
+                  } else {
+                    SnackBar snackBar = const SnackBar(
+                      content: Text("Не правельный код"),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
 
 

@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sulu_mobile_application/features/auth/views/screens/otp_checking_page.dart';
 import 'package:sulu_mobile_application/utils/model/city_model.dart';
 import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,18 +17,16 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   /// Provider
   final UserProvider _userProvider = UserProvider();
 
   /// Cities
   List<CityModel> cities = [];
+
   void getCities(BuildContext context) async {
     cities = await _userProvider.getCities();
     city = cities[0];
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   /// Input Controllers
@@ -38,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   CityModel city = CityModel(id: 1, name: "Алма-ата");
-  
+
   /// Validate
   bool _firstNameValidate = true;
   bool _lastNameValidate = true;
@@ -102,20 +101,16 @@ class _RegisterPageState extends State<RegisterPage> {
   bool errorTextOpacity = false;
   bool isButtonDisabled = false;
 
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => getCities(context));
+    WidgetsBinding.instance?.addPostFrameCallback((_) => getCities(context));
   }
 
   @override
   Widget build(BuildContext context) {
-
     /// Size
     double width = MediaQuery.of(context).size.width;
-
 
     return Scaffold(
       appBar: AppBar(),
@@ -200,12 +195,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 /// Select City
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   width: width - 30,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: const Color(0xffBBBBBB))
-                  ),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: const Color(0xffBBBBBB))),
                   child: DropdownButton<CityModel>(
                     isExpanded: true,
                     value: city,
@@ -217,7 +212,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         city = newValue!;
                       });
                     },
-                    items: cities.map<DropdownMenuItem<CityModel>>((CityModel value) {
+                    items: cities
+                        .map<DropdownMenuItem<CityModel>>((CityModel value) {
                       return DropdownMenuItem<CityModel>(
                         value: value,
                         child: Text(value.name),
@@ -259,7 +255,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                       child: !agree
-                          ? const Icon(Icons.check_box_outline_blank, color: Colors.redAccent,)
+                          ? const Icon(
+                              Icons.check_box_outline_blank,
+                              color: Colors.redAccent,
+                            )
                           : const Icon(
                               Icons.check_box,
                               color: Colors.red,
@@ -277,7 +276,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           text: "условиями пользования",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              launch('https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
+                              launch(
+                                  'https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
                             },
                           style: const TextStyle(
                               fontFamily: 'Montserrat',
@@ -288,7 +288,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           text: "политикой конфиденциальности",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              launch('https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
+                              launch(
+                                  'https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
                             },
                           style: const TextStyle(
                               fontFamily: 'Montserrat',
@@ -300,81 +301,82 @@ class _RegisterPageState extends State<RegisterPage> {
                 ]),
                 const SizedBox(height: 25),
 
-
                 /// Button
                 SizedBox(
                   width: width * 0.95,
-                  child: agree ? ElevatedButton(
-                      onPressed: () async {
+                  child: agree
+                      ? ElevatedButton(
+                          onPressed: () async {
+                            /// Validation
+                            registerValidator();
+                            if (_confirmPasswordValidate &&
+                                _passwordValidate &&
+                                _phoneNumberValidate &&
+                                _lastNameValidate &&
+                                _firstNameValidate) {
+                              if (passwordController.text ==
+                                  confirmPasswordController.text) {
+                                setState(() {
+                                  circularBarIndicatorOpacity = true;
+                                });
 
-                        /// Validation
-                        registerValidator();
-                        if (_confirmPasswordValidate &&
-                            _passwordValidate &&
-                            _phoneNumberValidate &&
-                            _lastNameValidate &&
-                            _firstNameValidate) {
-                          if (passwordController.text ==
-                              confirmPasswordController.text) {
-                            setState(() {
-                              circularBarIndicatorOpacity = true;
-                            });
+                                // log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
 
-                            // log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
+                                /// Registration
+                                // int status = await _userProvider.register(
+                                //     firstNameController.text,
+                                //     lastNameController.text,
+                                //     "",
+                                //     "+7" + phoneNumberController.text,
+                                //     passwordController.text,
+                                //     city.id
+                                // );
 
-                            /// Registration
-                            int status = await _userProvider.register(
-                                firstNameController.text,
-                                lastNameController.text,
-                                "",
-                                "+7" + phoneNumberController.text,
-                                passwordController.text,
-                                city.id
-                            );
+                                /// Check phone number
+                                bool checkPhoneNumberStatus =
+                                    await _userProvider.checkPhoneNumber(
+                                        phoneNumberController.text);
 
-                            if (status == 200) {
+                                if (checkPhoneNumberStatus) {
+                                  /// Sending otp to backend with phone number
+                                  await _userProvider.sendOtp(
+                                      "7" + phoneNumberController.text);
 
-                             await _userProvider.sendOtp("+7"+phoneNumberController.text);
-                              circularBarIndicatorOpacity = false;
-                                Navigator.pushNamed(context, '/check_otp',arguments: (phoneNumberController.text));
-                              // setState(() {
-                              //   circularBarIndicatorOpacity = false;
-                              //   showDialog(
-                              //       context: context,
-                              //       builder: (_) {
-                              //         return CupertinoAlertDialog(
-                              //           content: const Text(
-                              //             "Регистрация \n прошла успешлно!",
-                              //             style: TextStyle(color: Colors.green),
-                              //           ),
-                              //           actions: [
-                              //             TextButton(
-                              //                 onPressed: () {
-                              //                   Navigator.pushNamed(
-                              //                       context, '/login');
-                              //                 },
-                              //                 child: const Text("Ok"))
-                              //           ],
-                              //         );
-                              //       });
-                              // });
+                                  circularBarIndicatorOpacity = false;
+
+                                  // Navigator.pushNamed(context, '/check_otp',
+                                  //     arguments: (
+                                  //
+                                  //     ));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => OtpCheckingPage(
+                                              phoneNumber:
+                                                  phoneNumberController.text,
+                                              firstName:
+                                                  firstNameController.text,
+                                              lastName: lastNameController.text,
+                                              patronymic: "",
+                                              password: passwordController.text,
+                                              cityId: city.id)));
+                                } else {
+                                  setState(() {
+                                    errorTextOpacity = true;
+                                    circularBarIndicatorOpacity = false;
+                                  });
+                                }
+                              }
                             }
-                            else {
-                              setState(() {
-                                errorTextOpacity = true;
-                                circularBarIndicatorOpacity = false;
-                              });
-                            }
-                          }
-                        }
-                      },
-                      child: const Text("Регистрация")) : ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black12)
-                    ),
-                    child: const Text("Регистрация"),
-                  ),
+                          },
+                          child: const Text("Регистрация"))
+                      : ElevatedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.black12)),
+                          child: const Text("Регистрация"),
+                        ),
                 ),
                 const SizedBox(height: 20),
 

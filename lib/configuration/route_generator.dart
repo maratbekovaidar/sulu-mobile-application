@@ -36,10 +36,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const EstablishmentsPage());
       case '/category':
         return MaterialPageRoute(builder: (_) => const CategoryPage());
-      case '/check_otp':
-        if(args is String ){
-        return MaterialPageRoute(builder: (_) => OtpCheckingPage(phoneNumber: args));
-        }
+      // case '/check_otp':
+      //   if(args is String ){
+      //   return MaterialPageRoute(builder: (_) => OtpCheckingPage(phoneNumber: args));
+      //   }
         return _errorRoute();
 
       // case '/restaurant_details':
