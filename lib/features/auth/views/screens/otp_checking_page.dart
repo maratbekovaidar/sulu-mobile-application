@@ -1,12 +1,30 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 
-class OtpCheckingPage extends StatefulWidget {
 
-  const OtpCheckingPage({Key? key, required this.phoneNumber}) : super(key: key);
+//using it for arguments in routeGenerator
+class OtpCheckingConstructor {
+
+  const OtpCheckingConstructor({Key? key, required this.phoneNumber,required this.name,required this.surname,required this.password,required this.cityId }) ;
   final String phoneNumber;
+  final String name;
+  final String surname;
+  final int cityId;
+  final String password;
+}
+  class OtpCheckingPage extends StatefulWidget {
+
+  const OtpCheckingPage({Key? key, required this.phoneNumber,required this.name,required this.surname,required this.password,required this.cityId }) : super(key: key);
+  final String phoneNumber;
+  final String name;
+  final String surname;
+  final int cityId;
+  final String password;
+
+
 
 
   @override
@@ -14,9 +32,10 @@ class OtpCheckingPage extends StatefulWidget {
 }
 
 class _OtpCheckingPageState extends State<OtpCheckingPage> {
-  UserProvider _userProvider = UserProvider();
+  UserProvider _userProvider =  UserProvider();
 
 
+  String? errorText;
   double opacity = 0;
   bool isButtonDisabled = true;
   final TextEditingController _pinPutController = TextEditingController();
@@ -89,17 +108,38 @@ class _OtpCheckingPageState extends State<OtpCheckingPage> {
 
                   int otpStatus= await _userProvider.confirmOtp("+7"+widget.phoneNumber, _pinPutController.text);
                   if(otpStatus==200){
-                    Navigator.pushNamed(context, '/login');
-                  }else if(await _userProvider.confirmOtp("+7"+widget.phoneNumber, _pinPutController.text)==403){
+                    int registerStatus = await _userProvider.register(
+                        widget.name,
+                        widget.surname,
+                        "",
+                        "+7" + widget.phoneNumber,
+                        widget.password,
+                        widget.cityId
+                    );
+                    if(registerStatus==200){
+                    Navigator.pushNamed(context, '/login');}
+                    else{
+                      opacity=1;
+                      errorText="Ошибка при регистрации";
+                      setState(() {
+
+                      });
+
+                    }
+                  }else if(otpStatus==403){
+                    errorText="Проверьте правильность кода";
+                    opacity=1;
+                    setState(() {
+
+                    });
+
                   }
 
 
                 },
-                child: const Text("Зарегестрироваться"))
-
-
-
-
+                child: const Text("Зарегестрироваться")),
+            const SizedBox(height: 30,),
+            Opacity(opacity:opacity,child: Text(errorText??"",style: TextStyle(color: Colors.red),))
           ],
         ),
       ),

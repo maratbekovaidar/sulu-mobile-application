@@ -5,6 +5,7 @@ import 'package:sulu_mobile_application/features/auth/views/screens/otp_checking
 import 'package:sulu_mobile_application/features/auth/views/screens/register_page.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishment_page.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
+import 'package:sulu_mobile_application/features/favorite/views/screens/favorite_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/home_page.dart';
 
@@ -36,9 +37,11 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const EstablishmentsPage());
       case '/category':
         return MaterialPageRoute(builder: (_) => const CategoryPage());
+        case '/favorite':
+        return MaterialPageRoute(builder: (_) => const FavoritePage());
       case '/check_otp':
-        if(args is String ){
-        return MaterialPageRoute(builder: (_) => OtpCheckingPage(phoneNumber: args));
+        if(args is OtpCheckingConstructor ){
+        return MaterialPageRoute(builder: (_) => OtpCheckingPage(phoneNumber:args.phoneNumber,password: args.password,cityId: args.cityId,name: args.name,surname: args.surname, ));
         }
         return _errorRoute();
 

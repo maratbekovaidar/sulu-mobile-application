@@ -25,7 +25,6 @@ class UserProvider {
             'Content-Type':'application/json'
           }
       );
-      print(response.body);
 
       FlutterSecureStorage flutterSecureStorage = const FlutterSecureStorage();
 
@@ -100,9 +99,8 @@ class UserProvider {
 
   /// Register
   Future<int> sendOtp( String phoneNumber) async {
-
+try{
     String code=await getOtp(phoneNumber);
-    print(code);
 
 
     var url = Uri.parse('${Configuration.host}public/auth/addUserToVerification?code=$code&phoneNumber=$phoneNumber');
@@ -116,8 +114,12 @@ class UserProvider {
     );
 
     return jsonDecode(response.body)["httpStatus"];
+}catch(e){
+  return 405;
+}
   }
-  /// confirm Otp
+
+  /// confirm Otp from db
   Future<int> confirmOtp( String phoneNumber, String userCode) async {
 
     var url = Uri.parse('${Configuration.host}public/auth/verifyPhoneNumber?code=$userCode&phoneNumber=$phoneNumber');
@@ -132,6 +134,7 @@ class UserProvider {
     return jsonDecode(response.body)["httpStatus"];
   }
 
+  ///Get sms code
   Future<String> getOtp(String phoneNumber) async {
     var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');
     var response = await http.post(
@@ -140,6 +143,7 @@ class UserProvider {
     String fulString= response.body.substring(response.body.indexOf("CODE"));
     String partString=fulString.substring(6);
     partString = partString.replaceFirst(" ", "");
+    print(partString);
     return partString;
   }
 

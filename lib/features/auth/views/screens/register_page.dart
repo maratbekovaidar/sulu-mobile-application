@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sulu_mobile_application/features/auth/views/screens/otp_checking_page.dart';
 import 'package:sulu_mobile_application/utils/model/city_model.dart';
 import 'package:sulu_mobile_application/utils/services/user_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,6 +48,10 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _passwordValidate = true;
   bool _confirmPasswordValidate = true;
   bool agree = true;
+
+
+  /// Error text
+  String? errorText;
 
   /// Validator
   void registerValidator() {
@@ -317,6 +322,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               confirmPasswordController.text) {
                             setState(() {
                               circularBarIndicatorOpacity = true;
+                              errorTextOpacity=false;
                             });
 
                             log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
@@ -330,9 +336,15 @@ class _RegisterPageState extends State<RegisterPage> {
                                 city.id
                             );
                             if (status == 200) {
-                             await _userProvider.sendOtp("+7"+phoneNumberController.text);
+                             int otpStatus = await _userProvider.sendOtp("+7"+phoneNumberController.text);
+                             if(otpStatus==200){
                               circularBarIndicatorOpacity = false;
-                                Navigator.pushNamed(context, '/check_otp',arguments: (phoneNumberController.text));
+                              setState(() {
+                                errorText="";
+                                errorTextOpacity = false;
+                                circularBarIndicatorOpacity = false;
+                              });
+                                Navigator.pushNamed(context, '/check_otp',arguments: OtpCheckingConstructor(phoneNumber: phoneNumberController.text, name: firstNameController.text, surname: lastNameController.text, password: passwordController.text, cityId: city.id));
                               // setState(() {
                               //   circularBarIndicatorOpacity = false;
                               //   showDialog(
@@ -355,8 +367,17 @@ class _RegisterPageState extends State<RegisterPage> {
                               //       });
                               // });
                             }
+                             else if(otpStatus==405){
+                               setState(() {
+                                 errorText="Проверьте правильность номера";
+                                 errorTextOpacity = true;
+                                 circularBarIndicatorOpacity = false;
+                               });
+                             }
+                            }
                             else {
                               setState(() {
+                                errorText= "Такой пользователь уже существует";
                                 errorTextOpacity = true;
                                 circularBarIndicatorOpacity = false;
                               });
@@ -387,8 +408,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     errorTextOpacity
-                        ? const Text(
-                            "Такой пользователь уже существует!",
+                        ?  Text(
+                            errorText??"",
                             style: TextStyle(color: Colors.red),
                           )
                         : Container()
