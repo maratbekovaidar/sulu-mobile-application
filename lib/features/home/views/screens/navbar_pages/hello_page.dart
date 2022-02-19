@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishment_page.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
@@ -65,33 +64,11 @@ class _HelloPageState extends State<HelloPage> {
 
                     if (state is MainBannerInitialState) {
                         mainBannerBloc.add(MainBannerLoadEvent());
-                        return Shimmer.fromColors(
-                            baseColor: Colors.red[600]!,
-                            highlightColor: Colors.red[300]!,
-                          child: Container(
-                            width: width,
-                            height: width / 2,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                          )
-                        );
+                        return const Center(child: CircularProgressIndicator(),);
                     }
                     if (state is MainBannerLoadingState) {
-                      return Shimmer.fromColors(
-                          baseColor: Colors.red[600]!,
-                          highlightColor: Colors.red[300]!,
-                          enabled: true,
-                          child: Container(
-                            width: width,
-                            height: width / 2,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                          )
-                      );
+                      return const Center(child: CircularProgressIndicator(),);
+
                     }
 
                     if (state is MainBannerLoadedState) {
@@ -124,19 +101,8 @@ class _HelloPageState extends State<HelloPage> {
                                           loadingBuilder: (BuildContext context, Widget child,
                                               ImageChunkEvent? loadingProgress) {
                                             if (loadingProgress == null) return child;
-                                            return Shimmer.fromColors(
-                                                baseColor: Colors.red[600]!,
-                                                highlightColor: Colors.red[300]!,
-                                                enabled: true,
-                                                child: Container(
-                                                  width: width,
-                                                  height: width / 2,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.red,
-                                                      borderRadius: BorderRadius.circular(10)
-                                                  ),
-                                                )
-                                            );
+                                            return const Center(child: CircularProgressIndicator(),);
+
                                           },
                                         )
                                     ))
@@ -172,19 +138,8 @@ class _HelloPageState extends State<HelloPage> {
                     }
 
 
-                    return Shimmer.fromColors(
-                        baseColor: Colors.red[600]!,
-                        highlightColor: Colors.red[300]!,
-                        enabled: true,
-                        child: Container(
-                          width: width,
-                          height: width / 2,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                        )
-                    );
+                    return const Center(child: CircularProgressIndicator(),);
+
 
                   },
                 ),

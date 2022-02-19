@@ -120,7 +120,23 @@ try{
   }
 
   /// confirm Otp from db
+  Future<int> confirmPhoneNumber( String phoneNumber) async {
+
+    var url = Uri.parse('${Configuration.host}public/auth/checkPhoneNumber?phoneNumber=${phoneNumber}');
+
+    var response = await http.post(
+        url,
+        headers: {
+          'Content-Type':'application/json'
+        }
+    );
+    print(response.body);
+
+    return jsonDecode(response.body)["httpStatus"];
+  }
+  /// confirm Otp from db
   Future<int> confirmOtp( String phoneNumber, String userCode) async {
+    phoneNumber.replaceFirst("+", "");
 
     var url = Uri.parse('${Configuration.host}public/auth/verifyPhoneNumber?code=$userCode&phoneNumber=$phoneNumber');
 
