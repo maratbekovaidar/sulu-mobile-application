@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -307,6 +306,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: width * 0.95,
                   child: agree ? ElevatedButton(
                       onPressed: () async {
+
+                        /// Validation
                         registerValidator();
                         if (_confirmPasswordValidate &&
                             _passwordValidate &&
@@ -319,17 +320,20 @@ class _RegisterPageState extends State<RegisterPage> {
                               circularBarIndicatorOpacity = true;
                             });
 
-                            log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
+                            // log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
 
-                            int status = await _userProvider.register(
-                                firstNameController.text,
-                                lastNameController.text,
-                                "",
-                                "+7" + phoneNumberController.text,
-                                passwordController.text,
-                                city.id
-                            );
+                            // /// Registration
+                            // int status = await _userProvider.register(
+                            //     firstNameController.text,
+                            //     lastNameController.text,
+                            //     "",
+                            //     "+7" + phoneNumberController.text,
+                            //     passwordController.text,
+                            //     city.id
+                            // );
+
                             if (status == 200) {
+
                              await _userProvider.sendOtp("+7"+phoneNumberController.text);
                               circularBarIndicatorOpacity = false;
                                 Navigator.pushNamed(context, '/check_otp',arguments: (phoneNumberController.text));

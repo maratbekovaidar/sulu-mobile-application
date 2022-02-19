@@ -16,35 +16,11 @@ class _NoAuthPageState extends State<NoAuthPage> {
   /// Data of MainBanner
   List<MainBannerModel> mainBanners = [
     MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
-        imageUrl:
-        "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
-    MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
-        imageUrl:
-        "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
-    MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
-        imageUrl:
-        "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
-    MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
-        imageUrl:
-        "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
-    MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
-        imageUrl:
-        "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
-    MainBannerModel(
-        title: "PartySet",
-        description: "Save more than 50% off",
-        imageUrl:
-        "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg"),
+      1,
+      "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg",
+      "https://cdn3.vectorstock.com/i/1000x1000/45/32/orange-ripped-paper-background-banner-template-vector-20944532.jpg",
+      1
+    ),
   ];
   int _mainBannerIndex = 0;
   final CarouselController _mainBannerController = CarouselController();

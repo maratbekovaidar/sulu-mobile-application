@@ -48,7 +48,7 @@ class _OtpCheckingPageState extends State<OtpCheckingPage> {
           children: [
 
              Padding(
-              padding: EdgeInsets.only(top:60.0),
+              padding: const EdgeInsets.only(top:60.0),
               child: Text("Код подтверждения", style: GoogleFonts.inter(
               color: const Color(0xffFF385C),
           fontWeight: FontWeight.w700,

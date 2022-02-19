@@ -51,6 +51,8 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   chips_choice: ^2.0.1
   rename: ^2.0.1
+  shimmer: ^2.0.0
+  cached_network_image: ^3.2.0
 
 
 

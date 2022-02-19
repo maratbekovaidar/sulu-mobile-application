@@ -8,9 +8,11 @@ import 'package:sulu_mobile_application/features/profile/views/screens/profile_p
 import 'package:sulu_mobile_application/utils/bloc/appointment/appointment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/favorite/favorite_bloc.dart';
+import 'package:sulu_mobile_application/utils/bloc/main_banner/main_banner_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sulu_mobile_application/utils/repository/appointment_repository.dart';
+import 'package:sulu_mobile_application/utils/repository/banner_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/establishment_repository.dart';
 
 
@@ -40,6 +42,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   /// Repository
   EstablishmentRepository establishmentRepository = EstablishmentRepository();
   AppointmentRepository appointmentRepository = AppointmentRepository();
+  BannerRepository bannerRepository = BannerRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +57,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
     /// Bloc
     UserBloc userBloc = UserBloc();
+    FavoriteBloc favoriteBloc = FavoriteBloc();
     EstablishmentBloc establishmentBloc =
         EstablishmentBloc(establishmentRepository: establishmentRepository);
     AppointmentBloc appointmentBloc =
         AppointmentBloc(appointmentRepository: appointmentRepository);
-    FavoriteBloc favoriteBloc=FavoriteBloc();
+    MainBannerBloc mainBannerBloc =
+        MainBannerBloc(bannerRepository: bannerRepository);
+
 
     return MultiBlocProvider(
       providers: [
@@ -73,6 +79,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ),
         BlocProvider(
           create: (context) => appointmentBloc,
+        ),
+        BlocProvider(
+          create: (context) => mainBannerBloc,
         ),
       ],
       child: Scaffold(
