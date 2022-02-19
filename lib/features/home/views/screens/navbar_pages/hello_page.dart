@@ -12,6 +12,7 @@ import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/main_banner_model.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelloPage extends StatefulWidget {
   const HelloPage({Key? key}) : super(key: key);
@@ -93,17 +94,28 @@ class _HelloPageState extends State<HelloPage> {
                                     carouselController: _mainBannerController,
                                     items: state.loadedMainBanners
                                         .map((item) => Center(
-                                        child: Image.network(
-                                          item.imageUrl,
-                                          width: width,
-                                          height: width / 2,
-                                          fit: BoxFit.fill,
-                                          loadingBuilder: (BuildContext context, Widget child,
-                                              ImageChunkEvent? loadingProgress) {
-                                            if (loadingProgress == null) return child;
-                                            return const Center(child: CircularProgressIndicator(),);
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            /// Open url of partners
+                                            String _url = item.url!;
+                                            Future _launchURL() async {
+                                              if (!await launch(_url)) throw 'Could not launch $_url';
+                                            }
+                                            _launchURL();
 
                                           },
+                                          child: Image.network(
+                                            item.imageUrl,
+                                            width: width,
+                                            height: width / 2,
+                                            fit: BoxFit.fill,
+                                            loadingBuilder: (BuildContext context, Widget child,
+                                                ImageChunkEvent? loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return const Center(child: CircularProgressIndicator(),);
+
+                                            },
+                                          ),
                                         )
                                     ))
                                         .toList(),
