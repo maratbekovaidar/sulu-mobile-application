@@ -322,15 +322,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
                             // log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
 
-                            // /// Registration
-                            // int status = await _userProvider.register(
-                            //     firstNameController.text,
-                            //     lastNameController.text,
-                            //     "",
-                            //     "+7" + phoneNumberController.text,
-                            //     passwordController.text,
-                            //     city.id
-                            // );
+                            /// Registration
+                            int status = await _userProvider.register(
+                                firstNameController.text,
+                                lastNameController.text,
+                                "",
+                                "+7" + phoneNumberController.text,
+                                passwordController.text,
+                                city.id
+                            );
 
                             if (status == 200) {
 

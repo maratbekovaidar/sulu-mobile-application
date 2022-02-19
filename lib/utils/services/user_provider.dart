@@ -119,6 +119,18 @@ class UserProvider {
     return jsonDecode(response.body)["httpStatus"];
   }
 
+  /// GErt
+  Future<String> getOtp(String phoneNumber) async {
+    var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');
+    var response = await http.post(
+        url
+    );
+    String fulString= response.body.substring(response.body.indexOf("CODE"));
+    String partString=fulString.substring(6);
+    partString = partString.replaceFirst(" ", "");
+    return partString;
+  }
+
   /// confirm Otp
   Future<int> confirmOtp( String phoneNumber, String userCode) async {
 
@@ -134,17 +146,17 @@ class UserProvider {
     return jsonDecode(response.body)["httpStatus"];
   }
 
-
-  Future<String> getOtp(String phoneNumber) async {
-    var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');
-    var response = await http.post(
-        url
-    );
-    String fulString= response.body.substring(response.body.indexOf("CODE"));
-    String partString=fulString.substring(6);
-    partString = partString.replaceFirst(" ", "");
-    return partString;
-  }
+  /// Get OTP from smsc
+  // Future<String> getOtp(String phoneNumber) async {
+  //   var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');
+  //   var response = await http.post(
+  //       url
+  //   );
+  //   String fulString= response.body.substring(response.body.indexOf("CODE"));
+  //   String partString=fulString.substring(6);
+  //   partString = partString.replaceFirst(" ", "");
+  //   return partString;
+  // }
 
   /// User Change info
   Future<bool> changeUserInfo(String firstName, String lastName, String photo) async {
