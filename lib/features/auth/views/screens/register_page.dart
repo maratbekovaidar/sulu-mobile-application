@@ -18,18 +18,16 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   /// Provider
   final UserProvider _userProvider = UserProvider();
 
   /// Cities
   List<CityModel> cities = [];
+
   void getCities(BuildContext context) async {
     cities = await _userProvider.getCities();
     city = cities[0];
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   /// Input Controllers
@@ -40,7 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   CityModel city = CityModel(id: 1, name: "Алма-ата");
-  
+
   /// Validate
   bool _firstNameValidate = true;
   bool _lastNameValidate = true;
@@ -48,7 +46,6 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _passwordValidate = true;
   bool _confirmPasswordValidate = true;
   bool agree = true;
-
 
   /// Error text
   String? errorText;
@@ -108,20 +105,16 @@ class _RegisterPageState extends State<RegisterPage> {
   bool errorTextOpacity = false;
   bool isButtonDisabled = false;
 
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => getCities(context));
+    WidgetsBinding.instance?.addPostFrameCallback((_) => getCities(context));
   }
 
   @override
   Widget build(BuildContext context) {
-
     /// Size
     double width = MediaQuery.of(context).size.width;
-
 
     return Scaffold(
       appBar: AppBar(),
@@ -206,12 +199,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 /// Select City
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   width: width - 30,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: const Color(0xffBBBBBB))
-                  ),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: const Color(0xffBBBBBB))),
                   child: DropdownButton<CityModel>(
                     isExpanded: true,
                     value: city,
@@ -223,7 +216,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         city = newValue!;
                       });
                     },
-                    items: cities.map<DropdownMenuItem<CityModel>>((CityModel value) {
+                    items: cities
+                        .map<DropdownMenuItem<CityModel>>((CityModel value) {
                       return DropdownMenuItem<CityModel>(
                         value: value,
                         child: Text(value.name),
@@ -265,7 +259,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                       child: !agree
-                          ? const Icon(Icons.check_box_outline_blank, color: Colors.redAccent,)
+                          ? const Icon(
+                              Icons.check_box_outline_blank,
+                              color: Colors.redAccent,
+                            )
                           : const Icon(
                               Icons.check_box,
                               color: Colors.red,
@@ -283,7 +280,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           text: "условиями пользования",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              launch('https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
+                              launch(
+                                  'https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
                             },
                           style: const TextStyle(
                               fontFamily: 'Montserrat',
@@ -294,7 +292,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           text: "политикой конфиденциальности",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              launch('https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
+                              launch(
+                                  'https://docs.google.com/document/d/1cvtTj-5tUHDFv1saAIVjJSNTYa5UlIq3/edit?usp=sharing&ouid=105666820019597166004&rtpof=true&sd=true');
                             },
                           style: const TextStyle(
                               fontFamily: 'Montserrat',
@@ -306,86 +305,90 @@ class _RegisterPageState extends State<RegisterPage> {
                 ]),
                 const SizedBox(height: 25),
 
-
                 /// Button
                 SizedBox(
                   width: width * 0.95,
-                  child: agree ? ElevatedButton(
-                      onPressed: () async {
-                        registerValidator();
-                        if (_confirmPasswordValidate &&
-                            _passwordValidate &&
-                            _phoneNumberValidate &&
-                            _lastNameValidate &&
-                            _firstNameValidate) {
-                          if (passwordController.text ==
-                              confirmPasswordController.text) {
-                            setState(() {
-                              circularBarIndicatorOpacity = true;
-                              errorTextOpacity=false;
-                            });
+                  child: agree
+                      ? ElevatedButton(
+                          onPressed: () async {
 
-                            log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
+                            /// Validation
+                            registerValidator();
+                            if (_confirmPasswordValidate &&
+                                _passwordValidate &&
+                                _phoneNumberValidate &&
+                                _lastNameValidate &&
+                                _firstNameValidate) {
+                              if (passwordController.text ==
+                                  confirmPasswordController.text) {
+                                setState(() {
+                                  circularBarIndicatorOpacity = true;
+                                  errorTextOpacity = false;
+                                });
 
-                            int status = await _userProvider.confirmPhoneNumber("+7"+phoneNumberController.text);
-                            print(status);
-                            if (status == 200) {
-                             int otpStatus = await _userProvider.sendOtp("+7"+phoneNumberController.text);
-                             if(otpStatus==200){
-                              circularBarIndicatorOpacity = false;
-                              setState(() {
-                                errorText="";
-                                errorTextOpacity = false;
-                                circularBarIndicatorOpacity = false;
-                              });
-                                Navigator.pushNamed(context, '/check_otp',arguments: OtpCheckingConstructor(phoneNumber: phoneNumberController.text, name: firstNameController.text, surname: lastNameController.text, password: passwordController.text, cityId: city.id));
-                              // setState(() {
-                              //   circularBarIndicatorOpacity = false;
-                              //   showDialog(
-                              //       context: context,
-                              //       builder: (_) {
-                              //         return CupertinoAlertDialog(
-                              //           content: const Text(
-                              //             "Регистрация \n прошла успешлно!",
-                              //             style: TextStyle(color: Colors.green),
-                              //           ),
-                              //           actions: [
-                              //             TextButton(
-                              //                 onPressed: () {
-                              //                   Navigator.pushNamed(
-                              //                       context, '/login');
-                              //                 },
-                              //                 child: const Text("Ok"))
-                              //           ],
-                              //         );
-                              //       });
-                              // });
+                                log("Phone number: " +
+                                    phoneNumberController.text +
+                                    ", Password: " +
+                                    passwordController.text);
+
+                                /// Check exist phone number
+                                int status =
+                                    await _userProvider.confirmPhoneNumber(
+                                        "7" + phoneNumberController.text);
+
+                                /// If doest exist phone number
+                                if (status == 200) {
+
+                                  /// Send OTP to backend
+                                  int otpStatus = await _userProvider.sendOtp(
+                                      "7" + phoneNumberController.text);
+
+                                  /// If success sent OTP to backend
+                                  if (otpStatus == 200) {
+                                    circularBarIndicatorOpacity = false;
+                                    setState(() {
+                                      errorText = "";
+                                      errorTextOpacity = false;
+                                      circularBarIndicatorOpacity = false;
+                                    });
+
+                                    /// After sending navigate to check OTP page
+                                    Navigator.pushNamed(context, '/check_otp',
+                                        arguments: OtpCheckingConstructor(
+                                            phoneNumber:
+                                                phoneNumberController.text,
+                                            name: firstNameController.text,
+                                            surname: lastNameController.text,
+                                            password: passwordController.text,
+                                            cityId: city.id));
+
+                                  } else if (otpStatus == 405) {
+                                    setState(() {
+                                      errorText =
+                                          "Проверьте правильность номера";
+                                      errorTextOpacity = true;
+                                      circularBarIndicatorOpacity = false;
+                                    });
+                                  }
+                                } else {
+                                  setState(() {
+                                    errorText =
+                                        "Такой пользователь уже существует";
+                                    errorTextOpacity = true;
+                                    circularBarIndicatorOpacity = false;
+                                  });
+                                }
+                              }
                             }
-                             else if(otpStatus==405){
-                               setState(() {
-                                 errorText="Проверьте правильность номера";
-                                 errorTextOpacity = true;
-                                 circularBarIndicatorOpacity = false;
-                               });
-                             }
-                            }
-                            else {
-                              setState(() {
-                                errorText= "Такой пользователь уже существует";
-                                errorTextOpacity = true;
-                                circularBarIndicatorOpacity = false;
-                              });
-                            }
-                          }
-                        }
-                      },
-                      child: const Text("Регистрация")) : ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black12)
-                    ),
-                    child: const Text("Регистрация"),
-                  ),
+                          },
+                          child: const Text("Регистрация"))
+                      : ElevatedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.black12)),
+                          child: const Text("Регистрация"),
+                        ),
                 ),
                 const SizedBox(height: 20),
 
@@ -402,8 +405,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     errorTextOpacity
-                        ?  Text(
-                            errorText??"",
+                        ? Text(
+                            errorText ?? "",
                             style: TextStyle(color: Colors.red),
                           )
                         : Container()
