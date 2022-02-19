@@ -75,10 +75,15 @@ class EstablishmentProvider {
     String? token = await storage.read(key: 'token');
 
 
-    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findEstablishmentByName/serviceTypeId/userToken?serviceTypeId=$typeId",parser: establishmentParser,headerParameters: {
+    final Future<List<EstablishmentModel>>result = _networkClient.get(path: "private/client/findEstablishmentByName/serviceTypeId/userToken?serviceTypeId=$typeId",parser: establishmentParser,headerParameters: {
       'Content-Type': 'application/json',
       'Authorization': token!
-    });
+    },
+      parameters: {
+        'serviceTypeId': typeId.toString(),
+        'establishmentName': ""
+      }
+    );
 
     return result;
   }
@@ -93,7 +98,11 @@ class EstablishmentProvider {
     final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findEstablishmentByName/serviceTypeId/userToken?establishmentName=$name",parser: establishmentParser,headerParameters: {
       'Content-Type': 'application/json',
       'Authorization': token!
-    });
+    },
+        parameters: {
+          'serviceTypeId': "",
+          'establishmentName': name
+        });
 
     return result;
   }
@@ -106,7 +115,11 @@ class EstablishmentProvider {
     final Future<List<EstablishmentModel>> result = _networkClient.get(path:"private/client/findEstablishmentByName/serviceTypeId/userToken?establishmentName=$name&serviceTypeId=$typeId",parser: establishmentParser,headerParameters: {
       'Authorization': token!,
       'Content-Type': 'application/json'
-    });
+    },
+        parameters: {
+          'serviceTypeId': typeId.toString(),
+          'establishmentName': name
+        });
     return result;
 
   }
