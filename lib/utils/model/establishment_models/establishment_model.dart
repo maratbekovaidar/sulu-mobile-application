@@ -34,13 +34,32 @@ class EstablishmentModel {
 
   factory EstablishmentModel.fromJson(json) {
 
+    print(json);
     List<String> images = [
-      json['photo1'] ?? "https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg",
-      json['photo2'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
-      json['photo3'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
-      json['photo4'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
-      json['photo5'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
+      json['photo1'] ?? "https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg"
     ];
+
+    // json['photo2'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
+    // json['photo3'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
+    // json['photo4'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
+    // json['photo5'] ?? 'https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg',
+
+    // json['photo2'] != null ? images.add(json['photo2']) : () {};
+    // json['photo3'] != null ? images.add(json['photo3']) : () {};
+    // json['photo4'] != null ? images.add(json['photo4']) : () {};
+    // json['photo5'] != null ? images.add(json['photo5']) : () {};
+
+    int i = 2;
+    bool filled = false;
+    while(!filled) {
+      String photoN = "photo" + i.toString();
+      if(json[photoN] != null) {
+        images.add(json[photoN]);
+        i++;
+      } else {
+        filled = true;
+      }
+    }
 
     List<dynamic> scheduleJson = json['schedule'];
     return EstablishmentModel(
