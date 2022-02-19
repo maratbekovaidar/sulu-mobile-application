@@ -96,17 +96,18 @@ class UserProvider {
     );
 
     return jsonDecode(response.body)["httpStatus"];
-  }/// Register
+  }
 
   /// Register
   Future<int> sendOtp( String phoneNumber) async {
-
-    String code=await getOtp(phoneNumber);
+    print("Before sending code" + phoneNumber);
+    String code = await getOtp(phoneNumber);
     print(code);
+    print("After sending code:" + phoneNumber);
 
 
     var url = Uri.parse('${Configuration.host}public/auth/addUserToVerification?code=$code&phoneNumber=$phoneNumber');
-
+    print("Code have sent to back:" + phoneNumber);
 
     var response = await http.post(
         url,
@@ -117,6 +118,7 @@ class UserProvider {
 
     return jsonDecode(response.body)["httpStatus"];
   }
+
   /// confirm Otp
   Future<int> confirmOtp( String phoneNumber, String userCode) async {
 
@@ -131,6 +133,7 @@ class UserProvider {
 
     return jsonDecode(response.body)["httpStatus"];
   }
+
 
   Future<String> getOtp(String phoneNumber) async {
     var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');

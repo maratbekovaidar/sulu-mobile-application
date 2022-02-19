@@ -2,10 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishment_page.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/favorite/favorite_bloc.dart';
+import 'package:sulu_mobile_application/utils/bloc/main_banner/main_banner_bloc.dart';
+import 'package:sulu_mobile_application/utils/bloc/master/master_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/main_banner_model.dart';
 import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
@@ -19,42 +22,8 @@ class HelloPage extends StatefulWidget {
 }
 
 class _HelloPageState extends State<HelloPage> {
-  /// Data of MainBanner
-  List<MainBannerModel> mainBanners = [
-    MainBannerModel(
-        title: "",
-        description: "",
-        imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/sulutest-3de34.appspot.com/o/1.png?alt=media&token=84dde307-fe57-4b69-b7aa-95c6982e5090"),
-    MainBannerModel(
-        title: "",
-        description: "",
-        imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/sulutest-3de34.appspot.com/o/2.png?alt=media&token=feb048f3-bbda-4bc0-891f-796975eab802"),
-    MainBannerModel(
-        title: "",
-        description: "",
-        imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/sulutest-3de34.appspot.com/o/3.png?alt=media&token=0f3b96f8-615b-4f3b-b7ff-b417eabcaa43"),
-    MainBannerModel(
-        title: "",
-        description: "",
-        imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/sulutest-3de34.appspot.com/o/4.png?alt=media&token=9c4782db-1130-4617-bc06-b1a27c621f54"),
-    ];
   int _mainBannerIndex = 0;
   final CarouselController _mainBannerController = CarouselController();
-
-  // List<int> favoritesId = [];
-  //
-  // /// Favorite status
-  // bool getFavoriteStatus(int id) {
-  //   if (favoritesId.contains(id)) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   @override
   void initState() {
@@ -71,6 +40,7 @@ class _HelloPageState extends State<HelloPage> {
 
     /// Bloc
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
+    MainBannerBloc mainBannerBloc = BlocProvider.of<MainBannerBloc>(context);
     EstablishmentBloc establishmentBloc =
         BlocProvider.of<EstablishmentBloc>(context);
 
@@ -78,6 +48,8 @@ class _HelloPageState extends State<HelloPage> {
       onRefresh: () async {
         userBloc.add(UserLoadEvent());
         establishmentBloc.add(EstablishmentLoadEvent());
+        mainBannerBloc.add(MainBannerLoadEvent());
+
       },
       child: ListView(
         children: [
@@ -86,65 +58,135 @@ class _HelloPageState extends State<HelloPage> {
             child: Flex(
               direction: Axis.vertical,
               children: [
+
                 /// Main Carousel
-                Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: Builder(
-                          builder: (context) {
-                            return CarouselSlider(
-                              options: CarouselOptions(
-                                  height: width / 2,
-                                  viewportFraction: 1.0,
-                                  enlargeCenterPage: false,
-                                  autoPlay: true,
-                                  onPageChanged: (index, reason) {
-                                    setState(() {
-                                      _mainBannerIndex = index;
-                                    });
-                                  }),
-                              carouselController: _mainBannerController,
-                              items: mainBanners
-                                  .map((item) => Center(
-                                          child: Container(
-                                        width: width,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  item.imageUrl)),
-                                        ),
-                                      )))
-                                  .toList(),
-                            );
-                          },
-                        )),
-                    Align(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: mainBanners.asMap().entries.map((entry) {
-                          return GestureDetector(
-                            onTap: () =>
-                                _mainBannerController.animateToPage(entry.key),
-                            child: Container(
-                              width: 10.0,
-                              height: 10.0,
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 4.0),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: (Colors.white).withOpacity(
-                                      _mainBannerIndex == entry.key
-                                          ? 0.9
-                                          : 0.4)),
+                BlocBuilder<MainBannerBloc, MainBannerState>(
+                  builder: (context, state) {
+
+                    if (state is MainBannerInitialState) {
+                        mainBannerBloc.add(MainBannerLoadEvent());
+                        return Shimmer.fromColors(
+                            baseColor: Colors.red[600]!,
+                            highlightColor: Colors.red[300]!,
+                          child: Container(
+                            width: width,
+                            height: width / 2,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10)
                             ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ],
+                          )
+                        );
+                    }
+                    if (state is MainBannerLoadingState) {
+                      return Shimmer.fromColors(
+                          baseColor: Colors.red[600]!,
+                          highlightColor: Colors.red[300]!,
+                          enabled: true,
+                          child: Container(
+                            width: width,
+                            height: width / 2,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                          )
+                      );
+                    }
+
+                    if (state is MainBannerLoadedState) {
+                      return Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Builder(
+                                builder: (context) {
+                                  return CarouselSlider(
+                                    options: CarouselOptions(
+                                        height: width / 2,
+                                        viewportFraction: 1.0,
+                                        enlargeCenterPage: false,
+                                        autoPlay: true,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            _mainBannerIndex = index;
+                                          });
+                                        }),
+                                    carouselController: _mainBannerController,
+                                    items: state.loadedMainBanners
+                                        .map((item) => Center(
+                                        child: Image.network(
+                                          item.imageUrl,
+                                          width: width,
+                                          height: width / 2,
+                                          fit: BoxFit.fill,
+                                          loadingBuilder: (BuildContext context, Widget child,
+                                              ImageChunkEvent? loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return Shimmer.fromColors(
+                                                baseColor: Colors.red[600]!,
+                                                highlightColor: Colors.red[300]!,
+                                                enabled: true,
+                                                child: Container(
+                                                  width: width,
+                                                  height: width / 2,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      borderRadius: BorderRadius.circular(10)
+                                                  ),
+                                                )
+                                            );
+                                          },
+                                        )
+                                    ))
+                                        .toList(),
+                                  );
+                                },
+                              )),
+                          Align(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: state.loadedMainBanners.asMap().entries.map((entry) {
+                                return GestureDetector(
+                                  onTap: () => _mainBannerController
+                                      .animateToPage(entry.key),
+                                  child: Container(
+                                    width: 10.0,
+                                    height: 10.0,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 4.0),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: (Colors.white).withOpacity(
+                                            _mainBannerIndex == entry.key
+                                                ? 0.9
+                                                : 0.4)),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+
+
+                    return Shimmer.fromColors(
+                        baseColor: Colors.red[600]!,
+                        highlightColor: Colors.red[300]!,
+                        enabled: true,
+                        child: Container(
+                          width: width,
+                          height: width / 2,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                        )
+                    );
+
+                  },
                 ),
                 const SizedBox(height: 30),
 
@@ -556,7 +598,7 @@ class _HelloPageState extends State<HelloPage> {
                                                                     size: 16,
                                                                   );
                                                                 } else {
-                                                                  return SizedBox();
+                                                                  return const SizedBox();
                                                                 }
                                                               }),
                                                           backgroundColor:
@@ -803,7 +845,7 @@ class _HelloPageState extends State<HelloPage> {
                                                                     size: 16,
                                                                   );
                                                                 } else {
-                                                                  return SizedBox();
+                                                                  return const SizedBox();
                                                                 }
                                                               }),
                                                           backgroundColor:
@@ -890,6 +932,7 @@ class _HelloPageState extends State<HelloPage> {
                     ),
                   ],
                 ),
+
               ],
             ),
           )
