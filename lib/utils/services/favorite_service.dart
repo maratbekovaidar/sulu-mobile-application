@@ -1,23 +1,21 @@
-
-
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sulu_mobile_application/configuration/configuration.dart';
-import 'package:sulu_mobile_application/utils/model/establishment_models/service_model.dart';
-import 'package:http/http.dart' as http;
-import 'package:sulu_mobile_application/utils/model/establishment_models/service_type_model.dart';
+import 'package:sulu_mobile_application/utils/model/establishment_models/establishment_model.dart';
 
-
-class ServiceProvider {
+class FavoriteService{
 
   /// Secure Storage
   FlutterSecureStorage storage = const FlutterSecureStorage();
 
-  /// Get Service of Establishment
-  Future<List<ServiceModel>> getServiceByEstablishmentId(int id) async {
+
+  /// Get Establishments ids that favorite
+  Future<List<int>> getFavoriteEstablishments() async {
+
     var url = Uri.parse(
-        '${Configuration.host}private/client/findServicesOfEstablishment/byEstablishmentId/$id');
+        '${Configuration.host}private/favorite/get/establishments');
 
     String? token = await storage.read(key: 'token');
 
@@ -34,9 +32,10 @@ class ServiceProvider {
       if (response.body.isNotEmpty) {
         List<dynamic> jsonResult = jsonDecode(
             utf8.decode(response.bodyBytes))["data"];
+        List<EstablishmentModel> favEst= jsonResult.map((json) => EstablishmentModel.fromJson(json["establishmentDTO"]))
+            .toList();
+        return favEst.map((e) => e.id).toList();
 
-
-        return jsonResult.map((json) => ServiceModel.fromJson(json)).toList();
       } else {
         throw Exception("Response is null. Response status: " +
             response.statusCode.toString());
@@ -44,80 +43,77 @@ class ServiceProvider {
     } else {
       throw Exception("Null Token. User Unauthorized");
     }
+
   }
 
-  /// Get Service Types
-  Future<List<ServiceTypeModel>> getServiceTypes() async {
-    var url = Uri.parse(
-        '${Configuration.host}private/type/getServiceTypes');
-
-    String? token = await storage.read(key: 'token');
-
-    if (token != null) {
-      var response = await http.get(
-          url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
-
-      /// Convert response to json list
-      if (response.body.isNotEmpty) {
-        List<dynamic> jsonResult = jsonDecode(
-            utf8.decode(response.bodyBytes))["data"];
-
-
-        return jsonResult.map((json) => ServiceTypeModel.fromJson(json)).toList();
-      } else {
-        throw Exception("Response is null. Response status: " +
-            response.statusCode.toString());
-      }
-    } else {
-      throw Exception("Null Token. User Unauthorized");
-    }
-  }
-
-  /// Set Appointment
-  Future<bool> setAppointment(String appointmentDate,
-      String appointmentStartTime, int masterId, String phoneNumber,
-      int serviceId, String username) async {
-    var url = Uri.parse(
-        '${Configuration.host}private/appointment/create');
-
-    String? token = await storage.read(key: 'token');
-
-
-    if (token != null) {
-      var response = await http.post(
-          url,
-          body: jsonEncode({
-            "appointmentDate": appointmentDate,
-            "appointmentStartTime": appointmentStartTime,
-            "masterId": masterId,
-            "phoneNumber": phoneNumber,
-            "serviceId": serviceId,
-            "username": username
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-      );
-
-      if (response.statusCode == 200) {
-        if(jsonDecode(response.body)['httpStatus'] == 200) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
+  /// Favorite status
+  Future<bool> getFavoriteStatus(int id) async{
+    List<int> favEsts = await getFavoriteEstablishments();
+    if (favEsts.contains(id)) {
+      return true;
     } else {
       return false;
     }
   }
 
+  /// Remove Favorite Establishment
+  Future<int> removeFavoriteEstablishment(int id) async {
+
+    var url = Uri.parse(
+        '${Configuration.host}private/favorite/deleteEstablishmentBy/$id');
+
+    String? token = await storage.read(key: 'token');
+
+    if (token != null) {
+      var response = await http.delete(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+      );
+
+      /// Convert response to json list
+      if (response.body.isNotEmpty) {
+        int statusCode = jsonDecode(response.body)['httpStatus'];
+        return statusCode;
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
+    } else {
+      throw Exception("Null Token. User Unauthorized");
+    }
+  }
+
+  /// Set Favorite Establishment
+  Future<int> setFavoriteEstablishment(int id) async {
+
+    var url = Uri.parse(
+        '${Configuration.host}private/favorite/addEstablishment/$id');
+
+    String? token = await storage.read(key: 'token');
+
+    if (token != null) {
+      var response = await http.post(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+      );
+
+      /// Convert response to json list
+      if (response.body.isNotEmpty) {
+        int statusCode = jsonDecode(response.body)['httpStatus'];
+        return statusCode;
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
+    } else {
+      throw Exception("Null Token. User Unauthorized");
+    }
+  }
 
 }

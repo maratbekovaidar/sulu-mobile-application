@@ -1,4 +1,4 @@
-import 'package:sulu_mobile_application/utils/model/city_model.dart';
+import 'package:sulu_mobile_application/utils/model/city_model/city_model.dart';
 
 class UserModel {
   final int id;

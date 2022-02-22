@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
 import 'package:sulu_mobile_application/utils/model/user_model.dart';
-import 'package:sulu_mobile_application/utils/services/user_provider.dart';
+import 'package:sulu_mobile_application/utils/services/user_service.dart';
 
 class ProfileEditPage extends StatefulWidget {
   const ProfileEditPage({Key? key, required this.userModel}) : super(key: key);
@@ -27,7 +27,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   TextEditingController confirmPasswordController = TextEditingController();
 
   /// User Provider
-  final UserProvider _userProvider = UserProvider();
+  final UserService _userProvider = UserService();
 
   @override
   void initState() {

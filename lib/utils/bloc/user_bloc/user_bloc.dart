@@ -1,15 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sulu_mobile_application/utils/model/city_model.dart';
+import 'package:sulu_mobile_application/utils/model/city_model/city_model.dart';
 import 'package:sulu_mobile_application/utils/model/user_model.dart';
-import 'package:sulu_mobile_application/utils/services/user_provider.dart';
+import 'package:sulu_mobile_application/utils/services/user_service.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
 
 class  UserBloc extends Bloc<UserEvent, UserState> {
 
-  UserProvider provider = UserProvider();
+  UserService provider = UserService();
 
   UserBloc() : super(UserInitial()) {
     on<UserEvent>((event, emit) async {

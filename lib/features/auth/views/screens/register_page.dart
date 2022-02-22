@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/otp_checking_page.dart';
-import 'package:sulu_mobile_application/utils/model/city_model.dart';
-import 'package:sulu_mobile_application/utils/services/user_provider.dart';
+import 'package:sulu_mobile_application/utils/model/city_model/city_model.dart';
+import 'package:sulu_mobile_application/utils/services/user_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -19,7 +19,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
 
   /// Provider
-  final UserProvider _userProvider = UserProvider();
+  final UserService _userProvider = UserService();
 
   /// Cities
   List<CityModel> cities = [];

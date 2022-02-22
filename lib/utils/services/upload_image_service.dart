@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sulu_mobile_application/configuration/configuration.dart';
 
 
-class UploadImageProvider {
+class UploadImageService {
 
   /// Secure Storage
   FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -15,14 +15,20 @@ class UploadImageProvider {
   /// Upload user avatar image
   Future<bool> uploadUserImage(int id, String photo, String fileName) async {
     String token = (await storage.read(key: 'token'))!;
+
     var formData = FormData.fromMap(
       {
         'file': await MultipartFile.fromFile(photo,filename: fileName)
       }
     );
+
+
     var response = await Dio().post(
-        '${Configuration.host}private/image/user/uploadImage?userId=$id',
+        '${Configuration.imageUploadUrl}private/image/user/uploadImage?userId=$id',
         data: formData,
+        onSendProgress: (int sent, int total) {
+          print('$sent $total');
+        },
         options: Options(
             headers: {
               'Content-Type':'application/json',
@@ -31,7 +37,8 @@ class UploadImageProvider {
         )
     );
     if (response.statusCode == 200) {
-     return true;
+
+      return true;
     } else {
       return false;
     }
@@ -53,7 +60,7 @@ class UploadImageProvider {
         }
     );
     var response = await Dio().post(
-        '${Configuration.host}private/image/feedback/uploadImageForEstablishmentFeedback?feedbackId=$id',
+        '${Configuration.imageUploadUrl}private/image/feedback/uploadImageForEstablishmentFeedback?feedbackId=$id',
         data: formData,
         options: Options(
             headers: {

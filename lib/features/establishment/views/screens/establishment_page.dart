@@ -14,7 +14,7 @@ import 'package:sulu_mobile_application/utils/repository/comment_repository.dart
 import 'package:sulu_mobile_application/utils/repository/establishment_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/master_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/service_repository.dart';
-import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
+import 'package:sulu_mobile_application/utils/services/establishment_service.dart';
 import 'package:share/share.dart';
 import 'package:sulu_mobile_application/constants/app_constants.dart' as constants;
 
@@ -55,7 +55,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
   List<MasterModel> masters = [];
 
 
-  final EstablishmentProvider _establishmentProvider = EstablishmentProvider();
+  final EstablishmentService _establishmentProvider = EstablishmentService();
 
 
   @override

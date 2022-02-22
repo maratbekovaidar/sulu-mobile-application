@@ -6,7 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/appointment_model.dart';
-import 'package:sulu_mobile_application/utils/services/appointment_provider.dart';
+import 'package:sulu_mobile_application/utils/services/appointment_service.dart';
 
 class CommentPage extends StatefulWidget {
   const CommentPage(
@@ -23,7 +23,7 @@ class CommentPage extends StatefulWidget {
 class _CommentPageState extends State<CommentPage> {
 
   /// Providers
-  final AppointmentProvider _appointmentProvider = AppointmentProvider();
+  final AppointmentService _appointmentProvider = AppointmentService();
 
   /// Upload data
   double ratingComment = 0;

@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:sulu_mobile_application/configuration/configuration.dart';
-import 'package:sulu_mobile_application/utils/model/city_model.dart';
+import 'package:sulu_mobile_application/utils/model/city_model/city_model.dart';
 import 'package:sulu_mobile_application/utils/model/user_model.dart';
 
-class UserProvider {
+class UserService {
 
   /// Secure Storage
   FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -181,6 +181,7 @@ try{
         "photo": photo
       })
     );
+    print(response.body);
 
 
     if(response.statusCode == 200) {

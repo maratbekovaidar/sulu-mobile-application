@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sulu_mobile_application/utils/services/user_provider.dart';
+import 'package:sulu_mobile_application/utils/services/user_service.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -18,7 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
   /// Api provider
-  UserProvider provider = UserProvider();
+  UserService provider = UserService();
 
   /// Checkbox
   bool isChecked = false;

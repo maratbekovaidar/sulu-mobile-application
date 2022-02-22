@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pin_put/pin_put.dart';
-import 'package:sulu_mobile_application/utils/services/user_provider.dart';
+import 'package:sulu_mobile_application/utils/services/user_service.dart';
 
 //using it for arguments in routeGenerator
 class OtpCheckingConstructor {
@@ -40,7 +40,7 @@ class OtpCheckingPage extends StatefulWidget {
 }
 
 class _OtpCheckingPageState extends State<OtpCheckingPage> {
-  final UserProvider _userProvider = UserProvider();
+  final UserService _userProvider = UserService();
 
   String? errorText;
   double opacity = 0;

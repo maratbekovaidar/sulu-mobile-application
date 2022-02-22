@@ -8,6 +8,7 @@ import 'package:sulu_mobile_application/features/establishment/views/screens/est
 import 'package:sulu_mobile_application/features/favorite/views/screens/favorite_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/home_page.dart';
+import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
 
 // Map<String, WidgetBuilder> routes = {
 //   '/' : (context) => const HomePage(),
@@ -35,6 +36,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const RegisterPage());
       case '/salons':
         return MaterialPageRoute(builder: (_) => const EstablishmentsPage());
+      case '/profile':
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
       case '/category':
         return MaterialPageRoute(builder: (_) => const CategoryPage());
         case '/favorite':

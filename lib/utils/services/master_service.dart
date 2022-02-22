@@ -7,7 +7,7 @@ import 'package:sulu_mobile_application/configuration/configuration.dart';
 import 'package:sulu_mobile_application/utils/model/master_models/master_model.dart';
 
 
-class MasterProvider {
+class MasterService {
 
   /// Secure Storage
   FlutterSecureStorage storage = const FlutterSecureStorage();

@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:sulu_mobile_application/utils/services/favorite_provider.dart';
+import 'package:sulu_mobile_application/utils/services/favorite_service.dart';
 
 part 'favorite_event.dart';
 part 'favorite_state.dart';
 
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
-  final FavoriteProvider _favoriteProvider = FavoriteProvider();
+  final FavoriteService _favoriteProvider = FavoriteService();
 
   FavoriteBloc() : super(FavoriteInitial()) {
     on<FavoriteEvent>((event, emit) async {

@@ -142,7 +142,7 @@ class _SuluDrawerState extends State<SuluDrawer> {
                               padding: const EdgeInsets.all(20.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+                                  Navigator.popAndPushNamed(context, '/profile');
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -183,7 +183,7 @@ class _SuluDrawerState extends State<SuluDrawer> {
 
                                     /// Avatar
                                     CircleAvatar(
-                                      backgroundColor: Colors.white,
+                                      backgroundColor: Colors.grey,
                                       backgroundImage:
                                       NetworkImage(state.userModel.photo),
                                       radius: 40,

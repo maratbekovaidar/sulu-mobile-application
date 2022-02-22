@@ -8,10 +8,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sulu_mobile_application/utils/api_clients/network_client.dart';
 import 'package:sulu_mobile_application/utils/model/comment_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/appointment_model.dart';
-import 'package:sulu_mobile_application/utils/services/upload_image_provider.dart';
+import 'package:sulu_mobile_application/utils/services/upload_image_service.dart';
 
 
-class AppointmentProvider {
+class AppointmentService {
 
   //client to use get and posts
   final _networkClient = NetworkClient();
@@ -77,7 +77,7 @@ class AppointmentProvider {
   Future<bool> setCommentService(int establishmentId, int masterDataId, double star, String comment, List<XFile>? images) async {
 
     /// Image provider
-    UploadImageProvider _imageProvider = UploadImageProvider();
+    UploadImageService _imageProvider = UploadImageService();
 
     var url = Uri.parse(
         'http://94.247.129.64:8080/private/comment/add/feedbackToEstablishment');

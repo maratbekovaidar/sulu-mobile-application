@@ -6,8 +6,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:sulu_mobile_application/features/profile/views/screens/profile_edit_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sulu_mobile_application/utils/services/upload_image_provider.dart';
-import 'package:sulu_mobile_application/utils/services/user_provider.dart';
+import 'package:sulu_mobile_application/utils/services/upload_image_service.dart';
+import 'package:sulu_mobile_application/utils/services/user_service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -20,9 +20,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   /// Providers and Controllers
   final ImagePicker _picker = ImagePicker();
-  final UploadImageProvider _uploadImageProvider = UploadImageProvider();
+  final UploadImageService _uploadImageProvider = UploadImageService();
   final PanelController _pc = PanelController();
-  final UserProvider _userProvider = UserProvider();
+  final UserService _userProvider = UserService();
   late UserBloc _userBloc;
 
   @override
@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 _userBloc = BlocProvider.of<UserBloc>(context);
 
                 if (state is UserInitial) {
-                  _userBloc.add(UserLoadCitiesEvent());
+                  // _userBloc.add(UserLoadCitiesEvent());
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
@@ -80,6 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 }
 
                 if (state is UserCitiesLoadedState) {
+
                   return ListView.builder(
                     itemCount: state.cities.length,
                     itemBuilder: (context, index) {
@@ -105,6 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
           appBar: AppBar(),
           body: BlocBuilder<UserBloc, UserState>(
             builder: (context, state) {
+
               _userBloc = BlocProvider.of<UserBloc>(context);
 
               if (state is UserInitial) {
@@ -144,6 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               /// Image
                               CircleAvatar(
+                                backgroundColor: Colors.grey,
                                 radius: 100,
                                 backgroundImage:
                                     NetworkImage(state.userModel.photo),
@@ -487,6 +490,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 );
               }
+
+
 
               return const Center(child: Text(""));
             },

@@ -8,7 +8,7 @@ import 'package:sulu_mobile_application/utils/model/establishment_models/establi
 import 'package:sulu_mobile_application/utils/model/master_models/master_portfolio_model.dart';
 
 
-class EstablishmentProvider {
+ class EstablishmentService {
 
 
   /// Client to use get and posts

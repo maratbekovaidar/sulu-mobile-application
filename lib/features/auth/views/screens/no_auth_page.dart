@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sulu_mobile_application/utils/model/main_banner_model.dart';
-import 'package:sulu_mobile_application/utils/services/establishment_provider.dart';
+import 'package:sulu_mobile_application/utils/services/establishment_service.dart';
 
 class NoAuthPage extends StatefulWidget {
   const NoAuthPage({Key? key}) : super(key: key);
@@ -53,7 +53,7 @@ class _NoAuthPageState extends State<NoAuthPage> {
   }
 
   /// Provider
-  final EstablishmentProvider _establishmentProvider = EstablishmentProvider();
+  final EstablishmentService _establishmentProvider = EstablishmentService();
 
   @override
   Widget build(BuildContext context) {

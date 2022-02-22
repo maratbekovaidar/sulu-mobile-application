@@ -4,7 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sulu_mobile_application/configuration/route_generator.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/first_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/login_page.dart';
-import 'package:sulu_mobile_application/features/auth/views/screens/otp_checking_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/register_page.dart';
 import 'package:sulu_mobile_application/features/favorite/views/screens/favorite_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
@@ -15,6 +14,8 @@ import 'package:sulu_mobile_application/features/establishment/views/screens/est
 import 'features/auth/views/screens/no_auth_page.dart';
 
 String? token;
+
+
 
 Future<void> main() async {
 
