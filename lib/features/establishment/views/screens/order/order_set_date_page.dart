@@ -13,7 +13,8 @@ import 'package:sulu_mobile_application/utils/repository/master_repository.dart'
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:sulu_mobile_application/constants/app_constants.dart' as constants;
+import 'package:sulu_mobile_application/constants/app_constants.dart'
+    as constants;
 
 class OrderSetDatePage extends StatefulWidget {
   const OrderSetDatePage(
@@ -30,16 +31,7 @@ class OrderSetDatePage extends StatefulWidget {
 }
 
 class _OrderSetDatePageState extends State<OrderSetDatePage> {
-
-  List<String> days = [
-    "Пн",
-    "Вт",
-    "Ср",
-    "Чт",
-    "Пт",
-    "Сб",
-    "Вс"
-  ];
+  List<String> days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
   /// Calendar Date
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -68,7 +60,8 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
   void initState() {
     super.initState();
     initializeDateFormatting();
-    List<int> days = widget.establishmentModel.schedule.map((e) => e.id).toList();
+    List<int> days =
+        widget.establishmentModel.schedule.map((e) => e.id).toList();
     days.sort();
     firstDay = days[0];
     lastDay = days[days.length - 1];
@@ -86,15 +79,16 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
     /// Selected time
 
     return MultiBlocProvider(
-  providers: [
-    BlocProvider(
-      create: (context) => MasterBloc(masterRepository: masterRepository),
-),
-    BlocProvider(
-      create: (context) => ExistsTimeBloc(existsTimeRepository: existsTimeRepository),
-    ),
-  ],
-  child: Scaffold(
+      providers: [
+        BlocProvider(
+          create: (context) => MasterBloc(masterRepository: masterRepository),
+        ),
+        BlocProvider(
+          create: (context) =>
+              ExistsTimeBloc(existsTimeRepository: existsTimeRepository),
+        ),
+      ],
+      child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text("Новая запись"),
@@ -120,7 +114,8 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                         children: [
                           /// Title
                           Text(
-                            constants.subcategories[widget.selectedService.subTypeId - 1],
+                            constants.subcategories[
+                                widget.selectedService.subTypeId - 1],
                             style: GoogleFonts.inter(),
                           ),
 
@@ -181,10 +176,10 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                       if (state is MasterLoadedState) {
                         if (state.loadedMastersOfEstablishment.isNotEmpty) {
                           Future.delayed(Duration.zero, () async {
-                            if(_selectedMasterModel == null) {
+                            if (_selectedMasterModel == null) {
                               setState(() {
                                 _selectedMasterModel =
-                                state.loadedMastersOfEstablishment[0];
+                                    state.loadedMastersOfEstablishment[0];
                               });
                             }
                           });
@@ -214,9 +209,8 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                                           /// Avatar
                                           CircleAvatar(
                                               radius: 25,
-                                              backgroundImage: NetworkImage(
-                                                items.photo
-                                              )),
+                                              backgroundImage:
+                                                  NetworkImage(items.photo)),
                                           const SizedBox(width: 10),
 
                                           /// Info
@@ -280,9 +274,11 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                       Row(
                         children: [
                           Text(
-                            "График работы: " + constants.days[firstDay - 1] + " - " + constants.days[lastDay - 1],
-                            style: GoogleFonts.inter(
-                                fontSize: 14),
+                            "График работы: " +
+                                constants.days[firstDay - 1] +
+                                " - " +
+                                constants.days[lastDay - 1],
+                            style: GoogleFonts.inter(fontSize: 14),
                           ),
                         ],
                       )
@@ -308,7 +304,17 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                         setState(() {
                           _selectedDay = selectedDay;
                           _focusedDay = focusedDay;
-                          existsTimeBloc.add(ExistsTimeLoadEvent(date: _selectedDay!.year.toString() + "-" + (_selectedDay!.month.toString().length == 1 ? "0" + _selectedDay!.month.toString() : _selectedDay!.month.toString()) + "-" + (_selectedDay!.day.toString().length == 1 ? "0" + _selectedDay!.day.toString() : _selectedDay!.day.toString()), masterDataId: _selectedMasterModel!.id));
+                          existsTimeBloc.add(ExistsTimeLoadEvent(
+                              date: _selectedDay!.year.toString() +
+                                  "-" +
+                                  (_selectedDay!.month.toString().length == 1
+                                      ? "0" + _selectedDay!.month.toString()
+                                      : _selectedDay!.month.toString()) +
+                                  "-" +
+                                  (_selectedDay!.day.toString().length == 1
+                                      ? "0" + _selectedDay!.day.toString()
+                                      : _selectedDay!.day.toString()),
+                              masterDataId: _selectedMasterModel!.id));
                         });
                       }
                     },
@@ -361,9 +367,13 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "Время работы салона: с " + widget.establishmentModel.fromWorkSchedule.replaceRange(5, 8, '') + " до " + widget.establishmentModel.toWorkSchedule.replaceRange(5, 8, ''),
-                        style: GoogleFonts.inter(
-                            fontSize: 14),
+                        "Время работы салона: с " +
+                            widget.establishmentModel.fromWorkSchedule
+                                .replaceRange(5, 8, '') +
+                            " до " +
+                            widget.establishmentModel.toWorkSchedule
+                                .replaceRange(5, 8, ''),
+                        style: GoogleFonts.inter(fontSize: 14),
                       ),
                     ],
                   ),
@@ -371,58 +381,63 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                 if (_selectedMasterModel != null)
                   BlocBuilder<ExistsTimeBloc, ExistsTimeState>(
                     builder: (context, state) {
-
-                      if(state is ExistsTimeInitialState) {
-                        existsTimeBloc = BlocProvider.of<ExistsTimeBloc>(context);
+                      if (state is ExistsTimeInitialState) {
+                        existsTimeBloc =
+                            BlocProvider.of<ExistsTimeBloc>(context);
                         return const Center(child: Text("Выберите день"));
                       }
 
-                      if(state is ExistsTimeLoadingState) {
+                      if (state is ExistsTimeLoadingState) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
 
-                      if(state is ExistsTimeErrorState) {
+                      if (state is ExistsTimeErrorState) {
                         return const Center(
                           child: Text("Этот день занят"),
                         );
                       }
 
-                      if(state is ExistsTimeLoadedState) {
+                      if (state is ExistsTimeLoadedState) {
+                        print((width / 60).floor());
                         return Container(
-                          height: (50 * (state.loadedExistsTime.length / 5).ceil()).toDouble(),
+                          height:
+                              (width * 0.15 * (state.loadedExistsTime.length / 5).ceil())
+                                  .toDouble(),
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: GridView.builder(
                               physics: const ScrollPhysics(),
                               gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: width > 400 ? 5 : 4,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                  childAspectRatio: 1.5),
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: (width / 80).floor(),
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      childAspectRatio: 1.5
+                                  ),
                               itemCount:
-                              // _selectedMasterModel!.masterStartTime.length,
-                              state.loadedExistsTime.length,
+                                  state.loadedExistsTime.length,
                               itemBuilder: (BuildContext context, index) {
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      _selectedTimesStatus =
-                                          List.filled(state.loadedExistsTime.length, false);
-                                      _selectedTime = state.loadedExistsTime[index];
+                                      _selectedTimesStatus = List.filled(
+                                          state.loadedExistsTime.length, false);
+                                      _selectedTime =
+                                          state.loadedExistsTime[index];
                                       _selectedTimesStatus[index] =
-                                      !_selectedTimesStatus[index];
+                                          !_selectedTimesStatus[index];
                                     });
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                         color:
-                                        _selectedTimesStatus[index] == false
-                                            ? Colors.white
-                                            : Colors.black12,
-                                        border: Border.all(color: Colors.black38),
+                                            _selectedTimesStatus[index] == false
+                                                ? Colors.white
+                                                : Colors.black12,
+                                        border:
+                                            Border.all(color: Colors.black38),
                                         borderRadius: BorderRadius.circular(5)),
                                     child: Text(state.loadedExistsTime[index]
                                         .replaceRange(5, 8, '')),
@@ -432,9 +447,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                         );
                       }
 
-
                       return Container();
-
                     },
                   )
                 else
@@ -525,6 +538,6 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
           ],
         ),
       ),
-);
+    );
   }
 }
