@@ -273,10 +273,10 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                 const SizedBox(width: 10),
 
                                 /// Time
-                                Text(widget.establishmentModel.toWorkSchedule
+                                Text(widget.establishmentModel.fromWorkSchedule
                                         .replaceRange(5, 8, "") +
                                     " - " +
-                                    widget.establishmentModel.fromWorkSchedule
+                                    widget.establishmentModel.toWorkSchedule
                                         .replaceRange(5, 8, "")),
                                 const SizedBox(width: 10),
                               ],
