@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sulu_mobile_application/configuration/route_generator.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/first_page.dart';
@@ -18,6 +19,8 @@ String? token;
 
 
 Future<void> main() async {
+
+
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -52,6 +55,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
 
       return MaterialApp(
         debugShowCheckedModeBanner: false,

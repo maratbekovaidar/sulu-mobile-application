@@ -45,6 +45,7 @@ class AppointmentModel {
         serviceType: json['serviceType'],
         serviceId: json['serviceId'],
         masterType: masterTypeJson.map((e) => MasterTypeModel.fromJson(e)).toList(),
-        masterDataId: json['masterDataId']);
+        masterDataId: json['masterDataId'],
+    );
   }
 }
