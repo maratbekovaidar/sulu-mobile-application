@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
+import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
+import 'package:sulu_mobile_application/utils/bloc/main_banner/main_banner_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
 
 class SuluDrawer extends StatefulWidget {
-  const SuluDrawer({Key? key}) : super(key: key);
+  const SuluDrawer({Key? key, this.updateState}) : super(key: key);
+  final Function? updateState;
 
   @override
   _SuluDrawerState createState() => _SuluDrawerState();
 }
 
 class _SuluDrawerState extends State<SuluDrawer> {
+
   Function? navigateToPage(BuildContext context,String pathName){
     Navigator.pushNamed(context, pathName);
 
@@ -71,6 +75,12 @@ class _SuluDrawerState extends State<SuluDrawer> {
             );
           });
   }
+
+  /// Refresh State of BLoC
+  void refreshStates() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -85,6 +95,10 @@ class _SuluDrawerState extends State<SuluDrawer> {
 
     /// Bloc
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
+    MainBannerBloc mainBannerBloc = BlocProvider.of<MainBannerBloc>(context);
+    EstablishmentBloc establishmentBloc =
+    BlocProvider.of<EstablishmentBloc>(context);
+
 
     return Drawer(
       child: ListView(
@@ -142,8 +156,14 @@ class _SuluDrawerState extends State<SuluDrawer> {
                               padding: const EdgeInsets.all(20.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  // Navigator.popAndPushNamed(context, '/profile');
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const ProfilePage())).whenComplete(() => {userBloc.add(UserLoadEvent())});
+
+                                  /// Refresh state hello page and load bloc after close profile page (c) Aidar PIZDEC KRUTOY NAHUI
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const ProfilePage())).whenComplete(() => {
+                                    userBloc.add(UserLoadEvent()),
+                                    mainBannerBloc.add(MainBannerLoadEvent()),
+                                    establishmentBloc.add(EstablishmentLoadEvent()),
+                                    establishmentBloc.add(EstablishmentLoadPopularEvent())
+                                  });
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -26,7 +26,6 @@ class _HelloPageState extends State<HelloPage> {
 
   @override
   void initState() {
-    print("Hello Init");
     super.initState();
 
   }
@@ -34,11 +33,6 @@ class _HelloPageState extends State<HelloPage> {
 
   @override
   void dispose() {
-    // userBloc.add(UserLoadEvent());
-    // establishmentBloc.add(EstablishmentLoadEvent());
-    // mainBannerBloc.add(MainBannerLoadEvent());
-
-    print("Hello Dispose");
     super.dispose();
   }
 
@@ -195,12 +189,20 @@ class _HelloPageState extends State<HelloPage> {
                               /// Hair
                               GestureDetector(
                                 onTap: () {
+
+
+                                  /// Example of change state after close
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               const EstablishmentsPage(
-                                                  title: "Волосы", typeId: 1)));
+                                                  title: "Волосы", typeId: 1))).whenComplete(() {
+                                    userBloc.add(UserLoadEvent());
+                                    establishmentBloc.add(EstablishmentLoadEvent());
+                                    mainBannerBloc.add(MainBannerLoadEvent());
+
+                                  });
                                 },
                                 child: Column(
                                   children: [
