@@ -164,12 +164,20 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
         dynamic jsonResult = jsonDecode(
             utf8.decode(response.bodyBytes))["data"];
         List<dynamic> timesJson = jsonResult["availableTimes"];
-        print("Times getting started");
         List<TimeOfDay> times = timesJson.map((time) {
           TimeOfDay timeOfDay = TimeOfDay(hour: int.parse(time.toString().substring(0, 2)), minute: int.parse(time.toString().substring(3, 5)));
           return timeOfDay;
         }).toList();
-        print("Times getted");
+
+        double toDoubleTimeOfDay(TimeOfDay timeOfDay) {
+          return timeOfDay.hour + timeOfDay.minute / 60;
+        }
+
+        times.sort(
+            (a, b) {
+              return toDoubleTimeOfDay(a).compareTo(toDoubleTimeOfDay(b));
+            }
+        );
         return times;
       } else {
         throw Exception("Response is null. Response status: " +
