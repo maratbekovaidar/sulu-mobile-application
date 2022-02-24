@@ -82,8 +82,9 @@ class ServiceService {
   Future<bool> setAppointment(String appointmentDate,
       String appointmentStartTime, int masterId, String phoneNumber,
       int serviceId, String username) async {
+    print(serviceId);
     var url = Uri.parse(
-        '${Configuration.host}private/appointment/create');
+        '${Configuration.imageUploadUrl}private/appointment/create');
 
     String? token = await storage.read(key: 'token');
 
@@ -104,6 +105,7 @@ class ServiceService {
             'Authorization': token
           }
       );
+
 
       if (response.statusCode == 200) {
         if(jsonDecode(response.body)['httpStatus'] == 200) {

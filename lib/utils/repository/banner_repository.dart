@@ -30,6 +30,7 @@ class BannerRepository {
       ],
     converter: const JsonConverter()
    ));
+
   Future<List<MainBannerModel>> getMainBanners() async {
     final Response response=await service.getMainBanners();
     List<MainBannerModel> banners= jsonDecode(response.bodyString)["data"].map<MainBannerModel>

@@ -400,7 +400,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                       }
 
                       if (state is ExistsTimeLoadedState) {
-                        print((width / 60).floor());
+
                         return Container(
                           height:
                               (width * 0.15 * (state.loadedExistsTime.length / 5).ceil())
@@ -418,6 +418,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                               itemCount:
                                   state.loadedExistsTime.length,
                               itemBuilder: (BuildContext context, index) {
+
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {

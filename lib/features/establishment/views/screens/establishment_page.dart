@@ -17,6 +17,7 @@ import 'package:sulu_mobile_application/utils/repository/service_repository.dart
 import 'package:sulu_mobile_application/utils/services/establishment_service.dart';
 import 'package:share/share.dart';
 import 'package:sulu_mobile_application/constants/app_constants.dart' as constants;
+import 'package:url_launcher/url_launcher.dart';
 
 
 class EstablishmentPage extends StatefulWidget {
@@ -57,6 +58,14 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
   final EstablishmentService _establishmentProvider = EstablishmentService();
 
+  _launchCaller(String phoneNumber) async {
+    final url = "tel:$phoneNumber";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   void initState() {
@@ -318,18 +327,23 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                         const SizedBox(height: 5),
 
                         /// Phone number
-                        Row(
-                          children: [
-                            /// Location icon
-                            const Icon(Icons.phone),
-                            const SizedBox(width: 10),
+                        InkWell(
+                          onTap: (){
+                            _launchCaller(widget.establishmentModel.phoneNumber);
+                          },
+                          child: Row(
+                            children: [
+                              /// Location icon
+                              const Icon(Icons.phone),
+                              const SizedBox(width: 10),
 
-                            /// Address text
-                            Text(
-                              widget.establishmentModel.phoneNumber,
-                              style: GoogleFonts.inter(),
-                            )
-                          ],
+                              /// Address text
+                              Text(
+                                widget.establishmentModel.phoneNumber,
+                                style: GoogleFonts.inter(),
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 30),
 

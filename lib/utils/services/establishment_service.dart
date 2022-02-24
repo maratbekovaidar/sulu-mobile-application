@@ -154,6 +154,8 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
           }
       );
 
+
+
       /// Convert response to json list
 
 

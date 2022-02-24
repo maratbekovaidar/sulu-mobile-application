@@ -29,6 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     /// Sizes
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return BlocProvider(
       create: (context) => UserBloc(),
       child: SlidingUpPanel(
@@ -45,6 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
         minHeight: 0,
+        maxHeight: height*0.8,
         controller: _pc,
         onPanelClosed: () {
           _userBloc.add(UserLoadEvent());

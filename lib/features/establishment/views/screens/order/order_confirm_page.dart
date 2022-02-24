@@ -72,7 +72,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
                       ),),
                       const SizedBox(height: 20),
                       Text("Дата: " + widget.date),
-                      Text("Время: " + widget.time)
+                      Text("Время: " + widget.time.substring(0,5))
                     ],
                   )
                 ],
@@ -271,11 +271,12 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
                             });
                           }
                         } catch (e) {
+                          print(e);
                           Navigator.pop(context);
                           showDialog(context: context, barrierDismissible: false, builder: (_) {
                             return CupertinoAlertDialog(
                               content: const Center(
-                                child: Text("Не удалось сделать зппись!", style: TextStyle(color: Colors.red),),
+                                child: Text("Не удалось сделать запись!", style: TextStyle(color: Colors.red),),
                               ),
                               actions: [
                                 TextButton(onPressed: () {
