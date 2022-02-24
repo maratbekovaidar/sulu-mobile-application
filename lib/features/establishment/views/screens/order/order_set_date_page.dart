@@ -441,7 +441,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                                         border:
                                             Border.all(color: Colors.black38),
                                         borderRadius: BorderRadius.circular(5)),
-                                    child: Text(state.loadedExistsTime[index].showTime()),
+                                    child: Center(child: Text(state.loadedExistsTime[index].showTime())),
                                   ),
                                 );
                               }),
