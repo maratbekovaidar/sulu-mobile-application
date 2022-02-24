@@ -27,7 +27,6 @@ class UploadImageService {
         '${Configuration.imageUploadUrl}private/image/user/uploadImage?userId=$id',
         data: formData,
         onSendProgress: (int sent, int total) {
-          print('$sent $total');
         },
         options: Options(
             headers: {

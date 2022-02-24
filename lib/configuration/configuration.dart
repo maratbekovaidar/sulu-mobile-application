@@ -1,5 +1,4 @@
 
-import 'package:chopper/chopper.dart';
 
 abstract class Configuration{
   static const host = 'https://sulutest.kz/';

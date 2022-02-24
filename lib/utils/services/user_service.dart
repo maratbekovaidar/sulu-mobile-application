@@ -122,7 +122,7 @@ try{
   /// confirm Otp from db
   Future<int> confirmPhoneNumber( String phoneNumber) async {
 
-    var url = Uri.parse('${Configuration.host}public/auth/checkPhoneNumber?phoneNumber=%2B${phoneNumber}');
+    var url = Uri.parse('${Configuration.host}public/auth/checkPhoneNumber?phoneNumber=%2B$phoneNumber');
 
     var response = await http.post(
         url,
@@ -130,7 +130,6 @@ try{
           'Content-Type':'application/json'
         }
     );
-    print(response.body);
 
     return jsonDecode(response.body)["httpStatus"];
   }
@@ -158,7 +157,6 @@ try{
     String fulString= response.body.substring(response.body.indexOf("CODE"));
     String partString=fulString.substring(6);
     partString = partString.replaceFirst(" ", "");
-    print(partString);
     return partString;
   }
 
@@ -181,7 +179,6 @@ try{
         "photo": photo
       })
     );
-    print(response.body);
 
 
     if(response.statusCode == 200) {

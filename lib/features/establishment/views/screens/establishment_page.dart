@@ -14,11 +14,10 @@ import 'package:sulu_mobile_application/utils/repository/comment_repository.dart
 import 'package:sulu_mobile_application/utils/repository/establishment_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/master_repository.dart';
 import 'package:sulu_mobile_application/utils/repository/service_repository.dart';
-import 'package:sulu_mobile_application/utils/services/establishment_service.dart';
 import 'package:share/share.dart';
-import 'package:sulu_mobile_application/constants/app_constants.dart' as constants;
+import 'package:sulu_mobile_application/constants/app_constants.dart'
+    as constants;
 import 'package:url_launcher/url_launcher.dart';
-
 
 class EstablishmentPage extends StatefulWidget {
   const EstablishmentPage({Key? key, required this.establishmentModel})
@@ -46,7 +45,6 @@ class _EstablishmentPageState extends State<EstablishmentPage>
   int _mainBannerIndex = 0;
   final CarouselController _mainBannerController = CarouselController();
 
-
   /// Repositories
   ServiceRepository serviceRepository = ServiceRepository();
   MasterRepository masterRepository = MasterRepository();
@@ -55,8 +53,6 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
   List<MasterModel> masters = [];
 
-
-  final EstablishmentService _establishmentProvider = EstablishmentService();
 
   _launchCaller(String phoneNumber) async {
     final url = "tel:$phoneNumber";
@@ -70,7 +66,8 @@ class _EstablishmentPageState extends State<EstablishmentPage>
   @override
   void initState() {
     super.initState();
-    List<int> days = widget.establishmentModel.schedule.map((e) => e.id).toList();
+    List<int> days =
+        widget.establishmentModel.schedule.map((e) => e.id).toList();
     days.sort();
     firstDay = days[0];
     lastDay = days[days.length - 1];
@@ -78,8 +75,6 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
   @override
   Widget build(BuildContext context) {
-
-
     /// Size
     double width = MediaQuery.of(context).size.width;
 
@@ -89,10 +84,8 @@ class _EstablishmentPageState extends State<EstablishmentPage>
           create: (context) =>
               ServiceBloc(serviceRepository: serviceRepository),
         ),
-
         BlocProvider(
-          create: (context) =>
-              FavoriteBloc(),
+          create: (context) => FavoriteBloc(),
         ),
         BlocProvider(
           create: (context) => MasterBloc(masterRepository: masterRepository),
@@ -101,8 +94,8 @@ class _EstablishmentPageState extends State<EstablishmentPage>
             create: (context) =>
                 CommentBloc(commentRepository: commentRepository)),
         BlocProvider(
-            create: (context) =>
-                EstablishmentBloc(establishmentRepository: establishmentRepository)),
+            create: (context) => EstablishmentBloc(
+                establishmentRepository: establishmentRepository)),
       ],
       child: Scaffold(
         appBar: AppBar(),
@@ -157,44 +150,44 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                 )),
 
                             /// Favorite Button
-                            Builder(
-                              builder: (context) {
-                                FavoriteBloc favoriteBloc =
-                                BlocProvider.of<FavoriteBloc>(context);
-                                return BlocBuilder<FavoriteBloc, FavoriteState>(
-                                  builder: (favContext, favState) {
-
-                                    if(favState is FavoriteInitial){
-                                      favoriteBloc.add(FavoriteLoadEvent(widget.establishmentModel.id));
-                                    }
-                                    if(favState is FavoriteLoad){
-                                      return Align(
-                                        alignment: Alignment.topRight,
-                                        child: Padding(
-                                          padding:
-                                          const EdgeInsets.all(5.0),
-                                          child: GestureDetector(
-                                            onTap:(){
-                                              favoriteBloc.add(FavoriteSetEvent(branchId:widget.establishmentModel.id, context: favContext));
-                                            },
-                                            child: Icon(
-                                              favState.isFavorite
-                                                  ? Icons.favorite
-                                                  : Icons
-                                                  .favorite_outline_rounded,
-                                              color: Colors.black38,
-                                              size: 30,
-                                            ),
+                            Builder(builder: (context) {
+                              FavoriteBloc favoriteBloc =
+                                  BlocProvider.of<FavoriteBloc>(context);
+                              return BlocBuilder<FavoriteBloc, FavoriteState>(
+                                builder: (favContext, favState) {
+                                  if (favState is FavoriteInitial) {
+                                    favoriteBloc.add(FavoriteLoadEvent(
+                                        widget.establishmentModel.id));
+                                  }
+                                  if (favState is FavoriteLoad) {
+                                    return Align(
+                                      alignment: Alignment.topRight,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            favoriteBloc.add(FavoriteSetEvent(
+                                                branchId: widget
+                                                    .establishmentModel.id,
+                                                context: favContext));
+                                          },
+                                          child: Icon(
+                                            favState.isFavorite
+                                                ? Icons.favorite
+                                                : Icons
+                                                    .favorite_outline_rounded,
+                                            color: Colors.black38,
+                                            size: 30,
                                           ),
                                         ),
-                                      );
-                                    }else{
-                                      return SizedBox();
-                                    }
-                                  },
-                                );
-                              }
-                            )
+                                      ),
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                },
+                              );
+                            })
                           ],
                         )
                       ],
@@ -222,42 +215,44 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                             setState(() {
                                               _mainBannerIndex = index;
                                             });
-                                          }
-                                      ),
+                                          }),
                                       carouselController: _mainBannerController,
                                       items: widget.establishmentModel.images
-                                          .map((item) =>
-                                          Center(
-                                              child: Container(
+                                          .map((item) => Center(
+                                                  child: Container(
                                                 width: width,
                                                 decoration: BoxDecoration(
                                                   image: DecorationImage(
                                                       fit: BoxFit.cover,
-                                                      image: NetworkImage(
-                                                        item
-                                                      )
-                                                  ),
+                                                      image:
+                                                          NetworkImage(item)),
                                                 ),
-                                              )
-                                          ))
+                                              )))
                                           .toList(),
                                     );
                                   },
-                                )
-                            ),
+                                )),
                             Align(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: widget.establishmentModel.images.asMap().entries.map((entry) {
+                                children: widget.establishmentModel.images
+                                    .asMap()
+                                    .entries
+                                    .map((entry) {
                                   return GestureDetector(
-                                    onTap: () => _mainBannerController.animateToPage(entry.key),
+                                    onTap: () => _mainBannerController
+                                        .animateToPage(entry.key),
                                     child: Container(
                                       width: 10.0,
                                       height: 10.0,
-                                      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 8.0, horizontal: 4.0),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: (Colors.white).withOpacity(_mainBannerIndex == entry.key ? 0.9 : 0.4)),
+                                          color: (Colors.white).withOpacity(
+                                              _mainBannerIndex == entry.key
+                                                  ? 0.9
+                                                  : 0.4)),
                                     ),
                                   );
                                 }).toList(),
@@ -278,7 +273,9 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                 const SizedBox(width: 10),
 
                                 /// Schedule
-                                Text(constants.days[firstDay - 1] + " - " + constants.days[lastDay - 1]),
+                                Text(constants.days[firstDay - 1] +
+                                    " - " +
+                                    constants.days[lastDay - 1]),
                                 const SizedBox(width: 10),
 
                                 /// Time
@@ -328,8 +325,9 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
                         /// Phone number
                         InkWell(
-                          onTap: (){
-                            _launchCaller(widget.establishmentModel.phoneNumber);
+                          onTap: () {
+                            _launchCaller(
+                                widget.establishmentModel.phoneNumber);
                           },
                           child: Row(
                             children: [
@@ -478,14 +476,19 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                 onTap: () {
                                                                   Navigator.push(
                                                                       context,
-                                                                      MaterialPageRoute(builder:
-                                                                          (context) {
-                                                                        return OrderSetDatePage(
-                                                                            establishmentModel: widget.establishmentModel,
-                                                                            selectedService: state.loadedServices[index]);
-                                                                      }));
+                                                                      MaterialPageRoute(
+                                                                          builder:
+                                                                              (context) {
+                                                                    return OrderSetDatePage(
+                                                                        establishmentModel:
+                                                                            widget
+                                                                                .establishmentModel,
+                                                                        selectedService:
+                                                                            state.loadedServices[index]);
+                                                                  }));
                                                                 },
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   padding: const EdgeInsets
                                                                           .symmetric(
                                                                       vertical:
@@ -494,41 +497,35 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                           10),
                                                                   decoration: const BoxDecoration(
                                                                       border: Border(
-                                                                          bottom: BorderSide(
-                                                                              color:
-                                                                                  Colors.black12))),
+                                                                          bottom:
+                                                                              BorderSide(color: Colors.black12))),
                                                                   child: Row(
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-
                                                                       /// Information
                                                                       Column(
                                                                         crossAxisAlignment:
-                                                                            CrossAxisAlignment
-                                                                                .start,
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
                                                                           /// Title
                                                                           Text(
-                                                                            constants.subcategories[state.loadedServices[index].subTypeId - 1],
-                                                                            style:
-                                                                                GoogleFonts.inter(
-                                                                                  color: Colors.black,
-                                                                                  fontWeight: FontWeight.bold,
-                                                                                  fontSize: 16
-                                                                                ),
+                                                                            constants.subcategories[state.loadedServices[index].subTypeId -
+                                                                                1],
+                                                                            style: GoogleFonts.inter(
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: 16),
                                                                           ),
 
                                                                           SizedBox(
-                                                                            width: width * 0.5,
-                                                                            child: Text(
+                                                                            width:
+                                                                                width * 0.5,
+                                                                            child:
+                                                                                Text(
                                                                               state.loadedServices[index].description,
-                                                                              style:
-                                                                              GoogleFonts.inter(
-                                                                                  color: Colors.black38,
-                                                                                  fontSize: 12
-                                                                              ),
+                                                                              style: GoogleFonts.inter(color: Colors.black38, fontSize: 12),
                                                                             ),
                                                                           ),
                                                                         ],
@@ -537,24 +534,24 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                       /// Price
                                                                       Column(
                                                                         mainAxisAlignment:
-                                                                        MainAxisAlignment.start,
+                                                                            MainAxisAlignment.start,
                                                                         children: [
                                                                           /// Price
                                                                           Text(
-                                                                            state.loadedServices[index].cost.toString() + "₸",
+                                                                            state.loadedServices[index].cost.toString() +
+                                                                                "₸",
                                                                             style: GoogleFonts.inter(
                                                                                 color: Colors.black,
                                                                                 fontWeight: FontWeight.bold,
-                                                                                fontSize: 14
-                                                                            ),
+                                                                                fontSize: 14),
                                                                           ),
 
                                                                           /// Time
                                                                           Text(
                                                                             "1 час",
-                                                                            style: GoogleFonts.inter(color: Colors.black38, fontSize: 12),
+                                                                            style:
+                                                                                GoogleFonts.inter(color: Colors.black38, fontSize: 12),
                                                                           ),
-
                                                                         ],
                                                                       ),
                                                                     ],
@@ -636,7 +633,10 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                 /// Avatar
                                                                 CircleAvatar(
                                                                     radius: 25,
-                                                                    backgroundImage: NetworkImage(state.loadedMastersOfEstablishment[index].photo)),
+                                                                    backgroundImage: NetworkImage(state
+                                                                        .loadedMastersOfEstablishment[
+                                                                            index]
+                                                                        .photo)),
                                                                 const SizedBox(
                                                                     width: 10),
 
@@ -696,76 +696,100 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                             child: BlocBuilder<CommentBloc,
                                                 CommentState>(
                                               builder: (context, state) {
-                                                CommentBloc commentBloc = BlocProvider.of<CommentBloc>(context);
+                                                CommentBloc commentBloc =
+                                                    BlocProvider.of<
+                                                        CommentBloc>(context);
 
-                                                if(state is CommentInitialState) {
-                                                  commentBloc.add(CommentLoadEvent(id: widget.establishmentModel.id));
+                                                if (state
+                                                    is CommentInitialState) {
+                                                  commentBloc.add(
+                                                      CommentLoadEvent(
+                                                          id: widget
+                                                              .establishmentModel
+                                                              .id));
                                                 }
 
-                                                if(state is CommentLoadingState) {
+                                                if (state
+                                                    is CommentLoadingState) {
                                                   return const Center(
-                                                    child: CircularProgressIndicator(),
+                                                    child:
+                                                        CircularProgressIndicator(),
                                                   );
                                                 }
 
-                                                if(state is CommentErrorState) {
+                                                if (state
+                                                    is CommentErrorState) {
                                                   return const Center(
                                                     child: Text("Нету отзывов"),
                                                   );
                                                 }
 
-                                                if(state is CommentLoadedState) {
+                                                if (state
+                                                    is CommentLoadedState) {
                                                   return ListView.builder(
-                                                    physics: const ScrollPhysics(),
-                                                    itemCount: state.loadedCommentsOfEstablishment.length,
+                                                    physics:
+                                                        const ScrollPhysics(),
+                                                    itemCount: state
+                                                        .loadedCommentsOfEstablishment
+                                                        .length,
                                                     itemBuilder:
                                                         (BuildContext context,
-                                                        int index) {
+                                                            int index) {
                                                       return Padding(
-                                                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 10.0),
                                                         child: Container(
                                                           padding:
-                                                          const EdgeInsets.all(
-                                                              20),
+                                                              const EdgeInsets
+                                                                  .all(20),
                                                           decoration: BoxDecoration(
                                                               borderRadius:
-                                                              BorderRadius
-                                                                  .circular(4),
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          4),
                                                               border: Border.all(
                                                                   color: Colors
                                                                       .black38)),
                                                           child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               /// User Information
                                                               Row(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
                                                                 children: [
-
                                                                   /// User Information
                                                                   Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
                                                                     children: [
                                                                       CircleAvatar(
-                                                                        radius: 25,
-                                                                        backgroundImage:
-                                                                        NetworkImage(state.loadedCommentsOfEstablishment[index].userPhoto),
+                                                                        radius:
+                                                                            25,
+                                                                        backgroundImage: NetworkImage(state
+                                                                            .loadedCommentsOfEstablishment[index]
+                                                                            .userPhoto),
                                                                       ),
                                                                       const SizedBox(
-                                                                          width: 10),
+                                                                          width:
+                                                                              10),
                                                                       Column(
                                                                         crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
-                                                                          Text(state.loadedCommentsOfEstablishment[index].userfirstname + " " + state.loadedCommentsOfEstablishment[index].userfirstname),
+                                                                          Text(state.loadedCommentsOfEstablishment[index].userfirstname +
+                                                                              " " +
+                                                                              state.loadedCommentsOfEstablishment[index].userfirstname),
                                                                           const Text(
                                                                             "12 января, 21:56",
-                                                                            style: TextStyle(
-                                                                                color: Colors
-                                                                                    .black38,
-                                                                                fontSize:
-                                                                                14),
+                                                                            style:
+                                                                                TextStyle(color: Colors.black38, fontSize: 14),
                                                                           )
                                                                         ],
                                                                       )
@@ -774,13 +798,22 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
                                                                   /// Star
                                                                   Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .end,
                                                                     children: [
-                                                                      const Icon(Icons.star, color: Colors.yellow),
-                                                                      Text(state.loadedCommentsOfEstablishment[index].stars.toString())
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .star,
+                                                                          color:
+                                                                              Colors.yellow),
+                                                                      Text(state
+                                                                          .loadedCommentsOfEstablishment[
+                                                                              index]
+                                                                          .stars
+                                                                          .toString())
                                                                     ],
                                                                   ),
-
                                                                 ],
                                                               ),
 
@@ -788,7 +821,10 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                   height: 10),
 
                                                               /// Comment
-                                                              Text(state.loadedCommentsOfEstablishment[index].text),
+                                                              Text(state
+                                                                  .loadedCommentsOfEstablishment[
+                                                                      index]
+                                                                  .text),
                                                               const SizedBox(
                                                                   height: 20),
 
@@ -796,12 +832,19 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                               Wrap(
                                                                 spacing: 10,
                                                                 runSpacing: 10,
-                                                                children: state.loadedCommentsOfEstablishment[index].images.map((image) {
-                                                                  return Image.network(
+                                                                children: state
+                                                                    .loadedCommentsOfEstablishment[
+                                                                        index]
+                                                                    .images
+                                                                    .map(
+                                                                        (image) {
+                                                                  return Image
+                                                                      .network(
                                                                     image,
                                                                     width: 150,
                                                                     height: 100,
-                                                                    fit: BoxFit.cover,
+                                                                    fit: BoxFit
+                                                                        .cover,
                                                                   );
                                                                 }).toList(),
                                                               ),
@@ -813,23 +856,27 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                 children: [
                                                                   CircleAvatar(
                                                                     radius: 15,
-                                                                    backgroundImage: NetworkImage(state.loadedCommentsOfEstablishment[index].masterPhoto),
+                                                                    backgroundImage: NetworkImage(state
+                                                                        .loadedCommentsOfEstablishment[
+                                                                            index]
+                                                                        .masterPhoto),
                                                                   ),
                                                                   const SizedBox(
                                                                       width: 5),
                                                                   Column(
                                                                     crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                        CrossAxisAlignment
+                                                                            .start,
                                                                     children: [
-                                                                      Text(state.loadedCommentsOfEstablishment[index].mastername,
+                                                                      Text(
+                                                                          state
+                                                                              .loadedCommentsOfEstablishment[
+                                                                                  index]
+                                                                              .mastername,
                                                                           style: const TextStyle(
-                                                                              color: Colors
-                                                                                  .black38,
-                                                                              fontSize:
-                                                                              14,
-                                                                              fontWeight:
-                                                                              FontWeight.bold)),
+                                                                              color: Colors.black38,
+                                                                              fontSize: 14,
+                                                                              fontWeight: FontWeight.bold)),
                                                                     ],
                                                                   )
                                                                 ],
@@ -843,86 +890,111 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                 }
 
                                                 return Container();
-
                                               },
                                             ),
                                           ),
 
                                           /// Portfolio
                                           Center(
-                                            child: BlocBuilder<EstablishmentBloc,
+                                            child: BlocBuilder<
+                                                EstablishmentBloc,
                                                 EstablishmentState>(
                                               builder: (context, state) {
-                                                EstablishmentBloc establishmentBloc = BlocProvider.of<EstablishmentBloc>(context);
+                                                EstablishmentBloc
+                                                    establishmentBloc =
+                                                    BlocProvider.of<
+                                                            EstablishmentBloc>(
+                                                        context);
 
-                                                if(state is EstablishmentInitialState) {
-                                                  establishmentBloc.add(EstablishmentLoadPortfolioEvent(id: widget.establishmentModel.id));
+                                                if (state
+                                                    is EstablishmentInitialState) {
+                                                  establishmentBloc.add(
+                                                      EstablishmentLoadPortfolioEvent(
+                                                          id: widget
+                                                              .establishmentModel
+                                                              .id));
                                                 }
 
-                                                if(state is EstablishmentLoadingState) {
+                                                if (state
+                                                    is EstablishmentLoadingState) {
                                                   return const Center(
-                                                    child: CircularProgressIndicator(),
+                                                    child:
+                                                        CircularProgressIndicator(),
                                                   );
                                                 }
 
-                                                if(state is EstablishmentErrorState) {
+                                                if (state
+                                                    is EstablishmentErrorState) {
                                                   return const Center(
                                                     child: Text("Нету отзывов"),
                                                   );
                                                 }
 
-                                                if(state is EstablishmentLoadedPortfolioState) {
+                                                if (state
+                                                    is EstablishmentLoadedPortfolioState) {
                                                   return ListView.builder(
-                                                    physics: const ScrollPhysics(),
-                                                    itemCount: state.loadedPortfolio.length,
+                                                    physics:
+                                                        const ScrollPhysics(),
+                                                    itemCount: state
+                                                        .loadedPortfolio.length,
                                                     itemBuilder:
                                                         (BuildContext context,
-                                                        int index) {
+                                                            int index) {
                                                       return Padding(
-                                                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 10.0),
                                                         child: Container(
                                                           padding:
-                                                          const EdgeInsets.all(
-                                                              20),
+                                                              const EdgeInsets
+                                                                  .all(20),
                                                           decoration: BoxDecoration(
                                                               borderRadius:
-                                                              BorderRadius
-                                                                  .circular(4),
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          4),
                                                               border: Border.all(
                                                                   color: Colors
                                                                       .black38)),
                                                           child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               /// Master Information
                                                               Row(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
                                                                 children: [
-
                                                                   /// Master Information
                                                                   Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
                                                                     children: [
                                                                       CircleAvatar(
-                                                                        radius: 25,
-                                                                        backgroundImage:
-                                                                        NetworkImage(state.loadedPortfolio[index].masterPhoto),
+                                                                        radius:
+                                                                            25,
+                                                                        backgroundImage: NetworkImage(state
+                                                                            .loadedPortfolio[index]
+                                                                            .masterPhoto),
                                                                       ),
                                                                       const SizedBox(
-                                                                          width: 10),
+                                                                          width:
+                                                                              10),
                                                                       Column(
                                                                         crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
-                                                                          Text(state.loadedPortfolio[index].masterName),
+                                                                          Text(state
+                                                                              .loadedPortfolio[index]
+                                                                              .masterName),
                                                                           const Text(
                                                                             "12 января, 21:56",
-                                                                            style: TextStyle(
-                                                                                color: Colors
-                                                                                    .black38,
-                                                                                fontSize:
-                                                                                14),
+                                                                            style:
+                                                                                TextStyle(color: Colors.black38, fontSize: 14),
                                                                           )
                                                                         ],
                                                                       )
@@ -931,13 +1003,24 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
                                                                   /// Star
                                                                   Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .end,
                                                                     children: [
-                                                                      const Icon(Icons.star, color: Colors.yellow),
-                                                                      Text(state.loadedPortfolio[index].rating.toStringAsFixed(2).toString())
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .star,
+                                                                          color:
+                                                                              Colors.yellow),
+                                                                      Text(state
+                                                                          .loadedPortfolio[
+                                                                              index]
+                                                                          .rating
+                                                                          .toStringAsFixed(
+                                                                              2)
+                                                                          .toString())
                                                                     ],
                                                                   ),
-
                                                                 ],
                                                               ),
 
@@ -948,12 +1031,19 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                               Wrap(
                                                                 spacing: 10,
                                                                 runSpacing: 10,
-                                                                children: state.loadedPortfolio[index].images.map((image) {
-                                                                  return Image.network(
+                                                                children: state
+                                                                    .loadedPortfolio[
+                                                                        index]
+                                                                    .images
+                                                                    .map(
+                                                                        (image) {
+                                                                  return Image
+                                                                      .network(
                                                                     image,
                                                                     width: 150,
                                                                     height: 100,
-                                                                    fit: BoxFit.cover,
+                                                                    fit: BoxFit
+                                                                        .cover,
                                                                   );
                                                                 }).toList(),
                                                               ),
@@ -968,7 +1058,6 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                 }
 
                                                 return Container();
-
                                               },
                                             ),
                                           ),

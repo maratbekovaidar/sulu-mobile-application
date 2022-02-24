@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;

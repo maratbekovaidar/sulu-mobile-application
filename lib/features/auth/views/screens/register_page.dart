@@ -327,7 +327,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
 
                             int status = await _userProvider.confirmPhoneNumber("7"+phoneNumberController.text);
-                            print(status);
                             if (status == 200) {
                              int otpStatus = await _userProvider.sendOtp("7"+phoneNumberController.text);
                              if(otpStatus==200){
@@ -403,7 +402,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     errorTextOpacity
                         ?  Text(
                             errorText??"",
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           )
                         : Container()
                   ],

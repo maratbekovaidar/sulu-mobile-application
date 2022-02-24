@@ -1,9 +1,6 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
-import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/city_model/city_model.dart';
 import 'package:sulu_mobile_application/utils/services/user_service.dart';
 

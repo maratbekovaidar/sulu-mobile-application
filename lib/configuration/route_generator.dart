@@ -3,7 +3,6 @@ import 'package:sulu_mobile_application/features/auth/views/screens/first_page.d
 import 'package:sulu_mobile_application/features/auth/views/screens/login_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/otp_checking_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/register_page.dart';
-import 'package:sulu_mobile_application/features/establishment/views/screens/establishment_page.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
 import 'package:sulu_mobile_application/features/favorite/views/screens/favorite_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';

@@ -271,7 +271,6 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
                             });
                           }
                         } catch (e) {
-                          print(e);
                           Navigator.pop(context);
                           showDialog(context: context, barrierDismissible: false, builder: (_) {
                             return CupertinoAlertDialog(

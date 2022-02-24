@@ -82,7 +82,6 @@ class ServiceService {
   Future<bool> setAppointment(String appointmentDate,
       String appointmentStartTime, int masterId, String phoneNumber,
       int serviceId, String username) async {
-    print(serviceId);
     var url = Uri.parse(
         '${Configuration.imageUploadUrl}private/appointment/create');
 

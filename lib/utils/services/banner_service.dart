@@ -1,7 +1,6 @@
 
 
 import 'package:chopper/chopper.dart';
-import 'package:sulu_mobile_application/utils/model/main_banner_model.dart';
 
 part 'banner_service.chopper.dart';
 

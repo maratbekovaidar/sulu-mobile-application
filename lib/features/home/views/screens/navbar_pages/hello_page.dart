@@ -7,10 +7,7 @@ import 'package:sulu_mobile_application/features/establishment/views/screens/est
 import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/favorite/favorite_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/main_banner/main_banner_bloc.dart';
-import 'package:sulu_mobile_application/utils/bloc/master/master_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/user_bloc/user_bloc.dart';
-import 'package:sulu_mobile_application/utils/model/main_banner_model.dart';
-import 'package:sulu_mobile_application/utils/services/establishment_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,7 +28,7 @@ class _HelloPageState extends State<HelloPage> {
   }
 
   /// Provider
-  final EstablishmentService _establishmentProvider = EstablishmentService();
+  // final EstablishmentService _establishmentProvider = EstablishmentService();
 
   @override
   Widget build(BuildContext context) {

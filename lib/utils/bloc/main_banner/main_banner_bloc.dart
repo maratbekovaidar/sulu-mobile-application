@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:chopper/chopper.dart';
 import 'package:meta/meta.dart';
-import 'package:sulu_mobile_application/utils/bloc/master/master_bloc.dart';
 import 'package:sulu_mobile_application/utils/model/main_banner_model.dart';
 import 'package:sulu_mobile_application/utils/repository/banner_repository.dart';
 
@@ -20,7 +18,6 @@ class MainBannerBloc extends Bloc<MainBannerEvent, MainBannerState> {
           List<MainBannerModel> _loadedMainBanners = await bannerRepository.getMainBanners();
           return emit(MainBannerLoadedState(loadedMainBanners: _loadedMainBanners));
         } catch(e) {
-          print(e);
           return emit(MainBannerErrorState());
         }
       }
