@@ -52,6 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
           _userBloc.add(UserLoadEvent());
         },
         panel: Scaffold(
+          backgroundColor: Colors.transparent,
           body: Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(

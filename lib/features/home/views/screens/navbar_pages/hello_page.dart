@@ -22,9 +22,24 @@ class _HelloPageState extends State<HelloPage> {
   int _mainBannerIndex = 0;
   final CarouselController _mainBannerController = CarouselController();
 
+
+
   @override
   void initState() {
+    print("Hello Init");
     super.initState();
+
+  }
+
+
+  @override
+  void dispose() {
+    // userBloc.add(UserLoadEvent());
+    // establishmentBloc.add(EstablishmentLoadEvent());
+    // mainBannerBloc.add(MainBannerLoadEvent());
+
+    print("Hello Dispose");
+    super.dispose();
   }
 
   /// Provider
