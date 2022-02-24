@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sulu_mobile_application/core/extension/time_to_string_extension.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/order/order_confirm_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/exists_time/exists_time_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/master/master_bloc.dart';
@@ -440,7 +441,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                                         border:
                                             Border.all(color: Colors.black38),
                                         borderRadius: BorderRadius.circular(5)),
-                                    child: Text(state.loadedExistsTime[index].format(context)),
+                                    child: Text(state.loadedExistsTime[index].showTime()),
                                   ),
                                 );
                               }),
@@ -462,7 +463,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
               child: ElevatedButton(
                   onPressed: () {
                     if (_selectedDay != null) {
-                      if (_selectedTime != "") {
+                      if (_selectedTime != null) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) {
