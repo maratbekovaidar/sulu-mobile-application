@@ -9,7 +9,7 @@ class ExistsTimeLoadingState extends ExistsTimeState {}
 
 class ExistsTimeLoadedState extends ExistsTimeState {
 
-  final List<String> loadedExistsTime;
+  final List<TimeOfDay> loadedExistsTime;
   ExistsTimeLoadedState({required this.loadedExistsTime});
 
 }

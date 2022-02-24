@@ -34,7 +34,6 @@ class EstablishmentModel {
 
   factory EstablishmentModel.fromJson(json) {
 
-    print(json);
     List<String> images = [
       json['photo1'] ?? "https://images.squarespace-cdn.com/content/v1/5edee990a8696a7b8618fe6d/1592969100838-LFYK2NLO6IOIP3XJ2IUA/salon.jpg"
     ];

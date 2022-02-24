@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:sulu_mobile_application/configuration/configuration.dart';
@@ -140,7 +141,7 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
   }
 
   /// Get available time
-  Future<List<String>> getAvailableTimes(String date, int masterDataId) async {
+  Future<List<TimeOfDay>> getAvailableTimes(String date, int masterDataId) async {
     var url = Uri.parse('${Configuration.host}private/appointment/check/IsExistsInDate?date=$date&masterDataId=$masterDataId');
 
     String? token = await storage.read(key: 'token');
@@ -163,7 +164,12 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
         dynamic jsonResult = jsonDecode(
             utf8.decode(response.bodyBytes))["data"];
         List<dynamic> timesJson = jsonResult["availableTimes"];
-        List<String> times = timesJson.map((e) => e.toString()).toList();
+        print("Times getting started");
+        List<TimeOfDay> times = timesJson.map((time) {
+          TimeOfDay timeOfDay = TimeOfDay(hour: int.parse(time.toString().substring(0, 2)), minute: int.parse(time.toString().substring(3, 5)));
+          return timeOfDay;
+        }).toList();
+        print("Times getted");
         return times;
       } else {
         throw Exception("Response is null. Response status: " +

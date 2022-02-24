@@ -1,5 +1,6 @@
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:sulu_mobile_application/utils/repository/exists_time_repository.dart';
 
@@ -13,9 +14,12 @@ class ExistsTimeBloc extends Bloc<ExistsTimeEvent, ExistsTimeState> {
       if(event is ExistsTimeLoadEvent) {
         emit(ExistsTimeLoadingState());
         try {
-          List<String> loadedExistsTime = await existsTimeRepository.getExistsTime(event.date, event.masterDataId);
+          List<TimeOfDay> loadedExistsTime = await existsTimeRepository.getExistsTime(event.date, event.masterDataId);
+          print(loadedExistsTime);
+          print("Bloc Loaded");
           return emit(ExistsTimeLoadedState(loadedExistsTime: loadedExistsTime));
         } catch(e) {
+          print(e);
           return emit(ExistsTimeErrorState());
         }
       }

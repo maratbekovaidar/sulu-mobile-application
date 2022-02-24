@@ -37,7 +37,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  String _selectedTime = "";
+  TimeOfDay? _selectedTime;
   MasterModel? _selectedMasterModel;
 
   /// Master Id
@@ -440,8 +440,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                                         border:
                                             Border.all(color: Colors.black38),
                                         borderRadius: BorderRadius.circular(5)),
-                                    child: Text(state.loadedExistsTime[index]
-                                        .replaceRange(5, 8, '')),
+                                    child: Text(state.loadedExistsTime[index].format(context)),
                                   ),
                                 );
                               }),
@@ -480,7 +479,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                             return OrderConfirmPage(
                               masterId: _selectedMasterModel!.id,
                               date: date,
-                              time: _selectedTime,
+                              time: _selectedTime!.format(context),
                               establishmentModel: widget.establishmentModel,
                               serviceModel: widget.selectedService,
                               masterModel: _selectedMasterModel!,
