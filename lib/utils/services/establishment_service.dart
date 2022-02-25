@@ -81,8 +81,7 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
       'Authorization': token!
     },
       parameters: {
-        'serviceTypeId': typeId.toString(),
-        'establishmentName': ""
+        'serviceTypeId': typeId.toString()
       }
     );
 
@@ -101,7 +100,6 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
       'Authorization': token!
     },
         parameters: {
-          'serviceTypeId': "",
           'establishmentName': name
         });
 
