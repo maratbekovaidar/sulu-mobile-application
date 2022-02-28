@@ -10,6 +10,7 @@ class AppointmentModel {
   final String establishmentAddress;
   final String establishmentName;
   final int establishmentId;
+  final String establishmentPhoto;
   final String masterName;
   final int masterDataId;
   final List<MasterTypeModel> masterType;
@@ -23,6 +24,7 @@ class AppointmentModel {
     required this.appointmentStartTime,
     required this.establishmentAddress,
     required this.establishmentId,
+    required this.establishmentPhoto,
     required this.establishmentName,
     required this.masterName,
     required this.masterDataId,
@@ -41,6 +43,7 @@ class AppointmentModel {
         establishmentAddress: json['establishmentAddress'],
         establishmentName: json['establishmentName'],
         establishmentId: json['establishmentId'],
+        establishmentPhoto: json['establishmentPhoto'],
         masterName: json['masterName'],
         serviceType: json['serviceType'],
         serviceId: json['serviceId'],
