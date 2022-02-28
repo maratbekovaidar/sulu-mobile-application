@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -114,17 +115,25 @@ class _HelloPageState extends State<HelloPage> {
                                             _launchURL();
 
                                           },
-                                          child: Image.network(
-                                            item.imageUrl,
+                                          child: CachedNetworkImage(
+                                            imageUrl:item.imageUrl,
                                             width: width,
                                             height: width / 2,
                                             fit: BoxFit.fill,
-                                            loadingBuilder: (BuildContext context, Widget child,
-                                                ImageChunkEvent? loadingProgress) {
-                                              if (loadingProgress == null) return child;
-                                              return const Center(child: CircularProgressIndicator(),);
+                                            progressIndicatorBuilder: (context,
+                                                String url,
+                                                DownloadProgress progress,
+                                            ){
+                                                 return const Center(child: CircularProgressIndicator(),);
 
                                             },
+
+                                            // loadingBuilder: (BuildContext context, Widget child,
+                                            //     ImageChunkEvent? loadingProgress) {
+                                            //   if (loadingProgress == null) return child;
+                                            //   return const Center(child: CircularProgressIndicator(),);
+                                            //
+                                            // },
                                           ),
                                         )
                                     ))
@@ -776,7 +785,7 @@ class _HelloPageState extends State<HelloPage> {
                                                       FavoriteState>(
                                                   builder:
                                                       (favContext, favState) {
-                                              
+
 
                                                 if (favState
                                                     is FavoriteInitial) {
