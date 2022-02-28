@@ -26,7 +26,7 @@ class _CommentPageState extends State<CommentPage> {
   final AppointmentService _appointmentProvider = AppointmentService();
 
   /// Upload data
-  double ratingComment = 0;
+  double ratingComment = 3;
   final TextEditingController _feedbackController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   List<XFile>? images;
@@ -54,8 +54,8 @@ class _CommentPageState extends State<CommentPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   /// Image
-                  Image.asset(
-                    'assets/images/salon.jpg',
+                  Image.network(
+                    widget.appointmentModel.establishmentPhoto,
                     fit: BoxFit.cover,
                     height: 200,
                     width: 180,
@@ -115,7 +115,7 @@ class _CommentPageState extends State<CommentPage> {
               const SizedBox(height: 20),
               RatingBar.builder(
                 initialRating: 3,
-                minRating: 1,
+                minRating: 0.5,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,

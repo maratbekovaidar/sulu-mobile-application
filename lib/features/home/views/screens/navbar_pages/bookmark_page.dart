@@ -71,8 +71,8 @@ class _BookmarkPageState extends State<BookmarkPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           /// Image
-                          Image.asset(
-                            'assets/images/salon.jpg',
+                          Image.network(
+                            state.loadedAppointments[index].establishmentPhoto,
                             fit: BoxFit.cover,
                             height: 200,
                             width: 180,
