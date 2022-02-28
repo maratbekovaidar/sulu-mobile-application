@@ -49,6 +49,10 @@ class _HelloPageState extends State<HelloPage> {
     MainBannerBloc mainBannerBloc = BlocProvider.of<MainBannerBloc>(context);
     EstablishmentBloc establishmentBloc =
         BlocProvider.of<EstablishmentBloc>(context);
+    FavoriteBloc favoriteBloc =
+    BlocProvider.of<
+        FavoriteBloc>(
+        context);
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -506,7 +510,10 @@ class _HelloPageState extends State<HelloPage> {
                                                                   state.establishments[
                                                                       index]),
                                                     ),
-                                                  );
+                                                  ).whenComplete(() {
+                                                    favoriteBloc.add(FavoriteLoadEvent(state.establishments[
+                                                    index].id));
+                                                  });
                                                 },
                                                 child: ClipRRect(
                                                   borderRadius:
@@ -522,11 +529,8 @@ class _HelloPageState extends State<HelloPage> {
                                               BlocBuilder<FavoriteBloc,
                                                       FavoriteState>(
                                                   builder:
-                                                      (favContext, favState) {
-                                                FavoriteBloc favoriteBloc =
-                                                    BlocProvider.of<
-                                                            FavoriteBloc>(
-                                                        favContext);
+                                                      (context, favState) {
+
 
                                                 if (favState
                                                     is FavoriteInitial) {
@@ -553,7 +557,7 @@ class _HelloPageState extends State<HelloPage> {
                                                                           index]
                                                                       .id,
                                                                   context:
-                                                                      favContext));
+                                                                      context));
                                                         },
                                                         child: CircleAvatar(
                                                           radius: 15,
@@ -753,7 +757,9 @@ class _HelloPageState extends State<HelloPage> {
                                                                   state.establishments[
                                                                       index]),
                                                     ),
-                                                  );
+                                                  ).whenComplete(() => favoriteBloc.add(FavoriteLoadEvent(
+                                                  state.establishments[
+                                                  index].id)));
                                                 },
                                                 child: ClipRRect(
                                                   borderRadius:
@@ -770,10 +776,7 @@ class _HelloPageState extends State<HelloPage> {
                                                       FavoriteState>(
                                                   builder:
                                                       (favContext, favState) {
-                                                FavoriteBloc favoriteBloc =
-                                                    BlocProvider.of<
-                                                            FavoriteBloc>(
-                                                        favContext);
+                                              
 
                                                 if (favState
                                                     is FavoriteInitial) {

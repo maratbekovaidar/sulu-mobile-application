@@ -204,7 +204,7 @@ class _SuluDrawerState extends State<SuluDrawer> {
 
                                     /// Avatar
                                     CircleAvatar(
-                                      backgroundColor: Colors.grey,
+                                      backgroundColor: Colors.white,
                                       backgroundImage:
                                       NetworkImage(state.userModel.photo),
                                       radius: 40,
