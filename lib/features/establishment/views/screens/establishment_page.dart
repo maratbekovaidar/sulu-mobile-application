@@ -632,6 +632,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
 
                                                                 /// Avatar
                                                                 CircleAvatar(
+                                                                  backgroundColor: Colors.white,
                                                                     radius: 25,
                                                                     backgroundImage: NetworkImage(state
                                                                         .loadedMastersOfEstablishment[
@@ -770,11 +771,12 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                             .start,
                                                                     children: [
                                                                       CircleAvatar(
+                                                                        backgroundColor:  Colors.white,
                                                                         radius:
                                                                             25,
                                                                         backgroundImage: NetworkImage(state
                                                                             .loadedCommentsOfEstablishment[index]
-                                                                            .userPhoto),
+                                                                            .userPhoto,),
                                                                       ),
                                                                       const SizedBox(
                                                                           width:
@@ -845,6 +847,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                     height: 100,
                                                                     fit: BoxFit
                                                                         .cover,
+                                                                    color: Colors.white,
                                                                   );
                                                                 }).toList(),
                                                               ),
@@ -855,6 +858,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                               Row(
                                                                 children: [
                                                                   CircleAvatar(
+                                                                    backgroundColor: Colors.white,
                                                                     radius: 15,
                                                                     backgroundImage: NetworkImage(state
                                                                         .loadedCommentsOfEstablishment[
@@ -975,6 +979,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                             .start,
                                                                     children: [
                                                                       CircleAvatar(
+                                                                        backgroundColor: Colors.white,
                                                                         radius:
                                                                             25,
                                                                         backgroundImage: NetworkImage(state
@@ -1040,6 +1045,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                   return Image
                                                                       .network(
                                                                     image,
+                                                                    color: Colors.white,
                                                                     width: 150,
                                                                     height: 100,
                                                                     fit: BoxFit
