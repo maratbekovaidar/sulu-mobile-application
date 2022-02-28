@@ -480,7 +480,7 @@ class _OrderSetDatePageState extends State<OrderSetDatePage> {
                             return OrderConfirmPage(
                               masterId: _selectedMasterModel!.id,
                               date: date,
-                              time: _selectedTime!.format(context),
+                              time: _selectedTime!.showTime() + ":00",
                               establishmentModel: widget.establishmentModel,
                               serviceModel: widget.selectedService,
                               masterModel: _selectedMasterModel!,

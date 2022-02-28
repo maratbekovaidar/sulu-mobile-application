@@ -140,6 +140,8 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
 
   /// Get available time
   Future<List<TimeOfDay>> getAvailableTimes(String date, int masterDataId) async {
+
+
     var url = Uri.parse('${Configuration.host}private/appointment/check/IsExistsInDate?date=$date&masterDataId=$masterDataId');
 
     String? token = await storage.read(key: 'token');
