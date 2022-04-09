@@ -74,7 +74,7 @@ class AppointmentService {
 
 
   /// Set Comment
-  Future<bool> setCommentService(int establishmentId, int masterDataId, double star, String comment, List<XFile>? images) async {
+  Future<bool> setCommentService(int appointmentId, int establishmentId, int masterDataId, double star, String comment, List<XFile>? images) async {
 
     /// Image provider
     UploadImageService _imageProvider = UploadImageService();
@@ -88,6 +88,7 @@ class AppointmentService {
       var response = await http.post(
           url,
           body: jsonEncode({
+            "appointmentId" : appointmentId,
             "establishmentId" : establishmentId,
             "masterDataId" : masterDataId,
             "stars" : star,

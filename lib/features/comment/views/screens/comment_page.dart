@@ -219,7 +219,7 @@ class _CommentPageState extends State<CommentPage> {
                         ),
                       );
                     });
-                    bool result = await _appointmentProvider.setCommentService(widget.appointmentModel.establishmentId, widget.appointmentModel.masterDataId, ratingComment, _feedbackController.text, images);
+                    bool result = await _appointmentProvider.setCommentService(widget.appointmentModel.id, widget.appointmentModel.establishmentId, widget.appointmentModel.masterDataId, ratingComment, _feedbackController.text, images);
                     if(result) {
                       Navigator.pop(context);
                       showDialog(context: context, builder: (_) {
