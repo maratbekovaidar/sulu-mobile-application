@@ -56,6 +56,7 @@ class _CommentPageState extends State<CommentPage> {
                   /// Image
                   Image.network(
                     widget.appointmentModel.establishmentPhoto,
+                    color: Colors.white,
                     fit: BoxFit.cover,
                     height: 200,
                     width: 180,

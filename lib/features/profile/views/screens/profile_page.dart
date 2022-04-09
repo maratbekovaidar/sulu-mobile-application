@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -152,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 backgroundColor: Colors.grey,
                                 radius: 100,
                                 backgroundImage:
-                                    NetworkImage(state.userModel.photo),
+                                    CachedNetworkImageProvider(state.userModel.photo),
                               ),
 
                               /// Edit Button
