@@ -8,6 +8,7 @@ import 'package:sulu_mobile_application/features/favorite/views/screens/favorite
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/home_page.dart';
 import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
+import 'package:sulu_mobile_application/features/unauth/unauth_home/views/screens/unauth_home.dart';
 
 // Map<String, WidgetBuilder> routes = {
 //   '/' : (context) => const HomePage(),
@@ -39,8 +40,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ProfilePage());
       case '/category':
         return MaterialPageRoute(builder: (_) => const CategoryPage());
-        case '/favorite':
+      case '/favorite':
         return MaterialPageRoute(builder: (_) => const FavoritePage());
+      case '/un_auth/home':
+        return MaterialPageRoute(builder: (_) => const UnAuthHomePage());
       case '/check_otp':
         if(args is OtpCheckingConstructor ){
         return MaterialPageRoute(builder: (_) => OtpCheckingPage(phoneNumber:args.phoneNumber,password: args.password,cityId: args.cityId,name: args.name,surname: args.surname, ));
