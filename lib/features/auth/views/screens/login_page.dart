@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:sulu_mobile_application/utils/services/user_service.dart';
 
 
@@ -32,13 +33,18 @@ class _LoginPageState extends State<LoginPage> {
   bool isButtonDisabled = true;
   TextEditingController passwordController = TextEditingController();
 
+  /// Phone number formatter
+  var maskFormatter = MaskTextInputFormatter(
+      mask: '(###) ###-##-##',
+      filter: { "#": RegExp(r'[0-9]') },
+      type: MaskAutoCompletionType.eager
+  );
+
   /// Error Status opacity
   bool errorStatusOpacity = false;
 
   /// Loading opacity
   bool circularIndicatorOpacity = false;
-
-
 
 
   @override
@@ -78,21 +84,21 @@ class _LoginPageState extends State<LoginPage> {
                 /// Phone Number
                 TextFormField(
                   controller: phoneNumberController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.phone,
                   onChanged: (value) {
-                    if (value.isEmpty ||
-                        value.length <= 9) {
-                      setState(() {
-                        isButtonDisabled = true;
-                      });
-                    } else if(value.length>9) {
-                      setState(() {
-                        isButtonDisabled = false;
-                      });
-                    }
+                    // if (value.isEmpty ||
+                    //     value.length <= 9) {
+                    //   setState(() {
+                    //     isButtonDisabled = true;
+                    //   });
+                    // } else if(value.length>9) {
+                    //   setState(() {
+                    //     isButtonDisabled = false;
+                    //   });
+                    // }
                   },
                   inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    maskFormatter
                   ],
                   decoration: InputDecoration(
                     prefixIcon: const Padding(
@@ -110,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: "777-777-77-77",
                     counterText: ""
                   ),
-                  maxLength: 10,
+                  // maxLength: 10,
                 ),
                 const SizedBox(height: 10),
 
@@ -196,8 +202,8 @@ class _LoginPageState extends State<LoginPage> {
                         });
 
                         try {
-                          log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
-                          bool status = await provider.login("+7" + phoneNumberController.text, passwordController.text);
+                          log("Phone number: " + maskFormatter.getUnmaskedText() + ", Password: " + passwordController.text);
+                          bool status = await provider.login("+7" + maskFormatter.getUnmaskedText(), passwordController.text);
                           setState(() {
                             circularIndicatorOpacity = false;
                           });
