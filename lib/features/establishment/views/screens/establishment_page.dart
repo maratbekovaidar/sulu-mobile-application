@@ -370,6 +370,9 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                     /// Tabs
                                     TabBar(
                                       labelColor: Colors.black,
+                                      labelPadding: const EdgeInsets.symmetric(
+                                        horizontal: 0
+                                      ),
                                       unselectedLabelColor: Colors.black38,
                                       indicatorColor: Colors.black,
                                       overlayColor: MaterialStateProperty.all(
