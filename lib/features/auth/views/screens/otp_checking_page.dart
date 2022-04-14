@@ -141,7 +141,7 @@ class _OtpCheckingPageState extends State<OtpCheckingPage> {
                     setState(() {});
                   }
                 },
-                child: const Text("Зарегестрироваться")),
+                child: const Text("Зарегистрироваться")),
             const SizedBox(
               height: 30,
             ),

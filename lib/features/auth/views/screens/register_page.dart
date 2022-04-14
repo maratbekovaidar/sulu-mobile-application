@@ -326,7 +326,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                             log("Phone number: " + phoneNumberController.text + ", Password: " + passwordController.text);
 
-                            int status = await _userProvider.confirmPhoneNumber("7"+phoneNumberController.text);
+                            int status = await _userProvider.verifyPhoneNumber("7"+phoneNumberController.text);
                             if (status == 200) {
                              int otpStatus = await _userProvider.sendOtp("7"+phoneNumberController.text);
                              if(otpStatus==200){

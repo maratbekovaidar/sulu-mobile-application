@@ -3,7 +3,7 @@ description: SULU mobile app with flutter
 
 publish_to: 'none' 
 
-version: 1.0.7+8
+version: 1.0.8+9
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

@@ -95,9 +95,10 @@ class UserService {
     );
 
     return jsonDecode(response.body)["httpStatus"];
-  }/// Register
+  }
 
-  /// Register
+
+  /// Send OTP
   Future<int> sendOtp( String phoneNumber) async {
 try{
     String code=await getOtp(phoneNumber);
@@ -119,8 +120,8 @@ try{
 }
   }
 
-  /// confirm Otp from db
-  Future<int> confirmPhoneNumber( String phoneNumber) async {
+  /// Confirm PhoneNumber for existing in DB
+  Future<int> verifyPhoneNumber( String phoneNumber) async {
 
     var url = Uri.parse('${Configuration.host}public/auth/checkPhoneNumber?phoneNumber=%2B$phoneNumber');
 
@@ -133,7 +134,8 @@ try{
 
     return jsonDecode(response.body)["httpStatus"];
   }
-  /// confirm Otp from db
+
+  /// Confirm OTP from db
   Future<int> confirmOtp( String phoneNumber, String userCode) async {
 
     var url = Uri.parse('${Configuration.host}public/auth/verifyPhoneNumber?code=$userCode&phoneNumber=$phoneNumber');
@@ -148,7 +150,7 @@ try{
     return jsonDecode(response.body)["httpStatus"];
   }
 
-  ///Get sms code
+  /// Get OTP
   Future<String> getOtp(String phoneNumber) async {
     var url = Uri.parse('https://smsc.kz/sys/send.php?login=info@sulu.life&psw=c708adb7a37585ca85de3ba573feb71aa1e57cf2&phones=$phoneNumber&mes=code&call=1');
     var response = await http.post(
