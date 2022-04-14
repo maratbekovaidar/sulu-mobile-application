@@ -249,6 +249,35 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ) : Container(),
 
+                const SizedBox(height: 100),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    const Text("Нету аккаунта?", style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w300,
+                    )),
+
+                    /// Register
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/register");
+                        },
+                        child: Text(
+                          "Регистрация",
+                          style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300,
+                              decoration: TextDecoration.underline
+                          ),
+                        )
+                    ),
+                  ],
+                ),
 
               ],
             ),
