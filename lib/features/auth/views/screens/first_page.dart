@@ -20,6 +20,7 @@ class _FirstPageState extends State<FirstPage> {
 
     /// Size
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
 
     return WillPopScope(
@@ -43,6 +44,7 @@ class _FirstPageState extends State<FirstPage> {
 
             /// Color and Content
             Container(
+              height: height,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -97,6 +99,7 @@ class _FirstPageState extends State<FirstPage> {
                     ],
                   ),
 
+
                   /// Button of register and login
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -112,6 +115,28 @@ class _FirstPageState extends State<FirstPage> {
                                 Navigator.pushNamed(context, '/login');
                               }, child:
                               const Text("Войти")
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+
+                          /// Button
+                          SizedBox(
+                            width: width * 0.9,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                  Navigator.pushNamed(context, '/login');
+                              },
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                  Colors.white
+                                )
+                              ),
+                              child: const Text(
+                                "Пропустить",
+                                style: TextStyle(
+                                  color: Colors.redAccent
+                                ),
+                              )
                             ),
                           ),
                           const SizedBox(height: 5),
@@ -143,7 +168,7 @@ class _FirstPageState extends State<FirstPage> {
                               )
                             ],
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 20),
                         ],
                       )
                     ],
