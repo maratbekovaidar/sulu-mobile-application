@@ -23,6 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   /// Checkbox
   bool isChecked = false;
 
+  /// Password Visibility
+  bool passwordObscurity = true;
+
 
   /// TextField Controller
   TextEditingController phoneNumberController = TextEditingController();
@@ -113,9 +116,20 @@ class _LoginPageState extends State<LoginPage> {
 
                 /// Password
                 TextField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                      hintText: "Пароль"
+                  obscureText: passwordObscurity,
+                  decoration: InputDecoration(
+                    hintText: "Пароль",
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          passwordObscurity = !passwordObscurity;
+                        });
+                      },
+                      icon: Icon(
+                        passwordObscurity ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                        color: Colors.redAccent,
+                      )
+                    )
                   ),
                   controller: passwordController,
                 ),
