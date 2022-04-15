@@ -124,7 +124,7 @@ class _FirstPageState extends State<FirstPage> {
                             width: width * 0.9,
                             child: ElevatedButton(
                               onPressed: () {
-                                  Navigator.pushNamed(context, '/un_auth/home');
+                                  Navigator.pushNamed(context, '/un_auth_page');
                               },
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(

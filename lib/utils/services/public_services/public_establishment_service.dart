@@ -9,7 +9,7 @@ import 'package:sulu_mobile_application/utils/model/establishment_models/establi
 import 'package:sulu_mobile_application/utils/model/master_models/master_portfolio_model.dart';
 
 
-class EstablishmentService {
+class PublicEstablishmentService {
 
 
   /// Client to use get and posts
@@ -48,7 +48,7 @@ class EstablishmentService {
         parser: establishmentParser,
         headerParameters: {
           'Content-Type': 'application/json',
-          'Authorization': token!
+          
         }
     );
 
@@ -62,7 +62,7 @@ class EstablishmentService {
 
     final Future<List<EstablishmentModel>>result= _networkClient.get(path: "public/client/findAllFavoritesOfTheEstablishment",parser: establishmentParser,headerParameters: {
       'Content-Type': 'application/json',
-      'Authorization': token!
+      
     });
 
     return result;
@@ -78,7 +78,7 @@ class EstablishmentService {
 
     final Future<List<EstablishmentModel>>result = _networkClient.get(path: "public/client/findEstablishmentByName/serviceTypeId/userToken",parser: establishmentParser,headerParameters: {
       'Content-Type': 'application/json',
-      'Authorization': token!
+      
     },
         parameters: {
           'serviceTypeId': typeId.toString()
@@ -97,7 +97,7 @@ class EstablishmentService {
 
     final Future<List<EstablishmentModel>>result= _networkClient.get(path: "public/client/findEstablishmentByName/serviceTypeId/userToken",parser: establishmentParser,headerParameters: {
       'Content-Type': 'application/json',
-      'Authorization': token!
+      
     },
         parameters: {
           'establishmentName': name
@@ -112,7 +112,6 @@ class EstablishmentService {
     String? token = await storage.read(key: 'token');
 
     final Future<List<EstablishmentModel>> result = _networkClient.get(path:"public/client/findEstablishmentByName/serviceTypeId/userToken",parser: establishmentParser,headerParameters: {
-      'Authorization': token!,
       'Content-Type': 'application/json'
     },
         parameters: {
@@ -132,7 +131,6 @@ class EstablishmentService {
 
 
     final Future<List<MasterPortfolioModel>> result = _networkClient.get(path: "public/client/findAllPortfolioOfEstablishmentById/$id",parser: establishmentParser, headerParameters: {
-      'Authorization': token!,
       'Content-Type': 'application/json'
     });
     return result;
