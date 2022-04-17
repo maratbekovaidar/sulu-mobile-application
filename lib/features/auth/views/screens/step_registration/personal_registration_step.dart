@@ -38,231 +38,233 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         foregroundColor: Colors.red,
       ),
       backgroundColor: Colors.redAccent,
-      body: ListView(
-        children: [
-          Stack(
-            children: [
+      body: SingleChildScrollView(
+        reverse: true,
+        child: Stack(
+          children: [
 
-              /// Wave
-              ClipPath(
-                clipper: MyClipper(),
-                child: Container(
-                  height: 300,
-                  color: Colors.white,
-                )
-              ),
+            /// Wave
+            ClipPath(
+              clipper: MyClipper(),
+              child: Container(
+                height: 300,
+                color: Colors.white,
+              )
+            ),
 
-              /// Content
-              SizedBox(
-                height: height - 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            /// Content
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+                /// Main Block
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
 
-                    /// Main Block
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
+                    /// Illustration
+                    SvgPicture.asset(
+                      "assets/auth/auth_2.svg",
+                      semanticsLabel: 'Acme Logo',
+                      width: width,
+                    ),
 
-                        /// Illustration
-                        SvgPicture.asset(
-                          "assets/auth/auth_2.svg",
-                          semanticsLabel: 'Acme Logo',
-                          width: width,
-                        ),
+                    /// Labels and Inputs
+                    SizedBox(
+                      child: Column(
+                        children: [
 
-                        /// Labels and Inputs
-                        SizedBox(
-                          child: Column(
+                          /// Title
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-
-                              /// Title
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: width * 0.85,
-                                    child: const Text(
-                                      "Введите номер телефона",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22
-                                      ),
-                                    ),
+                              SizedBox(
+                                width: width * 0.85,
+                                child: const Text(
+                                  "Введите номер телефона",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 15),
-
-                              /// Step
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: width * 0.85,
-                                    child: const Text(
-                                      "Шаг 1 из 3",
-                                      style: TextStyle(
-                                          color: Colors.yellow,
-                                          fontSize: 16
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 30),
-
-                              /// Phone Number
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: width * 0.85,
-                                    child: TextFormField(
-                                      controller: phoneNumberController,
-                                      keyboardType: TextInputType.phone,
-                                      inputFormatters: <TextInputFormatter>[
-                                        maskFormatter
-                                      ],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white
-                                      ),
-                                      decoration: InputDecoration(
-                                        fillColor: const Color(0xff570404),
-                                        filled: true,
-                                        prefixIcon: const Padding(
-                                            padding:
-                                            EdgeInsets.only(left: 15, top: 15, bottom: 15),
-                                            child: Text(
-                                              '+7',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold
-                                              ),
-                                            )
-                                        ),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.circular(20)),
-                                        disabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.circular(20)),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.circular(20)),
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.circular(20)),
-                                        hintText: "(777) 777-77-77",
-                                        hintStyle: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white38
-                                        ),
-                                        errorText: phoneNumberValidState == "exist" ? "Такой номер уже существует" : null,
-                                        errorStyle: const TextStyle(
-                                          color: Colors.yellow
-                                        ),
-
-                                        /// Phone number valid indicator
-                                        suffixIcon: maskFormatter.getUnmaskedText().length == 10 ? (
-                                          phoneNumberValidState == "valid" ? const Icon(
-                                            Icons.check,
-                                            color: Colors.green,
-                                          ) : phoneNumberValidState == "exist" ? const Icon(
-                                            Icons.close,
-                                            color: Colors.redAccent,
-                                          ) : phoneNumberValidState == "loading" ? Transform.scale(
-                                            scale: 0.5,
-                                            child: const CircularProgressIndicator(color: Colors.yellow),
-                                          ) : null
-                                        ) : null,
-                                        counterText: "",
-                                      ),
-                                      onChanged: (value) async {
-                                        if(maskFormatter.getUnmaskedText().length == 10) {
-                                          setState(() {
-                                            phoneNumberValidState = "loading";
-                                          });
-                                          int phoneNumberStatus = await _userProvider.verifyPhoneNumber("7" + maskFormatter.getUnmaskedText());
-                                          if(phoneNumberStatus == 200) {
-                                            setState(() {
-                                              phoneNumberValidState = "valid";
-                                            });
-                                          } else {
-                                            setState(() {
-                                              phoneNumberValidState = "exist";
-                                            });
-                                          }
-                                        }
-
-                                        if(maskFormatter.getUnmaskedText().length == 9) {
-                                          setState(() {
-                                            phoneNumberValidState = "null";
-                                          });
-                                        }
-                                      },
-                                      // maxLength: 10,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ],
+                          ),
+                          const SizedBox(height: 15),
+
+                          /// Step
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: width * 0.85,
+                                child: const Text(
+                                  "Шаг 1 из 3",
+                                  style: TextStyle(
+                                      color: Colors.yellow,
+                                      fontSize: 16
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+
+                          /// Phone Number
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: width * 0.85,
+                                child: TextFormField(
+                                  controller: phoneNumberController,
+                                  keyboardType: TextInputType.phone,
+                                  inputFormatters: <TextInputFormatter>[
+                                    maskFormatter
+                                  ],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white
+                                  ),
+                                  decoration: InputDecoration(
+                                    fillColor: const Color(0xff570404),
+                                    filled: true,
+                                    prefixIcon: const Padding(
+                                        padding:
+                                        EdgeInsets.only(left: 15, top: 15, bottom: 15),
+                                        child: Text(
+                                          '+7',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold
+                                          ),
+                                        )
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(20)),
+                                    disabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(20)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(20)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(20)),
+                                    hintText: "(777) 777-77-77",
+                                    hintStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white38
+                                    ),
+                                    errorText: phoneNumberValidState == "exist" ? "Такой номер уже существует" : null,
+                                    errorStyle: const TextStyle(
+                                      color: Colors.yellow
+                                    ),
+
+                                    /// Phone number valid indicator
+                                    suffixIcon: maskFormatter.getUnmaskedText().length == 10 ? (
+                                      phoneNumberValidState == "valid" ? const Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                      ) : phoneNumberValidState == "exist" ? const Icon(
+                                        Icons.close,
+                                        color: Colors.redAccent,
+                                      ) : phoneNumberValidState == "loading" ? Transform.scale(
+                                        scale: 0.5,
+                                        child: const CircularProgressIndicator(color: Colors.yellow),
+                                      ) : null
+                                    ) : null,
+                                    counterText: "",
+                                  ),
+                                  onChanged: (value) async {
+                                    if(maskFormatter.getUnmaskedText().length == 10) {
+                                      setState(() {
+                                        phoneNumberValidState = "loading";
+                                      });
+                                      int phoneNumberStatus = await _userProvider.verifyPhoneNumber("7" + maskFormatter.getUnmaskedText());
+                                      if(phoneNumberStatus == 200) {
+                                        setState(() {
+                                          phoneNumberValidState = "valid";
+                                        });
+                                      } else {
+                                        setState(() {
+                                          phoneNumberValidState = "exist";
+                                        });
+                                      }
+                                    }
+
+                                    if(maskFormatter.getUnmaskedText().length == 9) {
+                                      setState(() {
+                                        phoneNumberValidState = "null";
+                                      });
+                                    }
+                                  },
+                                  // maxLength: 10,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 100),
+
+                /// Button
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: width * 0.85,
+                          child: ElevatedButton(
+                             onPressed: phoneNumberValidState == "valid" ? () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpRegistrationStep()));
+                            } : () {},
+                            child: const Text(
+                              "Получить код подтверждение",
+                              style: TextStyle(
+                                color: Colors.redAccent
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(phoneNumberValidState == "valid" ? Colors.white : Colors.red[300]),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                )
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
 
-
-                    /// Button
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: width * 0.85,
-                              child: ElevatedButton(
-                                 onPressed: phoneNumberValidState == "valid" ? () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpRegistrationStep()));
-                                } : () {},
-                                child: const Text(
-                                  "Получить код подтверждение",
-                                  style: TextStyle(
-                                    color: Colors.redAccent
-                                  ),
-                                ),
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(phoneNumberValidState == "valid" ? Colors.white : Colors.red[300]),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    )
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 30),
-                      ],
-                    ),
-
+                    const SizedBox(height: 30),
                   ],
                 ),
-              )
-            ],
-          ),
-        ],
+
+                Padding(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
