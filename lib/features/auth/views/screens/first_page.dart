@@ -154,7 +154,7 @@ class _FirstPageState extends State<FirstPage> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/register');
+                                  Navigator.pushNamed(context, '/step_registration');
                                 },
                                 child: Text(
                                   "Зарегистрироваться",

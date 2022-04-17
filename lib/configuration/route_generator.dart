@@ -4,6 +4,7 @@ import 'package:sulu_mobile_application/features/auth/views/screens/login_page.d
 import 'package:sulu_mobile_application/features/auth/views/screens/no_auth_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/otp_checking_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/register_page.dart';
+import 'package:sulu_mobile_application/features/auth/views/screens/step_registration/personal_registration_step.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
 import 'package:sulu_mobile_application/features/favorite/views/screens/favorite_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
@@ -47,6 +48,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const UnAuthHomePage());
       case '/un_auth_page':
         return MaterialPageRoute(builder: (_) => const NoAuthPage());
+      case '/step_registration':
+        return MaterialPageRoute(builder: (_) => const PersonalRegistrationStep());
       case '/check_otp':
         if(args is OtpCheckingConstructor ){
         return MaterialPageRoute(builder: (_) => OtpCheckingPage(phoneNumber:args.phoneNumber,password: args.password,cityId: args.cityId,name: args.name,surname: args.surname, ));
