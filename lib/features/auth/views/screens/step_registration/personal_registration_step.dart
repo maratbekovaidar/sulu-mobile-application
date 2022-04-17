@@ -70,7 +70,7 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
 
                     /// Illustration
                     SvgPicture.asset(
-                      "assets/auth/auth_2.svg",
+                      "assets/auth/auth_1.svg",
                       semanticsLabel: 'Acme Logo',
                       width: width,
                     ),
@@ -238,8 +238,21 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
                         SizedBox(
                           width: width * 0.85,
                           child: ElevatedButton(
-                             onPressed: phoneNumberValidState == "valid" ? () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpRegistrationStep()));
+                             onPressed: phoneNumberValidState == "valid" ? () async {
+                               try {
+                                 int otpStatus = await _userProvider.sendOtp("7"+maskFormatter.getUnmaskedText());
+                                 if(otpStatus == 200) {
+                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpRegistrationStep()));
+                                 } else {
+                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                     content: Text("Не удалось отправить код подтверждение"),
+                                   ));
+                                 }
+                               } catch(e) {
+                                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                   content: Text("Не удалось отправить код подтверждение"),
+                                 ));
+                               }
                             } : () {},
                             child: const Text(
                               "Получить код подтверждение",

@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:pinput/pin_put/pin_put.dart';
 import 'package:sulu_mobile_application/features/auth/views/ui/my_clipper.dart';
 import 'package:sulu_mobile_application/utils/services/user_service.dart';
 
@@ -29,6 +30,27 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
       filter: { "#": RegExp(r'[0-9]') },
       type: MaskAutoCompletionType.eager
   );
+
+  final TextEditingController _pinPutController = TextEditingController();
+  final FocusNode _pinPutFocusNode = FocusNode();
+
+  BoxDecoration get _pinPutDecoration {
+    return BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.transparent),
+        borderRadius: BorderRadius.circular(15.0),
+        boxShadow: const [
+          BoxShadow(
+              offset: Offset(0, 20),
+              color: Color.fromRGBO(2, 32, 44, 0.05),
+              spreadRadius: 10,
+              blurRadius: 15)
+        ]
+    );
+  }
+
+  bool isRepeatSmsDisabled = true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +110,7 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
                                   SizedBox(
                                     width: width * 0.85,
                                     child: const Text(
-                                      "Введите номер телефона",
+                                      "Код подтверждение",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -116,103 +138,45 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 30),
+                              const SizedBox(height: 20),
 
-                              /// Phone Number
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: width * 0.85,
-                                    child: TextFormField(
-                                      controller: phoneNumberController,
-                                      keyboardType: TextInputType.phone,
-                                      inputFormatters: <TextInputFormatter>[
-                                        maskFormatter
-                                      ],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white
-                                      ),
-                                      decoration: InputDecoration(
-                                        fillColor: const Color(0xff570404),
-                                        filled: true,
-                                        prefixIcon: const Padding(
-                                            padding:
-                                            EdgeInsets.only(left: 15, top: 15, bottom: 15),
-                                            child: Text(
-                                              '+7',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold
-                                              ),
-                                            )
-                                        ),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.circular(20)),
-                                        disabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.circular(20)),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.circular(20)),
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.circular(20)),
-                                        hintText: "(777) 777-77-77",
-                                        hintStyle: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white38
-                                        ),
-                                        errorText: phoneNumberValidState == "exist" ? "Такой номер уже существует" : null,
-                                        errorStyle: const TextStyle(
-                                            color: Colors.yellow
-                                        ),
-
-                                        /// Phone number valid indicator
-                                        suffixIcon: maskFormatter.getUnmaskedText().length == 10 ? (
-                                            phoneNumberValidState == "valid" ? const Icon(
-                                              Icons.check,
-                                              color: Colors.green,
-                                            ) : phoneNumberValidState == "exist" ? const Icon(
-                                              Icons.close,
-                                              color: Colors.redAccent,
-                                            ) : phoneNumberValidState == "loading" ? Transform.scale(
-                                              scale: 0.5,
-                                              child: const CircularProgressIndicator(color: Colors.yellow),
-                                            ) : null
-                                        ) : null,
-                                        counterText: "",
-                                      ),
-                                      onChanged: (value) async {
-                                        if(maskFormatter.getUnmaskedText().length == 10) {
-                                          setState(() {
-                                            phoneNumberValidState = "loading";
-                                          });
-                                          int phoneNumberStatus = await _userProvider.verifyPhoneNumber("7" + maskFormatter.getUnmaskedText());
-                                          if(phoneNumberStatus == 200) {
-                                            setState(() {
-                                              phoneNumberValidState = "valid";
-                                            });
-                                          } else {
-                                            setState(() {
-                                              phoneNumberValidState = "exist";
-                                            });
-                                          }
-                                        }
-
-                                        if(maskFormatter.getUnmaskedText().length == 9) {
-                                          setState(() {
-                                            phoneNumberValidState = "null";
-                                          });
-                                        }
-                                      },
-                                      // maxLength: 10,
+                              /// Otp PinPut
+                              SizedBox(
+                                width: width * 0.85,
+                                child: PinPut(
+                                  onChanged: (value) {},
+                                  textStyle:
+                                  GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 18),
+                                  fieldsCount: 6,
+                                  eachFieldHeight: 44,
+                                  eachFieldWidth: 44,
+                                  focusNode: _pinPutFocusNode,
+                                  controller: _pinPutController,
+                                  submittedFieldDecoration: _pinPutDecoration,
+                                  selectedFieldDecoration: _pinPutDecoration,
+                                  disabledDecoration: _pinPutDecoration,
+                                  followingFieldDecoration: _pinPutDecoration.copyWith(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    border: Border.all(
+                                      color: Colors.transparent,
                                     ),
                                   ),
-                                ],
+                                  inputDecoration: const InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.transparent)
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.transparent)
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.transparent)
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.transparent)
+                                    ),
+                                    counterText: "",
+                                  ),
+                                ),
                               ),
                             ],
                           ),
