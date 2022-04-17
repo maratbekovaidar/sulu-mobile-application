@@ -1,20 +1,19 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:sulu_mobile_application/features/auth/views/screens/step_registration/otp_registration_step.dart';
 import 'package:sulu_mobile_application/features/auth/views/ui/my_clipper.dart';
 import 'package:sulu_mobile_application/utils/services/user_service.dart';
 
-class PersonalRegistrationStep extends StatefulWidget {
-  const PersonalRegistrationStep({Key? key}) : super(key: key);
+class OtpRegistrationStep extends StatefulWidget {
+  const OtpRegistrationStep({Key? key}) : super(key: key);
 
   @override
-  State<PersonalRegistrationStep> createState() => _PersonalRegistrationStepState();
+  State<OtpRegistrationStep> createState() => _OtpRegistrationStepState();
 }
 
-class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
-
+class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
   /// Provider
   final UserService _userProvider = UserService();
 
@@ -51,11 +50,11 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
 
               /// Wave
               ClipPath(
-                clipper: MyClipper(),
-                child: Container(
-                  height: 300,
-                  color: Colors.white,
-                )
+                  clipper: MyClipper(),
+                  child: Container(
+                    height: 300,
+                    color: Colors.white,
+                  )
               ),
 
               /// Content
@@ -91,9 +90,9 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
                                     child: const Text(
                                       "Введите номер телефона",
                                       style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22
                                       ),
                                     ),
                                   ),
@@ -132,8 +131,8 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
                                         maskFormatter
                                       ],
                                       style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white
                                       ),
                                       decoration: InputDecoration(
                                         fillColor: const Color(0xff570404),
@@ -169,21 +168,21 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
                                         ),
                                         errorText: phoneNumberValidState == "exist" ? "Такой номер уже существует" : null,
                                         errorStyle: const TextStyle(
-                                          color: Colors.yellow
+                                            color: Colors.yellow
                                         ),
 
                                         /// Phone number valid indicator
                                         suffixIcon: maskFormatter.getUnmaskedText().length == 10 ? (
-                                          phoneNumberValidState == "valid" ? const Icon(
-                                            Icons.check,
-                                            color: Colors.green,
-                                          ) : phoneNumberValidState == "exist" ? const Icon(
-                                            Icons.close,
-                                            color: Colors.redAccent,
-                                          ) : phoneNumberValidState == "loading" ? Transform.scale(
-                                            scale: 0.5,
-                                            child: const CircularProgressIndicator(color: Colors.yellow),
-                                          ) : null
+                                            phoneNumberValidState == "valid" ? const Icon(
+                                              Icons.check,
+                                              color: Colors.green,
+                                            ) : phoneNumberValidState == "exist" ? const Icon(
+                                              Icons.close,
+                                              color: Colors.redAccent,
+                                            ) : phoneNumberValidState == "loading" ? Transform.scale(
+                                              scale: 0.5,
+                                              child: const CircularProgressIndicator(color: Colors.yellow),
+                                            ) : null
                                         ) : null,
                                         counterText: "",
                                       ),
@@ -231,22 +230,20 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
                             SizedBox(
                               width: width * 0.85,
                               child: ElevatedButton(
-                                 onPressed: phoneNumberValidState == "valid" ? () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpRegistrationStep()));
-                                } : () {},
+                                onPressed: () {},
                                 child: const Text(
                                   "Получить код подтверждение",
                                   style: TextStyle(
-                                    color: Colors.redAccent
+                                      color: Colors.redAccent
                                   ),
                                 ),
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(phoneNumberValidState == "valid" ? Colors.white : Colors.red[300]),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
+                                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20.0),
+                                        )
                                     )
-                                  ),
                                 ),
                               ),
                             ),
