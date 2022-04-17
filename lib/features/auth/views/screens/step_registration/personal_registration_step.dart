@@ -22,7 +22,7 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
   TextEditingController phoneNumberController = TextEditingController();
 
   /// States
-  String phoneNumberValidState = "loading";
+  String phoneNumberValidState = "null";
 
   /// Phone number formatter
   var maskFormatter = MaskTextInputFormatter(
@@ -38,7 +38,6 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -176,9 +175,17 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
                                       phoneNumberValidState == "valid" ? const Icon(
                                         Icons.check,
                                         color: Colors.green,
-                                      ) : phoneNumberValidState == "exist" ? const Icon(
-                                        Icons.close,
-                                        color: Colors.redAccent,
+                                      ) : phoneNumberValidState == "exist" ? GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            phoneNumberController.clear();
+                                            phoneNumberValidState = "null";
+                                          });
+                                        },
+                                        child: const Icon(
+                                          Icons.close,
+                                          color: Colors.redAccent,
+                                        ),
                                       ) : phoneNumberValidState == "loading" ? Transform.scale(
                                         scale: 0.5,
                                         child: const CircularProgressIndicator(color: Colors.yellow),
