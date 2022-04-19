@@ -103,6 +103,7 @@ class UserService {
 try{
     String code=await getOtp(phoneNumber);
 
+    print(code);
 
     var url = Uri.parse('${Configuration.host}public/auth/addUserToVerification?code=$code&phoneNumber=$phoneNumber');
 

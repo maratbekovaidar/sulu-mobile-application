@@ -49,6 +49,7 @@ class RouteGenerator {
       case '/un_auth_page':
         return MaterialPageRoute(builder: (_) => const NoAuthPage());
       case '/step_registration':
+        return _createRoute(const PersonalRegistrationStep());
         return MaterialPageRoute(builder: (_) => const PersonalRegistrationStep());
       case '/check_otp':
         if(args is OtpCheckingConstructor ){
@@ -91,4 +92,24 @@ class RouteGenerator {
       );
     });
   }
+
+  static Route _createRoute(StatefulWidget toPage) {
+
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => toPage,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOutBack;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
 }

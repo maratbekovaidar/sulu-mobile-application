@@ -242,7 +242,7 @@ class _PersonalRegistrationStepState extends State<PersonalRegistrationStep> {
                                try {
                                  int otpStatus = await _userProvider.sendOtp("7"+maskFormatter.getUnmaskedText());
                                  if(otpStatus == 200) {
-                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpRegistrationStep()));
+                                   Navigator.push(context, MaterialPageRoute(builder: (context) => OtpRegistrationStep(phoneNumber: maskFormatter.getUnmaskedText())));
                                  } else {
                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                      content: Text("Не удалось отправить код подтверждение"),

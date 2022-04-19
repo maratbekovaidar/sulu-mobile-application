@@ -5,18 +5,27 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:sulu_mobile_application/features/auth/views/ui/my_clipper.dart';
+import 'package:sulu_mobile_application/features/auth/views/ui/shake_animation/shake_widget.dart';
 import 'package:sulu_mobile_application/utils/services/user_service.dart';
+import 'package:timer_count_down/timer_controller.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 class OtpRegistrationStep extends StatefulWidget {
-  const OtpRegistrationStep({Key? key}) : super(key: key);
+  const OtpRegistrationStep({Key? key, required this.phoneNumber}) : super(key: key);
+
+  final String phoneNumber;
 
   @override
   State<OtpRegistrationStep> createState() => _OtpRegistrationStepState();
 }
 
 class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
+
   /// Provider
   final UserService _userProvider = UserService();
+
+  /// Global animation key
+  final _shakeKey = GlobalKey<ShakeWidgetState>();
 
   /// Phone Controller
   TextEditingController phoneNumberController = TextEditingController();
@@ -31,6 +40,7 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
       type: MaskAutoCompletionType.eager
   );
 
+  /// OTP code Controllers
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinPutFocusNode = FocusNode();
 
@@ -49,8 +59,24 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
     );
   }
 
-  bool isRepeatSmsDisabled = true;
+  BoxDecoration get _pinPutSelectedDecoration {
+    return BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.transparent),
+        borderRadius: BorderRadius.circular(5.0),
+        boxShadow: const [
+          BoxShadow(
+              offset: Offset(0, 20),
+              color: Color.fromRGBO(2, 32, 44, 0.05),
+              spreadRadius: 10,
+              blurRadius: 15)
+        ]
+    );
+  }
 
+  /// Send OTP again
+  bool sendOtpAgain = false;
+  final CountdownController _controller = CountdownController(autoStart: true);
 
   @override
   Widget build(BuildContext context) {
@@ -143,44 +169,106 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
                               /// Otp PinPut
                               SizedBox(
                                 width: width * 0.85,
-                                child: PinPut(
-                                  onChanged: (value) {},
-                                  textStyle:
-                                  GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 18),
-                                  fieldsCount: 6,
-                                  eachFieldHeight: 44,
-                                  eachFieldWidth: 44,
-                                  focusNode: _pinPutFocusNode,
-                                  controller: _pinPutController,
-                                  submittedFieldDecoration: _pinPutDecoration,
-                                  selectedFieldDecoration: _pinPutDecoration,
-                                  disabledDecoration: _pinPutDecoration,
-                                  followingFieldDecoration: _pinPutDecoration.copyWith(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    border: Border.all(
-                                      color: Colors.transparent,
+                                child: ShakeWidget(
+                                  key: _shakeKey,
+                                  // 5. configure the animation parameters
+                                  shakeCount: 3,
+                                  shakeOffset: 10,
+                                  shakeDuration: const Duration(milliseconds: 400),
+                                  child: PinPut(
+                                    onChanged: (value) {},
+                                    textStyle:
+                                    GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 18),
+                                    fieldsCount: 6,
+                                    eachFieldHeight: 44,
+                                    eachFieldWidth: 44,
+                                    animationCurve: Curves.ease,
+                                    focusNode: _pinPutFocusNode,
+                                    controller: _pinPutController,
+                                    submittedFieldDecoration: _pinPutDecoration,
+                                    selectedFieldDecoration: _pinPutSelectedDecoration,
+                                    disabledDecoration: _pinPutDecoration,
+                                    followingFieldDecoration: _pinPutDecoration.copyWith(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      border: Border.all(
+                                        color: Colors.transparent,
+                                      ),
                                     ),
-                                  ),
-                                  inputDecoration: const InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.transparent)
+                                    inputDecoration: const InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent)
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent)
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent)
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent)
+                                      ),
+                                      counterText: "",
                                     ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.transparent)
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.transparent)
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.transparent)
-                                    ),
-                                    counterText: "",
+                                    onSubmit: (value) async {
+                                      int verifyStatus = await _userProvider.confirmOtp("7" + widget.phoneNumber, value);
+                                      if(verifyStatus == 200) {
+                                        print("Success");
+                                      } else {
+                                        _shakeKey.currentState?.shake();
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        const SizedBox(height: 20),
+
+                        /// Send OTP again
+                        SizedBox(
+                          width: width * 0.85,
+                          child: Row(
+                            children: [
+
+                              /// Label
+                              GestureDetector(
+                                onTap: sendOtpAgain ? () async {
+                                  _controller.restart();
+                                  setState(() {
+                                    sendOtpAgain = false;
+                                  });
+                                  int otpStatus = await _userProvider.sendOtp("7"+maskFormatter.getUnmaskedText());
+                                } : () {},
+                                child: Text(
+                                  "Отправить код повторно ",
+                                  style: TextStyle(
+                                    color: sendOtpAgain ? Colors.white :Colors.white38
+                                  ),
+                                ),
+                              ),
+
+                              /// Timer
+                              Countdown(
+                                controller: _controller,
+                                seconds: 30,
+                                build: (_, double time) => Text(
+                                  time.round().toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white
+                                  ),
+                                ),
+                                interval: const Duration(milliseconds: 100),
+                                onFinished: () {
+                                  setState(() {
+                                    sendOtpAgain = true;
+                                  });
+                                },
+                              ),
+
+                            ],
+                          ),
+                        )
                       ],
                     ),
 
@@ -194,9 +282,12 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
                             SizedBox(
                               width: width * 0.85,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  int otpStatus = await _userProvider.confirmOtp(
+                                      "7" + widget.phoneNumber, _pinPutController.text);
+                                },
                                 child: const Text(
-                                  "Получить код подтверждение",
+                                  "Подтвердить",
                                   style: TextStyle(
                                       color: Colors.redAccent
                                   ),
