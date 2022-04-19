@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+import 'package:sulu_mobile_application/features/auth/views/screens/step_registration/info_registration_step.dart';
 import 'package:sulu_mobile_application/features/auth/views/ui/my_clipper.dart';
 import 'package:sulu_mobile_application/features/auth/views/ui/shake_animation/shake_widget.dart';
 import 'package:sulu_mobile_application/utils/services/user_service.dart';
@@ -212,7 +213,7 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
                                     onSubmit: (value) async {
                                       int verifyStatus = await _userProvider.confirmOtp("7" + widget.phoneNumber, value);
                                       if(verifyStatus == 200) {
-                                        print("Success");
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => InfoRegistrationStep(phoneNumber: widget.phoneNumber)));
                                       } else {
                                         _shakeKey.currentState?.shake();
                                       }
@@ -238,7 +239,7 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
                                   setState(() {
                                     sendOtpAgain = false;
                                   });
-                                  int otpStatus = await _userProvider.sendOtp("7"+maskFormatter.getUnmaskedText());
+                                  await _userProvider.sendOtp("7"+maskFormatter.getUnmaskedText());
                                 } : () {},
                                 child: Text(
                                   "Отправить код повторно ",
@@ -285,6 +286,11 @@ class _OtpRegistrationStepState extends State<OtpRegistrationStep> {
                                 onPressed: () async {
                                   int otpStatus = await _userProvider.confirmOtp(
                                       "7" + widget.phoneNumber, _pinPutController.text);
+                                  if(otpStatus == 200) {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => InfoRegistrationStep(phoneNumber: widget.phoneNumber)));
+                                  } else {
+                                    _shakeKey.currentState?.shake();
+                                  }
                                 },
                                 child: const Text(
                                   "Подтвердить",
