@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/first_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/login_page.dart';
+import 'package:sulu_mobile_application/features/auth/views/screens/no_auth_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/otp_checking_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/register_page.dart';
+import 'package:sulu_mobile_application/features/auth/views/screens/step_registration/personal_registration_step.dart';
 import 'package:sulu_mobile_application/features/establishment/views/screens/establishments_page.dart';
 import 'package:sulu_mobile_application/features/favorite/views/screens/favorite_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/appbar/category_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/home_page.dart';
 import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
+import 'package:sulu_mobile_application/features/unauth/unauth_home/views/screens/unauth_home.dart';
 
 // Map<String, WidgetBuilder> routes = {
 //   '/' : (context) => const HomePage(),
@@ -39,8 +42,15 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ProfilePage());
       case '/category':
         return MaterialPageRoute(builder: (_) => const CategoryPage());
-        case '/favorite':
+      case '/favorite':
         return MaterialPageRoute(builder: (_) => const FavoritePage());
+      case '/un_auth/home':
+        return MaterialPageRoute(builder: (_) => const UnAuthHomePage());
+      case '/un_auth_page':
+        return MaterialPageRoute(builder: (_) => const NoAuthPage());
+      case '/step_registration':
+        return _createRoute(const PersonalRegistrationStep());
+        return MaterialPageRoute(builder: (_) => const PersonalRegistrationStep());
       case '/check_otp':
         if(args is OtpCheckingConstructor ){
         return MaterialPageRoute(builder: (_) => OtpCheckingPage(phoneNumber:args.phoneNumber,password: args.password,cityId: args.cityId,name: args.name,surname: args.surname, ));
@@ -82,4 +92,24 @@ class RouteGenerator {
       );
     });
   }
+
+  static Route _createRoute(StatefulWidget toPage) {
+
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => toPage,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOutBack;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
 }
