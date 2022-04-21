@@ -176,7 +176,9 @@ class _LoginPageState extends State<LoginPage> {
 
                     /// Reset Password
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/reset_password');
+                        },
                         child: Text(
                           "Забыли пароль?",
                           style: GoogleFonts.inter(

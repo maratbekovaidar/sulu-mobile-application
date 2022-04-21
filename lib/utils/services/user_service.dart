@@ -276,7 +276,7 @@ try{
 
   /// Reset Password
   Future<bool> resetPassword(String phoneNumber, String newPassword) async {
-    var url = Uri.parse('${Configuration.host}public/auth/resetPassword?newPassword=$newPassword&phoneNumber=$phoneNumber');
+    var url = Uri.parse('${Configuration.host}public/auth/resetPassword?newPassword=$newPassword&phoneNumber=%2B$phoneNumber');
 
     var response = await http.post(
       url,
@@ -285,6 +285,7 @@ try{
       },
     );
 
+    print(response.body);
 
     if(response.statusCode == 200) {
       if(jsonDecode(response.body)["httpStatus"] == 200) {
