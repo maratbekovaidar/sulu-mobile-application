@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:sulu_mobile_application/features/auth/views/screens/reset_password/otp_reset_password_page.dart';
 import 'package:sulu_mobile_application/features/auth/views/screens/step_registration/otp_registration_step.dart';
 import 'package:sulu_mobile_application/features/auth/views/ui/my_clipper.dart';
 import 'package:sulu_mobile_application/utils/services/user_service.dart';
@@ -87,7 +88,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               SizedBox(
                                 width: width * 0.85,
                                 child: const Text(
-                                  "Введите номер телефона",
+                                  "Забыли пароль? Введите свой номер телефона",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -106,7 +107,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               SizedBox(
                                 width: width * 0.85,
                                 child: const Text(
-                                  "Шаг 1 из 3",
+                                  "Шаг 1 из 2",
                                   style: TextStyle(
                                       color: Colors.yellow,
                                       fontSize: 16
@@ -165,7 +166,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white38
                                     ),
-                                    errorText: phoneNumberValidState == "exist" ? "Такой номер уже существует" : null,
+                                    errorText: phoneNumberValidState == "exist" ? "Такой номер не зарегистрирован" : null,
                                     errorStyle: const TextStyle(
                                         color: Colors.yellow
                                     ),
@@ -201,11 +202,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                       int phoneNumberStatus = await _userProvider.verifyPhoneNumber("7" + maskFormatter.getUnmaskedText());
                                       if(phoneNumberStatus == 200) {
                                         setState(() {
-                                          phoneNumberValidState = "valid";
+                                          phoneNumberValidState = "exist";
                                         });
                                       } else {
                                         setState(() {
-                                          phoneNumberValidState = "exist";
+                                          phoneNumberValidState = "valid";
                                         });
                                       }
                                     }
@@ -242,7 +243,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               try {
                                 int otpStatus = await _userProvider.sendOtp("7"+maskFormatter.getUnmaskedText());
                                 if(otpStatus == 200) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => OtpRegistrationStep(phoneNumber: maskFormatter.getUnmaskedText())));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => OtpResetPasswordPage(phoneNumber: maskFormatter.getUnmaskedText())));
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                     content: Text("Не удалось отправить код подтверждение"),
