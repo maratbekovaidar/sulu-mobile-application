@@ -16,6 +16,7 @@ class ServiceService {
 
   /// Get Service of Establishment
   Future<List<ServiceModel>> getServiceByEstablishmentId(int id) async {
+
     var url = Uri.parse(
         '${Configuration.host}private/client/findServicesOfEstablishment/byEstablishmentId/$id');
 
@@ -42,7 +43,25 @@ class ServiceService {
             response.statusCode.toString());
       }
     } else {
-      throw Exception("Null Token. User Unauthorized");
+      var response = await http.get(
+          Uri.parse(
+              '${Configuration.host}public/client/findServicesOfEstablishment/byEstablishmentId/$id'),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      );
+
+      /// Convert response to json list
+      if (response.body.isNotEmpty) {
+        List<dynamic> jsonResult = jsonDecode(
+            utf8.decode(response.bodyBytes))["data"];
+
+
+        return jsonResult.map((json) => ServiceModel.fromJson(json)).toList();
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
     }
   }
 

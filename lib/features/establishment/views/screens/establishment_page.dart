@@ -20,10 +20,11 @@ import 'package:sulu_mobile_application/constants/app_constants.dart'
 import 'package:url_launcher/url_launcher.dart';
 
 class EstablishmentPage extends StatefulWidget {
-  const EstablishmentPage({Key? key, required this.establishmentModel})
+  const EstablishmentPage({Key? key, required this.establishmentModel, this.auth = true})
       : super(key: key);
 
   final EstablishmentModel establishmentModel;
+  final bool auth;
 
   @override
   _EstablishmentPageState createState() => _EstablishmentPageState();
@@ -476,7 +477,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                 (context,
                                                                     index) {
                                                               return GestureDetector(
-                                                                onTap: () {
+                                                                onTap: widget.auth ? () {
                                                                   Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
@@ -489,7 +490,7 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                         selectedService:
                                                                             state.loadedServices[index]);
                                                                   }));
-                                                                },
+                                                                } : () {},
                                                                 child:
                                                                     Container(
                                                                   padding: const EdgeInsets

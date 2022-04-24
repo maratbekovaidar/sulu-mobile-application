@@ -518,7 +518,7 @@ class _UnAuthHelloPageState extends State<UnAuthHelloPage> {
                                                           EstablishmentPage(
                                                               establishmentModel:
                                                               state.establishments[
-                                                              index]),
+                                                              index], auth: false),
                                                     ),
                                                   ).whenComplete(() {
                                                     favoriteBloc.add(FavoriteLoadEvent(state.establishments[
@@ -765,7 +765,7 @@ class _UnAuthHelloPageState extends State<UnAuthHelloPage> {
                                                           EstablishmentPage(
                                                               establishmentModel:
                                                               state.establishments[
-                                                              index]),
+                                                              index], auth: false),
                                                     ),
                                                   ).whenComplete(() => favoriteBloc.add(FavoriteLoadEvent(
                                                       state.establishments[

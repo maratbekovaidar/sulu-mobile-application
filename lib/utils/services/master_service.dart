@@ -47,7 +47,32 @@ class MasterService {
             response.statusCode.toString());
       }
     } else {
-      throw Exception("Null Token. User Unauthorized");
+      var response = await http.post(
+          Uri.parse(
+              '${Configuration.host}public/client/getAllMastersOfEstablishment/$id'),
+          body: jsonEncode({
+            "direction": "ASC",
+            "pageNumber": 0,
+            "pageSize": 15,
+            "sortBy": "id"
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      );
+
+      /// Convert response to json list
+
+
+      if (response.body.isNotEmpty) {
+        List<dynamic> jsonResult = jsonDecode(
+            utf8.decode(response.bodyBytes))["data"]["data"];
+
+        return jsonResult.map((json) => MasterModel.fromJson(json)).toList();
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
     }
   }
 
