@@ -16,8 +16,7 @@ class BannerRepository {
     String? token = await storage.read(key: 'token');
     final Map<String, String> headers = {
             'Content-Type': 'application/json',
-            'Authorization': token!
-          };
+    };
     request = request.copyWith(headers: headers);
     return request;
   }

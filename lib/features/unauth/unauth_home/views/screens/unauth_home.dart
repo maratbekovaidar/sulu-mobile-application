@@ -6,6 +6,7 @@ import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/cart_page.dart';
 import 'package:sulu_mobile_application/features/home/views/screens/navbar_pages/hello_page.dart';
 import 'package:sulu_mobile_application/features/profile/views/screens/profile_page.dart';
+import 'package:sulu_mobile_application/features/unauth/unauth_home/views/screens/unauth_hello_page.dart';
 import 'package:sulu_mobile_application/utils/bloc/appointment/appointment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/establishment/establishment_bloc.dart';
 import 'package:sulu_mobile_application/utils/bloc/favorite/favorite_bloc.dart';
@@ -105,7 +106,7 @@ class _UnAuthHomePageState extends State<UnAuthHomePage> {
 
     /// Bottom Navbar pages
     List<Widget> pages = [
-      const HelloPage(),
+      const UnAuthHelloPage(),
       const BookmarkPage(),
       const CartPage(),
       const ProfilePage()
