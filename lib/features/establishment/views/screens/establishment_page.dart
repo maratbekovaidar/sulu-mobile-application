@@ -490,7 +490,29 @@ class _EstablishmentPageState extends State<EstablishmentPage>
                                                                         selectedService:
                                                                             state.loadedServices[index]);
                                                                   }));
-                                                                } : () {},
+                                                                } : () {
+                                                                  showDialog(context: context, builder: (_) {
+                                                                    return AlertDialog(
+                                                                      title: const Text(
+                                                                        "Необходима регистрация"
+                                                                      ),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          onPressed: () {
+                                                                            Navigator.pushNamed(context, "/step_registration");
+                                                                          },
+                                                                          child: const Text("Зарегистрироваться", style: TextStyle(color: Colors.green),)
+                                                                        ),
+                                                                        TextButton(
+                                                                            onPressed: () {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child: const Text("Позже")
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  });
+                                                                },
                                                                 child:
                                                                     Container(
                                                                   padding: const EdgeInsets
