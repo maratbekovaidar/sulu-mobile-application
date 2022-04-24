@@ -60,13 +60,19 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
 
     String? token = await storage.read(key: 'token');
 
-    final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findAllFavoritesOfTheEstablishment",parser: establishmentParser,headerParameters: {
-      'Content-Type': 'application/json',
-      'Authorization': token!
-    });
-
-    return result;
-
+    /// When user use app without registration
+    if(token == null || token == "") {
+      final Future<List<EstablishmentModel>>result= _networkClient.get(path: "public/client/findAllFavoritesOfTheEstablishment",parser: establishmentParser,headerParameters: {
+        'Content-Type': 'application/json',
+      });
+      return result;
+    } else {
+      final Future<List<EstablishmentModel>>result= _networkClient.get(path: "private/client/findAllFavoritesOfTheEstablishment",parser: establishmentParser,headerParameters: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      });
+      return result;
+    }
   }
 
   /// Get Establishments with Type Id

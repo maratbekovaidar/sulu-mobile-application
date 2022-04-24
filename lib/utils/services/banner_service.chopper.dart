@@ -18,6 +18,12 @@ class _$BannerService extends BannerService {
 
   @override
   Future<Response<dynamic>> getMainBanners() {
+    final $url = 'public/client/findAllAdvertisements';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+  @override
+  Future<Response<dynamic>> getPublicMainBanners() {
     final $url = 'private/client/findAllAdvertisements';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);

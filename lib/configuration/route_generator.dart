@@ -48,12 +48,14 @@ class RouteGenerator {
       case '/un_auth/home':
         return MaterialPageRoute(builder: (_) => const UnAuthHomePage());
       case '/un_auth_page':
-        return MaterialPageRoute(builder: (_) => const NoAuthPage());
+        return MaterialPageRoute(builder: (_) => const UnAuthHomePage());
       case '/step_registration':
         return _createRoute(const PersonalRegistrationStep());
       case '/reset_password':
         return _createRoute(const ResetPasswordPage());
         return MaterialPageRoute(builder: (_) => const PersonalRegistrationStep());
+      case '/no_auth_page' :
+        return MaterialPageRoute(builder: (_) => const NoAuthPage());
       case '/check_otp':
         if(args is OtpCheckingConstructor ){
         return MaterialPageRoute(builder: (_) => OtpCheckingPage(phoneNumber:args.phoneNumber,password: args.password,cityId: args.cityId,name: args.name,surname: args.surname, ));
