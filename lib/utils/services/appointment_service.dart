@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:sulu_mobile_application/configuration/configuration.dart';
 import 'package:sulu_mobile_application/utils/api_clients/network_client.dart';
 import 'package:sulu_mobile_application/utils/model/comment_model.dart';
 import 'package:sulu_mobile_application/utils/model/establishment_models/appointment_model.dart';
@@ -129,7 +130,7 @@ class AppointmentService {
 
   /// Get Comments
   Future<List<CommentModel>> getCommentsOfEstablishment(int id) async {
-    var url = Uri.parse('http://94.247.129.64:8080/private/comment/findAll/feedbackOfEstablishmentBy/$id');
+    var url = Uri.parse(Configuration.host + 'private/comment/findAll/feedbackOfEstablishmentBy/$id');
 
     String? token = await storage.read(key: 'token');
 
@@ -154,7 +155,24 @@ class AppointmentService {
             response.statusCode.toString());
       }
     } else {
-      throw Exception("Null Token. User Unauthorized");
+      var response = await http.get(
+          Uri.parse(Configuration.host + 'public/comment/findAll/feedbackOfEstablishmentBy/$id'),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      );
+
+      /// Convert response to json list
+
+
+      if (response.body.isNotEmpty) {
+        List<dynamic> jsonResult = jsonDecode(
+            utf8.decode(response.bodyBytes))["data"];
+        return jsonResult.map((json) => CommentModel.fromJson(json)).toList();
+      } else {
+        throw Exception("Response is null. Response status: " +
+            response.statusCode.toString());
+      }
     }
 
 
