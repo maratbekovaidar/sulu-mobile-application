@@ -467,7 +467,7 @@ class _UnAuthHelloPageState extends State<UnAuthHelloPage> {
                         builder: (context, state) {
                           if (state is EstablishmentInitialState) {
                             establishmentBloc
-                                .add(EstablishmentLoadPopularEvent());
+                                .add(EstablishmentLoadEvent());
                             return const Center(
                               child: CircularProgressIndicator(),
                             );

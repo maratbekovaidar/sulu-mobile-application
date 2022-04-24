@@ -42,17 +42,29 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
   Future<List<EstablishmentModel>> getEstablishments() async {
 
     String? token = await storage.read(key: 'token');
+    print(token ?? "Null");
+    if(token == null) {
+      final Future<List<EstablishmentModel>> result = _networkClient.get(
+          path: "public/client/findAll/establishments",
+          parser: establishmentParser,
+          headerParameters: {
+            'Content-Type': 'application/json',
+          }
+      );
+      return result;
+    } else {
 
-    final Future<List<EstablishmentModel>> result = _networkClient.get(
-        path: "private/client/findEstablishmentsByUserToken",
-        parser: establishmentParser,
-        headerParameters: {
-          'Content-Type': 'application/json',
-          'Authorization': token!
-        }
-    );
+      final Future<List<EstablishmentModel>> result = _networkClient.get(
+          path: "private/client/findEstablishmentsByUserToken",
+          parser: establishmentParser,
+          headerParameters: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+      );
 
-    return result;
+      return result;
+    }
   }
 
   /// Get Popular Establishments
@@ -60,8 +72,9 @@ import 'package:sulu_mobile_application/utils/model/master_models/master_portfol
 
     String? token = await storage.read(key: 'token');
 
+    print(token ?? "Null nahuy");
     /// When user use app without registration
-    if(token == null || token == "") {
+    if(token == null) {
       final Future<List<EstablishmentModel>>result= _networkClient.get(path: "public/client/findAllFavoritesOfTheEstablishment",parser: establishmentParser,headerParameters: {
         'Content-Type': 'application/json',
       });
