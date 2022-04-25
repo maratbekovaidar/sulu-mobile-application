@@ -289,7 +289,7 @@ class _HelloPageState extends State<HelloPage> {
                                 ),
                               ),
 
-                              /// Косметалогия
+                              /// Косметология
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -297,7 +297,7 @@ class _HelloPageState extends State<HelloPage> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               const EstablishmentsPage(
-                                                  title: "Кометология",
+                                                  title: "Косметология",
                                                   typeId: 4)));
                                 },
                                 child: Column(
@@ -309,7 +309,7 @@ class _HelloPageState extends State<HelloPage> {
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-                                      "Косметалогия",
+                                      "Косметология",
                                       style: GoogleFonts.inter(fontSize: 12),
                                     )
                                   ],

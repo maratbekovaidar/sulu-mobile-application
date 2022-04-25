@@ -290,7 +290,7 @@ class _UnAuthHelloPageState extends State<UnAuthHelloPage> {
                                 ),
                               ),
 
-                              /// Косметалогия
+                              /// Косметология
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -298,7 +298,7 @@ class _UnAuthHelloPageState extends State<UnAuthHelloPage> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                           const EstablishmentsPage(
-                                              title: "Кометология",
+                                              title: "Косметология",
                                               typeId: 4)));
                                 },
                                 child: Column(
@@ -310,7 +310,7 @@ class _UnAuthHelloPageState extends State<UnAuthHelloPage> {
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-                                      "Косметалогия",
+                                      "Косметология",
                                       style: GoogleFonts.inter(fontSize: 12),
                                     )
                                   ],
